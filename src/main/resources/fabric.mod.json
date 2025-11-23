@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "swd",
+  "version": "${version}",
+  "name": "Simple World Downloader",
+  "description": "Allows you to download worlds from servers.",
+  "authors": ["J0KER2J0KER"],
+  "contact": {
+    "homepage": "https://github.com/J0KER2J0KER/SimpleWorldDownloader",
+    "sources": "https://github.com/J0KER2J0KER/SimpleWorldDownloader",
+    "issues": "https://github.com/J0KER2J0KER/SimpleWorldDownloader/issues"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/swd/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.j0ker2j0ker.swd.client.SwdDataGenerator"
+    ],
+    "client": [
+      "com.j0ker2j0ker.swd.client.SwdClient"
+    ],
+    "main": [
+      "com.j0ker2j0ker.swd.Swd"
+    ]
+  },
+  "mixins": [
+    "swd.mixins.json",
+    {
+      "config": "swd.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
