@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader Asetukset",
+  "text.autoconfig.swd.option.showMessages": "Näytä viestit",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk-tallennusviestit näytetään toimintopalkissa.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Painikkeen sijainti",
+  "text.autoconfig.swd.option.buttonSide": "Painikkeen puoli",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Millä puolella painike näkyy.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = vasen, 1 = keskellä, 2 = oikea",
+  "text.autoconfig.swd.option.buttonHeight": "Painikkeen korkeus",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "Millä korkeudella painike näkyy.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = ylhäällä, 1 = alhaalla"
+}

@@ -22,6 +22,9 @@
     ],
     "main": [
       "com.j0ker2j0ker.swd.Swd"
+    ],
+    "modmenu": [
+      "com.j0ker2j0ker.swd.client.config.SwdModMenuIntegration"
     ]
   },
   "mixins": [

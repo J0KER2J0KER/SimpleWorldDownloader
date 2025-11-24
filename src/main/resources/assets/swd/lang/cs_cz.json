@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Konfigurace Simple World Downloader",
+  "text.autoconfig.swd.option.showMessages": "Zobrazit zprávy",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Zprávy o ukládání chunků se zobrazí na vaší liště akcí.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Pozice tlačítka",
+  "text.autoconfig.swd.option.buttonSide": "Strana tlačítka",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Na které straně se má tlačítko zobrazit.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = vlevo, 1 = střed, 2 = vpravo",
+  "text.autoconfig.swd.option.buttonHeight": "Výška tlačítka",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "Na jaké výšce se má tlačítko zobrazit.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = nahoře, 1 = dole"
+}

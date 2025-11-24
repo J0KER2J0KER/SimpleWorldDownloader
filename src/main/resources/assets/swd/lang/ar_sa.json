@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "إعدادات Simple World Downloader",
+  "text.autoconfig.swd.option.showMessages": "إظهار الرسائل",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "ستظهر رسائل حفظ الـChunks في شريط الإجراءات.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "موضع الزر",
+  "text.autoconfig.swd.option.buttonSide": "جانب الزر",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "في أي جانب يجب أن يظهر الزر.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = يسار، 1 = وسط، 2 = يمين",
+  "text.autoconfig.swd.option.buttonHeight": "ارتفاع الزر",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "على أي ارتفاع يجب أن يظهر الزر.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = أعلى، 1 = أسفل"
+}

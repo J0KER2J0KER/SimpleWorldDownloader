@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader Konfigurasjon",
+  "text.autoconfig.swd.option.showMessages": "Vis meldinger",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk-lagringsmeldinger vises i handlingslinjen din.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Knappens posisjon",
+  "text.autoconfig.swd.option.buttonSide": "Knappens side",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "På hvilken side knappen skal vises.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = venstre, 1 = midten, 2 = høyre",
+  "text.autoconfig.swd.option.buttonHeight": "Knappens høyde",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "På hvilken høyde knappen skal vises.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = topp, 1 = bunn"
+}

@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "uoᴉʇɐɹnƃᴉɟuoɔ plɹoʍ ǝlᴉds",
+  "text.autoconfig.swd.option.showMessages": "sǝƃɐssǝɯ ʍoɥs",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "˙ɹɐquoᴉʇɔ∀ ɹnoʎ uᴉ uǝʍoɹɐ ǝq llᴉʍ sǝƃɐssǝɯ ƃuᴉʌɐs ʞunɥɔ",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "uoᴉʇᴉsod uoʇʇnq",
+  "text.autoconfig.swd.option.buttonSide": "ǝpᴉs uoʇʇnq",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "˙uoʇʇnq ǝɥʇ ɹɐǝddɐ ʎlᴉp ǝpᴉs ɥɔᴉɥʍ uo",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "ʇɟǝl = 0, ɹǝʇuǝɔ = 1, ʇɥƃᴉɹ = 2",
+  "text.autoconfig.swd.option.buttonHeight": "ʇɥƃᴉǝɥ uoʇʇnq",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "˙ʇɥƃᴉǝɥ ʎuɐ ʇɐ ɹɐǝddɐ ʎlᴉp uoʇʇnq ǝɥʇ",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "doʇ = 0, ɯoʇʇoq = 1"
+}

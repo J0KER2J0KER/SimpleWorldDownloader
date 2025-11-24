@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader Config",
+  "text.autoconfig.swd.option.showMessages": "Nachrichten anzeigen",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk Speicherungsnachrichten werden in der Aktionsleiste angezeigt.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Knopf Position",
+  "text.autoconfig.swd.option.buttonSide": "Knopfseite",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Auf welcher Seite der Knopf erscheinen soll.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = links, 1 = mitte, 2 = rechts",
+  "text.autoconfig.swd.option.buttonHeight": "Knopf Höhe",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "Auf welcher Höhe der Knopf erscheinen soll.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = oben, 1 = unten"
+}

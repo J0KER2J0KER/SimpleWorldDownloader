@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Ρυθμίσεις Simple World Downloader",
+  "text.autoconfig.swd.option.showMessages": "Εμφάνιση μηνυμάτων",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Τα μηνύματα αποθήκευσης chunks θα εμφανίζονται στη γραμμή ενεργειών.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Θέση κουμπιού",
+  "text.autoconfig.swd.option.buttonSide": "Πλευρά κουμπιού",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Σε ποια πλευρά θα εμφανίζεται το κουμπί.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = αριστερά, 1 = κέντρο, 2 = δεξιά",
+  "text.autoconfig.swd.option.buttonHeight": "Ύψος κουμπιού",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "Σε ποιο ύψος θα εμφανίζεται το κουμπί.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = πάνω, 1 = κάτω"
+}

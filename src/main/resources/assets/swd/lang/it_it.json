@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Configurazione di Simple World Downloader",
+  "text.autoconfig.swd.option.showMessages": "Mostra messaggi",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "I messaggi di salvataggio dei chunk verranno mostrati nella barra delle azioni.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Posizione del pulsante",
+  "text.autoconfig.swd.option.buttonSide": "Lato del pulsante",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Su quale lato deve apparire il pulsante.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = sinistra, 1 = centro, 2 = destra",
+  "text.autoconfig.swd.option.buttonHeight": "Altezza del pulsante",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "A quale altezza deve apparire il pulsante.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = alto, 1 = basso"
+}

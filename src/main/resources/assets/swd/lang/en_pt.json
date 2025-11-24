@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader's Ship Log",
+  "text.autoconfig.swd.option.showMessages": "Show yer parrot squawks",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk savin’ messages be hollered in yer ActionBar, arrr!",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Where be the button?",
+  "text.autoconfig.swd.option.buttonSide": "Button’s berth",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Choose the side where the button drops anchor.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = port, 1 = midship, 2 = starboard",
+  "text.autoconfig.swd.option.buttonHeight": "Button’s mast height",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "At what height shall the button hoist?",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = crow’s nest, 1 = deck"
+}

@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader Configuration",
+  "text.autoconfig.swd.option.showMessages": "Show messages",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk save messages will be displayed in your ActionBar, eh?",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Button position",
+  "text.autoconfig.swd.option.buttonSide": "Button side",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Which side the button should appear on.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = left, 1 = centre, 2 = right",
+  "text.autoconfig.swd.option.buttonHeight": "Button height",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "At what height the button should appear.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = top, 1 = bottom"
+}

@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple Wurld Downloader Configz",
+  "text.autoconfig.swd.option.showMessages": "Sho messagz plz",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Chunk save msgz will showz in ur ActionBar, kthx.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Buttun posishun",
+  "text.autoconfig.swd.option.buttonSide": "Buttun sidez",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Wich side teh buttun shud appearz?",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = leftiez, 1 = midz, 2 = riteh",
+  "text.autoconfig.swd.option.buttonHeight": "Buttun highz",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "At wat high teh buttun shud appearz?",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = toppiez, 1 = bottomz"
+}

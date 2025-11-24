@@ -20,6 +20,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "onChunkData", at = @At("TAIL"))
     private void onChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
+        if(!SaveManager.getIsSaving()) return;
+
         MinecraftClient mc = MinecraftClient.getInstance();
         if(mc.isInSingleplayer() || mc.getCurrentServerEntry() == null) return;
         int chunkX = packet.getChunkX();
@@ -27,6 +29,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
         WorldChunk wc = this.world.getChunkManager().getWorldChunk(chunkX, chunkZ, false);
         if (wc == null || wc.isEmpty()) return;
 
-        if(SaveManager.getIsSaving()) SaveManager.saveChunkToRegion(SaveManager.path, wc, true);
+        SaveManager.saveChunkToRegion(SaveManager.path, wc, true);
     }
 }

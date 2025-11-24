@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "简单世界下载器配置",
+  "text.autoconfig.swd.option.showMessages": "显示消息",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "区块保存消息将显示在动作栏中。",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "按钮位置",
+  "text.autoconfig.swd.option.buttonSide": "按钮侧",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "按钮应显示在哪一侧。",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = 左, 1 = 中, 2 = 右",
+  "text.autoconfig.swd.option.buttonHeight": "按钮高度",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "按钮应显示在什么高度。",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = 上, 1 = 下"
+}

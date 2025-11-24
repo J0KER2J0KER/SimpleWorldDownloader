@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader Beállítások",
+  "text.autoconfig.swd.option.showMessages": "Üzenetek megjelenítése",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "A chunk mentési üzenetek megjelennek az akciósávban.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Gomb pozíciója",
+  "text.autoconfig.swd.option.buttonSide": "Gomb oldala",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Melyik oldalon jelenjen meg a gomb.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = bal, 1 = közép, 2 = jobb",
+  "text.autoconfig.swd.option.buttonHeight": "Gomb magassága",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "Milyen magasságban jelenjen meg a gomb.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = fent, 1 = lent"
+}

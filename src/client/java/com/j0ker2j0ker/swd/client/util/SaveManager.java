@@ -1,5 +1,7 @@
 package com.j0ker2j0ker.swd.client.util;
 
+import com.j0ker2j0ker.swd.client.config.SwdConfig;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -75,6 +77,8 @@ public class SaveManager {
 
     public static void printStatus(String msg) {
         MinecraftClient mc = MinecraftClient.getInstance();
+        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
+        if(!config.showMessages) return;
         if(mc != null && mc.inGameHud != null) {
             mc.inGameHud.setOverlayMessage(Text.of(msg), false);
         }

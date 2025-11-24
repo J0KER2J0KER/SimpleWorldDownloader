@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Simple World Downloader’s Configuratione",
+  "text.autoconfig.swd.option.showMessages": "Displayeth thy messages",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Missives of chunk saving shall be reveal’d upon thine ActionBar.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Placement of the button",
+  "text.autoconfig.swd.option.buttonSide": "Button’s quarter",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "Upon which side shall the button manifest?",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = port, 1 = midst, 2 = starboard",
+  "text.autoconfig.swd.option.buttonHeight": "Button’s altitude",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "At what height shall the button be reveal’d?",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = topmost, 1 = lowermost"
+}

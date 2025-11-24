@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.swd.title": "Налаштування Simple World Downloader",
+  "text.autoconfig.swd.option.showMessages": "Показувати повідомлення",
+  "text.autoconfig.swd.option.showMessages.@Tooltip": "Повідомлення про збереження чанків будуть показані у вашій панелі дій.",
+  "text.autoconfig.swd.option.buttonSide.@PrefixText": "Позиція кнопки",
+  "text.autoconfig.swd.option.buttonSide": "Сторона кнопки",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[0]": "На якій стороні має з’явитися кнопка.",
+  "text.autoconfig.swd.option.buttonSide.@Tooltip[1]": "0 = ліво, 1 = центр, 2 = право",
+  "text.autoconfig.swd.option.buttonHeight": "Висота кнопки",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[0]": "На якій висоті має з’явитися кнопка.",
+  "text.autoconfig.swd.option.buttonHeight.@Tooltip[1]": "0 = верх, 1 = низ"
+}
