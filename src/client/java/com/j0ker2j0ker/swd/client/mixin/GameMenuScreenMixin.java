@@ -47,21 +47,25 @@ public abstract class GameMenuScreenMixin extends Screen{
     }
 
     private int getX() {
+        return 4; //TODO until ClothConfig releases 1.21.11 version
+        /*
         SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
         switch (config.buttonSide){
-            //case 0: return 4;
             case 1: return width/2-10;
             case 2: return width-24;
             default: return 4;
         }
+        */
     }
     private int getY() {
+        return height-24; //TODO until ClothConfig releases 1.21.11 version
+        /*
         SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
         switch (config.buttonHeight){
             case 0: return 4;
-            //case 1: return height-24;
             default: return height-24;
         }
+         */
     }
 
 }

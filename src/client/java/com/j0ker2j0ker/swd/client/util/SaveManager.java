@@ -77,8 +77,8 @@ public class SaveManager {
 
     public static void printStatus(String msg) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        if(!config.showMessages) return;
+        // SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig(); //TODO until ClothConfig releases 1.21.11 version
+        // if(!config.showMessages) return; //TODO until ClothConfig releases 1.21.11 version
         if(mc != null && mc.inGameHud != null) {
             mc.inGameHud.setOverlayMessage(Text.of(msg), false);
         }
@@ -123,7 +123,7 @@ public class SaveManager {
 
         NbtCompound data = new NbtCompound();
 
-        data.putInt("DataVersion", 3953);
+        data.putInt("DataVersion", 4671);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
@@ -137,8 +137,8 @@ public class SaveManager {
         data.putByte("allowCommands", (byte)1);
 
         NbtCompound version = new NbtCompound();
-        version.putString("Name", "1.21.10");
-        version.putInt("Id", 3953);
+        version.putString("Name", "1.21.11");
+        version.putInt("Id", 4671);
         version.putString("Series", "main");
         version.putByte("Snapshot", (byte)0);
         data.put("Version", version);
@@ -250,7 +250,7 @@ public class SaveManager {
         ChunkPos pos = wc.getPos();
 
         NbtCompound chunk = new NbtCompound();
-        chunk.putInt("DataVersion", 3953); // 1.21.10
+        chunk.putInt("DataVersion", 4671); // 1.21.10
         chunk.putInt("xPos", pos.x);
         chunk.putInt("zPos", pos.z);
         chunk.putString("Status", "full");
@@ -320,7 +320,7 @@ public class SaveManager {
         chunk.put("block_entities", new NbtList());
         chunk.put("entities", new NbtList());
         chunk.put("Heightmaps", new NbtCompound());
-        chunk.putByte("isLightOn", (byte) 1);
+        chunk.putByte("isLightOn", (byte) 0);
 
         return chunk;
     }
