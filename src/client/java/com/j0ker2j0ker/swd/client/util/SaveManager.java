@@ -77,8 +77,8 @@ public class SaveManager {
 
     public static void printStatus(String msg) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        // SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig(); //TODO until ClothConfig releases 1.21.11 version
-        // if(!config.showMessages) return; //TODO until ClothConfig releases 1.21.11 version
+        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
+        if(!config.showMessages) return;
         if(mc != null && mc.inGameHud != null) {
             mc.inGameHud.setOverlayMessage(Text.of(msg), false);
         }

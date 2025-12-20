@@ -18,7 +18,7 @@ public class SwdClient implements ClientModInitializer {
 
     private void initialize() {
         instance = this;
-        //AutoConfig.register(SwdConfig.class, Toml4jConfigSerializer::new); //TODO until ClothConfig releases 1.21.11 version
+        AutoConfig.register(SwdConfig.class, Toml4jConfigSerializer::new);
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.getServer() == null) {
