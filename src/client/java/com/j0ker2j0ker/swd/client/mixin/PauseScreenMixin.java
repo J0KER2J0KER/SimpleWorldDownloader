@@ -4,28 +4,28 @@ import com.j0ker2j0ker.swd.client.SwdClient;
 import com.j0ker2j0ker.swd.client.config.SwdConfig;
 import com.j0ker2j0ker.swd.client.util.SaveManager;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.components.SpriteIconButton;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GameMenuScreen.class)
-public abstract class GameMenuScreenMixin extends Screen{
+@Mixin(PauseScreen.class)
+public abstract class PauseScreenMixin extends Screen {
 
-    protected GameMenuScreenMixin(Text title) {
+    protected PauseScreenMixin(Component title) {
         super(title);
     }
-    private static final Identifier START = Identifier.of("swd", "icon/start");
-    private static final Identifier STOP = Identifier.of("swd", "icon/stop");
+    private static final Identifier START = Identifier.fromNamespaceAndPath("swd", "icon/start");
+    private static final Identifier STOP = Identifier.fromNamespaceAndPath("swd", "icon/stop");
 
-    @Inject(at = @At("RETURN"), method = "initWidgets", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "createPauseMenu", cancellable = true)
     public void addSaveButton(CallbackInfo ci) {
-        if (client.isInSingleplayer()) return;
+        if (minecraft.isLocalServer()) return;
 
         refresh();
     }
@@ -37,12 +37,12 @@ public abstract class GameMenuScreenMixin extends Screen{
     private void refresh() {
         Identifier icon = START;
         if(SaveManager.getIsSaving()) icon = STOP;
-        TextIconButtonWidget iconButton = this.addDrawableChild(TextIconButtonWidget.builder(Text.of(getName()), (button) -> {
+        SpriteIconButton iconButton = this.addRenderableWidget(SpriteIconButton.builder(Component.nullToEmpty(getName()), (button) -> {
             SwdClient.getInstance().download();
             button.setFocused(false);
-            button.setMessage(Text.of(getName()));
+            button.setMessage(Component.nullToEmpty(getName()));
             refresh();
-        }, true).width(20).texture(icon, 16, 16).build());
+        }, true).width(20).sprite(icon, 16, 16).build());
         iconButton.setPosition(getX(), getY());
     }
 
