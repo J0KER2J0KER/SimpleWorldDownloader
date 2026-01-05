@@ -1,12 +1,11 @@
 package com.j0ker2j0ker.swd.client.util;
 
 import com.j0ker2j0ker.swd.client.config.SwdConfig;
-import me.shedaniel.autoconfig.AutoConfig;
+//import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.ChunkPos;
@@ -22,7 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-
+//TODO
 public class SaveManager {
 
     private static boolean isSaving = false;
@@ -78,8 +77,8 @@ public class SaveManager {
 
     public static void printStatus(String msg) {
         Minecraft mc = Minecraft.getInstance();
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        if(!config.showMessages) return;
+        /*SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
+        if(!config.showMessages) return;*/
         if(mc != null && mc.gui != null) {
             mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
         }
@@ -124,7 +123,7 @@ public class SaveManager {
 
         CompoundTag data = new CompoundTag();
 
-        data.putInt("DataVersion", 4671);
+        data.putInt("DataVersion", 4764);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
@@ -138,8 +137,8 @@ public class SaveManager {
         data.putByte("allowCommands", (byte)1);
 
         CompoundTag version = new CompoundTag();
-        version.putString("Name", "1.21.11");
-        version.putInt("Id", 4671);
+        version.putString("Name", "26.1 Snapshot 1");
+        version.putInt("Id", 4764);
         version.putString("Series", "main");
         version.putByte("Snapshot", (byte)0);
         data.put("Version", version);
@@ -251,7 +250,7 @@ public class SaveManager {
         ChunkPos pos = wc.getPos();
 
         CompoundTag chunk = new CompoundTag();
-        chunk.putInt("DataVersion", 4671); // 1.21.10
+        chunk.putInt("DataVersion", 4764); // 1.21.10
         chunk.putInt("xPos", pos.x);
         chunk.putInt("zPos", pos.z);
         chunk.putString("Status", "full");

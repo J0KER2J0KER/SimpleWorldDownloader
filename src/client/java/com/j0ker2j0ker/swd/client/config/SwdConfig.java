@@ -1,14 +1,15 @@
 package com.j0ker2j0ker.swd.client.config;
 
-import me.shedaniel.autoconfig.ConfigData;
+/*import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = "swd")
-public class SwdConfig implements ConfigData
+@Config(name = "swd")*/
+//TODO
+public class SwdConfig //implements ConfigData
 {
 
-    @ConfigEntry.Gui.Tooltip
+    /*@ConfigEntry.Gui.Tooltip
     public boolean showMessages = true;
 
     @ConfigEntry.Gui.PrefixText
@@ -18,5 +19,5 @@ public class SwdConfig implements ConfigData
 
     @ConfigEntry.Gui.Tooltip(count = 2)
     @ConfigEntry.BoundedDiscrete(min = 0, max = 1)
-    public int buttonHeight = 1;
+    public int buttonHeight = 1;*/
 }
