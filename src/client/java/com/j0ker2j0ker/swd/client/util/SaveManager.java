@@ -42,14 +42,14 @@ public class SaveManager {
         MinecraftClient mc = MinecraftClient.getInstance();
         if(!isSaving && mc.getCurrentServerEntry() != null) {
             isSaving = true;
-            name = mc.getCurrentServerEntry().address;
+            name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
             if(Files.exists(Paths.get("saves/"+name))) {
                 int i = 1;
                 while(Files.exists(Paths.get("saves/"+name + i))) i++;
                 name += i;
             }
-            path = mc.getLevelStorage().getSavesDirectory().toString() + "\\" + name;
-            regionPath = path + "\\region";
+            path = mc.getLevelStorage().getSavesDirectory().resolve(name).toString();
+            regionPath = Paths.get(path, "region").toString();
 
             try {
                 if(!Files.exists(Path.of(path))) {
