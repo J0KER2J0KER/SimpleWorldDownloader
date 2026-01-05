@@ -21,8 +21,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
+
+    private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
+    private static Thread saveThread = null;
 
     private static boolean isSaving = false;
     public static String name;
@@ -106,7 +110,7 @@ public class SaveManager {
         }
     }
 
-    public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
+    /*public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
         NbtCompound nbt = buildChunkNbt(wc);
         Path regionDir = Paths.get(worldFolder, "region");
         try (RegionStorage storage = new RegionStorage(regionDir)) {
@@ -115,7 +119,33 @@ public class SaveManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }*/
+    public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
+        NbtCompound nbt = buildChunkNbt(wc);
+        saveQueue.add(new ChunkSaveTask(wc.getPos(), nbt));
+
+        if (saveThread == null || !saveThread.isAlive()) {
+            Path regionDir = Paths.get(worldFolder, "region");
+            saveThread = new Thread(() -> processQueue(regionDir));
+            saveThread.start();
+        }
+
+        if (showMessage) printStatus("§a> Saving chunk " + wc.getPos());
     }
+
+    private static void processQueue(Path regionDir) {
+        try (RegionStorage storage = new RegionStorage(regionDir)) {
+            while (!saveQueue.isEmpty() && isSaving) {
+                ChunkSaveTask task = saveQueue.poll();
+                if (task != null) {
+                    storage.write(task.pos, task.nbt);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void createLevelDat(Path worldFolder, String worldName, ClientPlayerEntity p) throws IOException {
         Files.createDirectories(worldFolder);
@@ -357,6 +387,9 @@ public class SaveManager {
             }
         }
         return data;
+    }
+
+    private record ChunkSaveTask(ChunkPos pos, NbtCompound nbt) {
     }
 
 }
