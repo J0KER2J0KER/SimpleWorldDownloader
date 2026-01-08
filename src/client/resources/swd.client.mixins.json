@@ -4,8 +4,8 @@
   "package": "com.j0ker2j0ker.swd.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "GameMenuScreenMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "PauseScreenMixin",
+    "ClientPacketListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

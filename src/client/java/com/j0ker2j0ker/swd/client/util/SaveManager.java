@@ -1,18 +1,19 @@
 package com.j0ker2j0ker.swd.client.util;
 
 import com.j0ker2j0ker.swd.client.config.SwdConfig;
-import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
+//import me.shedaniel.autoconfig.AutoConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
-import net.minecraft.registry.Registries;
-import net.minecraft.state.property.Property;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.chunk.WorldChunk;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+//TODO
 public class SaveManager {
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
@@ -43,24 +45,24 @@ public class SaveManager {
     }
 
     public static void start() {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        if(!isSaving && mc.getCurrentServerEntry() != null) {
+        Minecraft mc = Minecraft.getInstance();
+        if(!isSaving && mc.getCurrentServer() != null) {
             isSaving = true;
-            name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
+            name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
             if(Files.exists(Paths.get("saves/"+name))) {
                 int i = 1;
                 while(Files.exists(Paths.get("saves/"+name + i))) i++;
                 name += i;
             }
-            path = mc.getLevelStorage().getSavesDirectory().resolve(name).toString();
+            path = mc.getLevelSource().getBaseDir().resolve(name).toString();
             regionPath = Paths.get(path, "region").toString();
 
             try {
                 if(!Files.exists(Path.of(path))) {
                     Files.createDirectories(Path.of(regionPath));
                     createLevelDat(Path.of(path), name, mc.player);
-                    if(mc.getCurrentServerEntry().getFavicon() != null) {
-                        byte[] icon = mc.getCurrentServerEntry().getFavicon();
+                    if(mc.getCurrentServer().getIconBytes() != null) {
+                        byte[] icon = mc.getCurrentServer().getIconBytes();
                         FileOutputStream fos = new FileOutputStream(path + "\\icon.png");
                         fos.write(icon);
                     }
@@ -80,29 +82,29 @@ public class SaveManager {
     }
 
     public static void printStatus(String msg) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        if(!config.showMessages) return;
-        if(mc != null && mc.inGameHud != null) {
-            mc.inGameHud.setOverlayMessage(Text.of(msg), false);
+        Minecraft mc = Minecraft.getInstance();
+        //SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
+        //if(!config.showMessages) return;
+        if(mc != null && mc.gui  != null) {
+            mc.gui .setOverlayMessage(Component.nullToEmpty(msg), false);
         }
     }
 
     public static void saveChunksAround(int radius) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        ClientWorld world = client.world;
+        Minecraft client = Minecraft.getInstance();
+        ClientLevel  world = client.level;
 
         if (world == null || client.player == null) return;
 
-        int playerChunkX = client.player.getChunkPos().x;
-        int playerChunkZ = client.player.getChunkPos().z;
+        int playerChunkX = client.player.chunkPosition().x();
+        int playerChunkZ = client.player.chunkPosition().z();
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
                 int chunkX = playerChunkX + dx;
                 int chunkZ = playerChunkZ + dz;
 
-                WorldChunk chunk = world.getChunkManager().getWorldChunk(chunkX, chunkZ);
+                LevelChunk  chunk = world.getChunkSource().getChunkNow(chunkX, chunkZ);
                 if (chunk != null) {
                     saveChunkToRegion(path, chunk, false);
                 }
@@ -110,8 +112,8 @@ public class SaveManager {
         }
     }
 
-    /*public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
-        NbtCompound nbt = buildChunkNbt(wc);
+    /*public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
+        CompoundTag nbt = buildChunkNbt(wc);
         Path regionDir = Paths.get(worldFolder, "region");
         try (RegionStorage storage = new RegionStorage(regionDir)) {
             storage.write(wc.getPos(), nbt);
@@ -120,8 +122,8 @@ public class SaveManager {
             e.printStackTrace();
         }
     }*/
-    public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
-        NbtCompound nbt = buildChunkNbt(wc);
+    public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
+        CompoundTag nbt = buildChunkNbt(wc);
         saveQueue.add(new ChunkSaveTask(wc.getPos(), nbt));
 
         if (saveThread == null || !saveThread.isAlive()) {
@@ -147,13 +149,13 @@ public class SaveManager {
     }
 
 
-    public static void createLevelDat(Path worldFolder, String worldName, ClientPlayerEntity p) throws IOException {
+    public static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
         Files.createDirectories(worldFolder);
         Files.createDirectories(worldFolder.resolve("region"));
 
-        NbtCompound data = new NbtCompound();
+        CompoundTag data = new CompoundTag();
 
-        data.putInt("DataVersion", 4671);
+        data.putInt("DataVersion", 4765);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
@@ -166,50 +168,50 @@ public class SaveManager {
         data.putByte("hardcore", (byte)0);
         data.putByte("allowCommands", (byte)1);
 
-        NbtCompound version = new NbtCompound();
-        version.putString("Name", "1.21.11");
-        version.putInt("Id", 4671);
+        CompoundTag version = new CompoundTag();
+        version.putString("Name", "26.1 Snapshot 2");
+        version.putInt("Id", 4765);
         version.putString("Series", "main");
         version.putByte("Snapshot", (byte)0);
         data.put("Version", version);
 
-        NbtCompound gameRules = new NbtCompound();
+        CompoundTag gameRules = new CompoundTag();
         gameRules.putString("doDaylightCycle", "true");
         gameRules.putString("doWeatherCycle", "true");
         data.put("GameRules", gameRules);
 
-        NbtCompound dataPacks = new NbtCompound();
-        NbtList enabled = new NbtList();
-        enabled.add(NbtString.of("vanilla"));
+        CompoundTag dataPacks = new CompoundTag();
+        ListTag enabled = new ListTag();
+        enabled.add(StringTag.valueOf("vanilla"));
         dataPacks.put("Enabled", enabled);
-        dataPacks.put("Disabled", new NbtList());
+        dataPacks.put("Disabled", new ListTag());
         data.put("DataPacks", dataPacks);
 
-        NbtCompound player = new NbtCompound();
+        CompoundTag player = new CompoundTag();
         player.putString("Dimension", "minecraft:overworld");
-        NbtList pos = new NbtList();
-        pos.add(NbtDouble.of(p.getBlockX()));
-        pos.add(NbtDouble.of(p.getBlockY()));
-        pos.add(NbtDouble.of(p.getBlockZ()));
+        ListTag pos = new ListTag();
+        pos.add(DoubleTag.valueOf(p.getBlockX()));
+        pos.add(DoubleTag.valueOf(p.getBlockY()));
+        pos.add(DoubleTag.valueOf(p.getBlockZ()));
         player.put("Pos", pos);
         data.put("Player", player);
 
-        NbtCompound worldGenSettings = new NbtCompound();
+        CompoundTag worldGenSettings = new CompoundTag();
         worldGenSettings.putLong("seed", 0L);
         worldGenSettings.putByte("generate_features", (byte)0);
         worldGenSettings.putByte("bonus_chest", (byte)0);
 
-        NbtCompound dimensions = new NbtCompound();
+        CompoundTag dimensions = new CompoundTag();
 
         {
-            NbtCompound overworld = new NbtCompound();
+            CompoundTag overworld = new CompoundTag();
             overworld.putString("type", "minecraft:overworld");
 
-            NbtCompound generator = new NbtCompound();
+            CompoundTag generator = new CompoundTag();
             generator.putString("type", "minecraft:flat");
 
-            NbtCompound settings = new NbtCompound();
-            settings.put("layers", new NbtList());
+            CompoundTag settings = new CompoundTag();
+            settings.put("layers", new ListTag());
             settings.putString("biome", "minecraft:plains");
             settings.putByte("structure", (byte)0);
 
@@ -220,14 +222,14 @@ public class SaveManager {
         }
 
         {
-            NbtCompound nether = new NbtCompound();
+            CompoundTag nether = new CompoundTag();
             nether.putString("type", "minecraft:the_nether");
 
-            NbtCompound generator = new NbtCompound();
+            CompoundTag generator = new CompoundTag();
             generator.putString("type", "minecraft:noise");
             generator.putString("settings", "minecraft:nether");
 
-            NbtCompound biomeSource = new NbtCompound();
+            CompoundTag biomeSource = new CompoundTag();
             biomeSource.putString("type", "minecraft:multi_noise");
             biomeSource.putString("preset", "minecraft:nether");
 
@@ -238,14 +240,14 @@ public class SaveManager {
         }
 
         {
-            NbtCompound end = new NbtCompound();
+            CompoundTag end = new CompoundTag();
             end.putString("type", "minecraft:the_end");
 
-            NbtCompound generator = new NbtCompound();
+            CompoundTag generator = new CompoundTag();
             generator.putString("type", "minecraft:noise");
             generator.putString("settings", "minecraft:end");
 
-            NbtCompound biomeSource = new NbtCompound();
+            CompoundTag biomeSource = new CompoundTag();
             biomeSource.putString("type", "minecraft:the_end");
 
             generator.put("biome_source", biomeSource);
@@ -257,14 +259,14 @@ public class SaveManager {
         worldGenSettings.put("dimensions", dimensions);
         data.put("WorldGenSettings", worldGenSettings);
 
-        NbtCompound dragonFight = new NbtCompound();
+        CompoundTag dragonFight = new CompoundTag();
         dragonFight.putByte("NeedsStateScanning", (byte)0);
         dragonFight.putByte("DragonKilled", (byte)0);
         dragonFight.putByte("PreviouslyKilled", (byte)0);
         dragonFight.putByte("IsRespawning", (byte)0);
         data.put("DragonFight", dragonFight);
 
-        NbtCompound root = new NbtCompound();
+        CompoundTag root = new CompoundTag();
         root.put("Data", data);
 
         Path levelDat = worldFolder.resolve("level.dat");
@@ -276,28 +278,28 @@ public class SaveManager {
     }
 
 
-    public static NbtCompound buildChunkNbt(WorldChunk wc) {
+    public static CompoundTag buildChunkNbt(LevelChunk wc) {
         ChunkPos pos = wc.getPos();
 
-        NbtCompound chunk = new NbtCompound();
-        chunk.putInt("DataVersion", 4671); // 1.21.10
-        chunk.putInt("xPos", pos.x);
-        chunk.putInt("zPos", pos.z);
+        CompoundTag chunk = new CompoundTag();
+        chunk.putInt("DataVersion", 4765); // 1.21.10
+        chunk.putInt("xPos", pos.x());
+        chunk.putInt("zPos", pos.z());
         chunk.putString("Status", "full");
         chunk.putLong("LastUpdate", 0L);
         chunk.putLong("InhabitedTime", 0L);
 
-        NbtList sections = new NbtList();
+        ListTag sections = new ListTag();
 
-        ChunkSection[] sectionArray = wc.getSectionArray();
+        LevelChunkSection[] sectionArray = wc.getSections();
         for (int secIndex = 0; secIndex < sectionArray.length; secIndex++) {
-            ChunkSection section = sectionArray[secIndex];
-            if (section == null || section.isEmpty()) continue;
+            LevelChunkSection section = sectionArray[secIndex];
+            if (section == null || section.hasOnlyAir()) continue;
 
-            NbtCompound sec = new NbtCompound();
-            sec.putInt("Y", secIndex + wc.getBottomSectionCoord());
+            CompoundTag sec = new CompoundTag();
+            sec.putInt("Y", secIndex + wc.getMinSectionY());
 
-            NbtList paletteList = new NbtList();
+            ListTag paletteList = new ListTag();
             Map<BlockState, Integer> paletteIndex = new HashMap<>();
             int[] indices = new int[16 * 16 * 16]; // 4096 blocks
 
@@ -311,12 +313,12 @@ public class SaveManager {
                             idx = paletteList.size();
                             paletteIndex.put(state, idx);
 
-                            NbtCompound entry = new NbtCompound();
-                            entry.putString("Name", Registries.BLOCK.getId(state.getBlock()).toString());
+                            CompoundTag entry = new CompoundTag();
+                            entry.putString("Name", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
                             if (!state.getProperties().isEmpty()) {
-                                NbtCompound props = new NbtCompound();
+                                CompoundTag props = new CompoundTag();
                                 for (Property<?> prop : state.getProperties()) {
-                                    props.putString(prop.getName(), String.valueOf(state.get(prop)));
+                                    props.putString(prop.getName(), String.valueOf(state.getValue(prop)));
                                 }
                                 entry.put("Properties", props);
                             }
@@ -330,26 +332,26 @@ public class SaveManager {
             int paletteSize = paletteList.size();
             int bits = paletteSize <= 1 ? 4 : Math.max(4, ceilLog2(paletteSize));
 
-            NbtCompound blockStates = new NbtCompound();
+            CompoundTag blockStates = new CompoundTag();
             blockStates.put("palette", paletteList);
             long[] data = packIndicesVanilla(indices, bits);
-            blockStates.put("data", new NbtLongArray(data));
+            blockStates.put("data", new LongArrayTag(data));
             sec.put("block_states", blockStates);
 
-            NbtCompound biomes = new NbtCompound();
-            NbtList biomePalette = new NbtList();
-            biomePalette.add(NbtString.of("minecraft:plains"));
+            CompoundTag biomes = new CompoundTag();
+            ListTag biomePalette = new ListTag();
+            biomePalette.add(StringTag.valueOf("minecraft:plains"));
             biomes.put("palette", biomePalette);
-            biomes.put("data", new NbtLongArray(new long[]{0L}));
+            biomes.put("data", new LongArrayTag(new long[]{0L}));
             sec.put("biomes", biomes);
 
             sections.add(sec);
         }
 
         chunk.put("sections", sections);
-        chunk.put("block_entities", new NbtList());
-        chunk.put("entities", new NbtList());
-        chunk.put("Heightmaps", new NbtCompound());
+        chunk.put("block_entities", new ListTag());
+        chunk.put("entities", new ListTag());
+        chunk.put("Heightmaps", new CompoundTag());
         chunk.putByte("isLightOn", (byte) 0);
 
         return chunk;
@@ -389,7 +391,7 @@ public class SaveManager {
         return data;
     }
 
-    private record ChunkSaveTask(ChunkPos pos, NbtCompound nbt) {
+    private record ChunkSaveTask(ChunkPos pos, CompoundTag nbt) {
     }
 
 }
