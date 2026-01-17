@@ -1,7 +1,5 @@
 package com.j0ker2j0ker.swd.client.util;
 
-import com.j0ker2j0ker.swd.client.config.SwdConfig;
-//import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -9,11 +7,16 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,8 +27,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-//TODO
 public class SaveManager {
+
+    private static final Minecraft mc = Minecraft.getInstance();
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
     private static Thread saveThread = null;
@@ -45,52 +49,45 @@ public class SaveManager {
     }
 
     public static void start() {
-        Minecraft mc = Minecraft.getInstance();
-        if(!isSaving && mc.getCurrentServer() != null) {
-            isSaving = true;
-            name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
-            if(Files.exists(Paths.get("saves/"+name))) {
-                int i = 1;
-                while(Files.exists(Paths.get("saves/"+name + i))) i++;
-                name += i;
-            }
-            path = mc.getLevelSource().getBaseDir().resolve(name).toString();
-            regionPath = Paths.get(path, "region").toString();
+        if(isSaving || mc.getCurrentServer() == null || mc.player == null) return;
+        isSaving = true;
 
-            try {
-                if(!Files.exists(Path.of(path))) {
-                    Files.createDirectories(Path.of(regionPath));
-                    createLevelDat(Path.of(path), name, mc.player);
-                    if(mc.getCurrentServer().getIconBytes() != null) {
-                        byte[] icon = mc.getCurrentServer().getIconBytes();
-                        FileOutputStream fos = new FileOutputStream(path + "\\icon.png");
-                        fos.write(icon);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            printStatus("§a> Started saving chunks...");
-            saveChunksAround(12);
+        name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
+        if(Files.exists(Paths.get("saves/"+name))) {
+            int i = 1;
+            while(Files.exists(Paths.get("saves/"+name + i))) i++;
+            name += i;
         }
+
+        path = mc.getLevelSource().getBaseDir().resolve(name).toString();
+        regionPath = Paths.get(path, "region").toString();
+
+        try {
+            if(!Files.exists(Path.of(path))) {
+                Files.createDirectories(Path.of(regionPath));
+                createLevelDat(Path.of(path), name, mc.player);
+                FileOutputStream fos = new FileOutputStream(path + "\\icon.png");
+                fos.write(mc.getCurrentServer().getIconBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        printStatus("§a> Started saving chunks...");
+        saveChunksAround();
     }
 
     public static void stop() {
+        if (!isSaving) return;
         isSaving = false;
         printStatus("§c> Stopped saving chunks.");
     }
 
-    public static void printStatus(String msg) {
-        Minecraft mc = Minecraft.getInstance();
-        //SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        //if(!config.showMessages) return;
-        if(mc != null && mc.gui  != null) {
-            mc.gui .setOverlayMessage(Component.nullToEmpty(msg), false);
-        }
+    private static void printStatus(String msg) {
+        mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
     }
 
-    public static void saveChunksAround(int radius) {
+    private static void saveChunksAround() {
         Minecraft client = Minecraft.getInstance();
         ClientLevel  world = client.level;
 
@@ -99,29 +96,17 @@ public class SaveManager {
         int playerChunkX = client.player.chunkPosition().x();
         int playerChunkZ = client.player.chunkPosition().z();
 
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dz = -radius; dz <= radius; dz++) {
+        for (int dx = -12; dx <= 12; dx++) {
+            for (int dz = -12; dz <= 12; dz++) {
                 int chunkX = playerChunkX + dx;
                 int chunkZ = playerChunkZ + dz;
 
                 LevelChunk  chunk = world.getChunkSource().getChunkNow(chunkX, chunkZ);
-                if (chunk != null) {
-                    saveChunkToRegion(path, chunk, false);
-                }
+                if (chunk != null) saveChunkToRegion(path, chunk, false);
             }
         }
     }
 
-    /*public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
-        CompoundTag nbt = buildChunkNbt(wc);
-        Path regionDir = Paths.get(worldFolder, "region");
-        try (RegionStorage storage = new RegionStorage(regionDir)) {
-            storage.write(wc.getPos(), nbt);
-            if (showMessage) printStatus("§a> Saved chunk " + wc.getPos());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
         CompoundTag nbt = buildChunkNbt(wc);
         saveQueue.add(new ChunkSaveTask(wc.getPos(), nbt));
@@ -148,8 +133,7 @@ public class SaveManager {
         }
     }
 
-
-    public static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
+    private static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
         Files.createDirectories(worldFolder);
         Files.createDirectories(worldFolder.resolve("region"));
 
@@ -278,11 +262,11 @@ public class SaveManager {
     }
 
 
-    public static CompoundTag buildChunkNbt(LevelChunk wc) {
+    private static CompoundTag buildChunkNbt(LevelChunk wc) {
         ChunkPos pos = wc.getPos();
 
         CompoundTag chunk = new CompoundTag();
-        chunk.putInt("DataVersion", 4767); // 1.21.10
+        chunk.putInt("DataVersion", 4767);
         chunk.putInt("xPos", pos.x());
         chunk.putInt("zPos", pos.z());
         chunk.putString("Status", "full");
@@ -349,7 +333,15 @@ public class SaveManager {
         }
 
         chunk.put("sections", sections);
-        chunk.put("block_entities", new ListTag());
+
+        ListTag blockEntitiesList = new ListTag();
+        for (var entry : wc.getBlockEntities().entrySet()) {
+            net.minecraft.world.level.block.entity.BlockEntity be = entry.getValue();
+            CompoundTag beNbt = be.saveWithFullMetadata(wc.getLevel().registryAccess());
+            blockEntitiesList.add(beNbt);
+        }
+        chunk.put("block_entities", blockEntitiesList);
+
         chunk.put("entities", new ListTag());
         chunk.put("Heightmaps", new CompoundTag());
         chunk.putByte("isLightOn", (byte) 0);
@@ -365,19 +357,17 @@ public class SaveManager {
     private static long[] packIndicesVanilla(int[] indices, int bits) {
         if (bits <= 0 || bits > 32) throw new IllegalArgumentException("bits must be 1..32");
         final int entriesPerLong = 64 / bits;
-        if (entriesPerLong <= 0) throw new IllegalArgumentException("bits too large for 64-bit packing");
 
         final int total = indices.length;
         final int longs = (total + entriesPerLong - 1) / entriesPerLong;
         long[] data = new long[longs];
 
-        long mask = (bits == 64) ? -1L : ((1L << bits) - 1);
+        long mask = (1L << bits) - 1;
 
         int entryInLong = 0;
         int longIndex = 0;
 
-        for (int i = 0; i < total; i++) {
-            int idx = indices[i];
+        for (int idx : indices) {
             int shift = entryInLong * bits;
 
             data[longIndex] |= ((long) idx & mask) << shift;
