@@ -155,7 +155,7 @@ public class SaveManager {
 
         CompoundTag data = new CompoundTag();
 
-        data.putInt("DataVersion", 4765);
+        data.putInt("DataVersion", 4767);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
@@ -169,8 +169,8 @@ public class SaveManager {
         data.putByte("allowCommands", (byte)1);
 
         CompoundTag version = new CompoundTag();
-        version.putString("Name", "26.1 Snapshot 2");
-        version.putInt("Id", 4765);
+        version.putString("Name", "26.1 Snapshot 3");
+        version.putInt("Id", 4767);
         version.putString("Series", "main");
         version.putByte("Snapshot", (byte)0);
         data.put("Version", version);
@@ -282,7 +282,7 @@ public class SaveManager {
         ChunkPos pos = wc.getPos();
 
         CompoundTag chunk = new CompoundTag();
-        chunk.putInt("DataVersion", 4765); // 1.21.10
+        chunk.putInt("DataVersion", 4767); // 1.21.10
         chunk.putInt("xPos", pos.x());
         chunk.putInt("zPos", pos.z());
         chunk.putString("Status", "full");
