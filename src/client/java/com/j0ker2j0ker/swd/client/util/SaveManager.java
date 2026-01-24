@@ -42,7 +42,7 @@ public class SaveManager {
 
     public static void start() {
         MinecraftClient mc = MinecraftClient.getInstance();
-        if(!isSaving && mc.getCurrentServerEntry() != null) {
+        if(!isSaving && mc.getCurrentServerEntry() != null && mc.player != null) {
             isSaving = true;
             name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
             if(Files.exists(Paths.get("saves").resolve(name))) {
@@ -349,19 +349,17 @@ public class SaveManager {
     private static long[] packIndicesVanilla(int[] indices, int bits) {
         if (bits <= 0 || bits > 32) throw new IllegalArgumentException("bits must be 1..32");
         final int entriesPerLong = 64 / bits;
-        if (entriesPerLong <= 0) throw new IllegalArgumentException("bits too large for 64-bit packing");
 
         final int total = indices.length;
         final int longs = (total + entriesPerLong - 1) / entriesPerLong;
         long[] data = new long[longs];
 
-        long mask = (bits == 64) ? -1L : ((1L << bits) - 1);
+        long mask = (1L << bits) - 1;
 
         int entryInLong = 0;
         int longIndex = 0;
 
-        for (int i = 0; i < total; i++) {
-            int idx = indices[i];
+        for (int idx : indices) {
             int shift = entryInLong * bits;
 
             data[longIndex] |= ((long) idx & mask) << shift;

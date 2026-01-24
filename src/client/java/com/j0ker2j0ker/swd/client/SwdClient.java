@@ -6,16 +6,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 public class SwdClient implements ClientModInitializer {
 
-    private static SwdClient instance;
-
     @Override
     public void onInitializeClient() {
-        initialize();
-    }
-
-    private void initialize() {
-        instance = this;
-
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.getServer() == null) {
                 SaveManager.stop();
@@ -27,13 +19,5 @@ public class SwdClient implements ClientModInitializer {
                 SaveManager.start();
             }
         });
-    }
-
-    public static SwdClient getInstance() {
-        return instance;
-    }
-
-    public void download() {
-        SaveManager.toggle();
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.client.gui.widget.TextIconButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,25 +19,29 @@ public abstract class GameMenuScreenMixin extends Screen{
     protected GameMenuScreenMixin(Text title) {
         super(title);
     }
+    @Unique
     private static final Identifier START = Identifier.of("swd", "icon/start");
+    @Unique
     private static final Identifier STOP = Identifier.of("swd", "icon/stop");
 
-    @Inject(at = @At("RETURN"), method = "initWidgets", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "initWidgets")
     public void addSaveButton(CallbackInfo ci) {
         if (client.isInSingleplayer()) return;
 
         refresh();
     }
 
+    @Unique
     private String getName() {
         if(!SaveManager.getIsSaving()) return "Start Downloading Chunks";
         else return "Stop Downloading Chunks";
     }
+    @Unique
     private void refresh() {
         Identifier icon = START;
         if(SaveManager.getIsSaving()) icon = STOP;
         TextIconButtonWidget iconButton = this.addDrawableChild(TextIconButtonWidget.builder(Text.of(getName()), (button) -> {
-            SwdClient.getInstance().download();
+            SaveManager.toggle();
             button.setFocused(false);
             button.setMessage(Text.of(getName()));
             refresh();
