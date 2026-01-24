@@ -1,9 +1,7 @@
 package com.j0ker2j0ker.swd.client.mixin;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
-import com.j0ker2j0ker.swd.client.config.SwdConfig;
 import com.j0ker2j0ker.swd.client.util.SaveManager;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextIconButtonWidget;
@@ -43,23 +41,7 @@ public abstract class GameMenuScreenMixin extends Screen{
             button.setMessage(Text.of(getName()));
             refresh();
         }, true).width(20).texture(icon, 16, 16).build());
-        iconButton.setPosition(getX(), getY());
-    }
-
-    private int getX() {
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        switch (config.buttonSide){
-            case 1: return width/2-10;
-            case 2: return width-24;
-            default: return 4;
-        }
-    }
-    private int getY() {
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        switch (config.buttonHeight){
-            case 0: return 4;
-            default: return height-24;
-        }
+        iconButton.setPosition(4, height-24);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.j0ker2j0ker.swd.client.util;
 
-import com.j0ker2j0ker.swd.client.config.SwdConfig;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -47,10 +45,10 @@ public class SaveManager {
         if(!isSaving && mc.getCurrentServerEntry() != null) {
             isSaving = true;
             name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
-            if(Files.exists(Paths.get("saves/"+name))) {
+            if(Files.exists(Paths.get("saves").resolve(name))) {
                 int i = 1;
-                while(Files.exists(Paths.get("saves/"+name + i))) i++;
-                name += i;
+                while(Files.exists(Paths.get("saves").resolve(name + " " + i))) i++;
+                name += " " + i;
             }
             path = mc.getLevelStorage().getSavesDirectory().resolve(name).toString();
             regionPath = Paths.get(path, "region").toString();
@@ -61,7 +59,7 @@ public class SaveManager {
                     createLevelDat(Path.of(path), name, mc.player);
                     if(mc.getCurrentServerEntry().getFavicon() != null) {
                         byte[] icon = mc.getCurrentServerEntry().getFavicon();
-                        FileOutputStream fos = new FileOutputStream(path + "\\icon.png");
+                        FileOutputStream fos = new FileOutputStream(Paths.get(path).resolve("icon.png").toFile());
                         fos.write(icon);
                     }
                 }
@@ -81,8 +79,6 @@ public class SaveManager {
 
     public static void printStatus(String msg) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        SwdConfig config = AutoConfig.getConfigHolder(SwdConfig.class).getConfig();
-        if(!config.showMessages) return;
         if(mc != null && mc.inGameHud != null) {
             mc.inGameHud.setOverlayMessage(Text.of(msg), false);
         }
@@ -110,16 +106,6 @@ public class SaveManager {
         }
     }
 
-    /*public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
-        NbtCompound nbt = buildChunkNbt(wc);
-        Path regionDir = Paths.get(worldFolder, "region");
-        try (RegionStorage storage = new RegionStorage(regionDir)) {
-            storage.write(wc.getPos(), nbt);
-            if (showMessage) printStatus("§a> Saved chunk " + wc.getPos());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     public static void saveChunkToRegion(String worldFolder, WorldChunk wc, boolean showMessage) {
         NbtCompound nbt = buildChunkNbt(wc);
         saveQueue.add(new ChunkSaveTask(wc.getPos(), nbt));
@@ -280,7 +266,7 @@ public class SaveManager {
         ChunkPos pos = wc.getPos();
 
         NbtCompound chunk = new NbtCompound();
-        chunk.putInt("DataVersion", 4671); // 1.21.10
+        chunk.putInt("DataVersion", 4671);
         chunk.putInt("xPos", pos.x);
         chunk.putInt("zPos", pos.z);
         chunk.putString("Status", "full");
@@ -299,7 +285,7 @@ public class SaveManager {
 
             NbtList paletteList = new NbtList();
             Map<BlockState, Integer> paletteIndex = new HashMap<>();
-            int[] indices = new int[16 * 16 * 16]; // 4096 blocks
+            int[] indices = new int[16 * 16 * 16];
 
             int i = 0;
             for (int y = 0; y < 16; y++) {
