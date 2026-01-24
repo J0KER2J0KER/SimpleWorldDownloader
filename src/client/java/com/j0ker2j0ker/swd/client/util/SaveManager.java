@@ -1,5 +1,6 @@
 package com.j0ker2j0ker.swd.client.util;
 
+import com.j0ker2j0ker.swd.client.SwdClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -44,11 +45,15 @@ public class SaveManager {
         MinecraftClient mc = MinecraftClient.getInstance();
         if(!isSaving && mc.getCurrentServerEntry() != null && mc.player != null) {
             isSaving = true;
-            name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
-            if(Files.exists(Paths.get("saves").resolve(name))) {
-                int i = 1;
-                while(Files.exists(Paths.get("saves").resolve(name + " " + i))) i++;
-                name += " " + i;
+            if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
+                name = mc.getCurrentServerEntry().address.replaceAll("[\\\\/:*?\"<>|]", "_");
+                if(Files.exists(Paths.get("saves").resolve(name))) {
+                    int i = 1;
+                    while(Files.exists(Paths.get("saves").resolve(name + " " + i))) i++;
+                    name += " " + i;
+                }
+            }else {
+                name = SwdClient.CONFIG.saveWorldTo;
             }
             path = mc.getLevelStorage().getSavesDirectory().resolve(name).toString();
             regionPath = Paths.get(path, "region").toString();
