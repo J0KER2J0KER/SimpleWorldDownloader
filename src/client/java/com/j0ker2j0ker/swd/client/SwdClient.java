@@ -30,7 +30,7 @@ public class SwdClient implements ClientModInitializer {
             }
         });
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if(SaveManager.getIsSaving()) {
+            if(SaveManager.isSaving) {
                 SaveManager.stop();
                 SaveManager.start();
             }

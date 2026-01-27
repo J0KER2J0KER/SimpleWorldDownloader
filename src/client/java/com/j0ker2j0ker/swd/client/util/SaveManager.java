@@ -5,10 +5,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Property;
+import net.minecraft.storage.NbtWriteView;
 import net.minecraft.text.Text;
+import net.minecraft.util.ErrorReporter;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
@@ -27,14 +30,12 @@ public class SaveManager {
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
     private static Thread saveThread = null;
 
-    private static boolean isSaving = false;
+    public static boolean isSaving = false;
     public static String name;
     public static String path;
     public static String regionPath;
 
-    public static boolean getIsSaving() {
-        return isSaving;
-    }
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     public static void toggle() {
         if(isSaving) stop();
@@ -42,7 +43,6 @@ public class SaveManager {
     }
 
     public static void start() {
-        MinecraftClient mc = MinecraftClient.getInstance();
         if(!isSaving && mc.getCurrentServerEntry() != null && mc.player != null) {
             isSaving = true;
             if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
@@ -78,25 +78,24 @@ public class SaveManager {
     }
 
     public static void stop() {
+        if (!isSaving) return;
         isSaving = false;
         printStatus("§c> Stopped saving chunks.");
     }
 
     public static void printStatus(String msg) {
-        MinecraftClient mc = MinecraftClient.getInstance();
         if(mc != null && mc.inGameHud != null) {
             mc.inGameHud.setOverlayMessage(Text.of(msg), false);
         }
     }
 
     public static void saveChunksAround(int radius) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        ClientWorld world = client.world;
+        ClientWorld world = mc.world;
 
-        if (world == null || client.player == null) return;
+        if (world == null || mc.player == null) return;
 
-        int playerChunkX = client.player.getChunkPos().x;
-        int playerChunkZ = client.player.getChunkPos().z;
+        int playerChunkX = mc.player.getChunkPos().x;
+        int playerChunkZ = mc.player.getChunkPos().z;
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
@@ -179,9 +178,9 @@ public class SaveManager {
         NbtCompound player = new NbtCompound();
         player.putString("Dimension", "minecraft:overworld");
         NbtList pos = new NbtList();
-        pos.add(NbtDouble.of(p.getBlockX()));
-        pos.add(NbtDouble.of(p.getBlockY()));
-        pos.add(NbtDouble.of(p.getBlockZ()));
+        pos.add(NbtDouble.of(p.getX()));
+        pos.add(NbtDouble.of(p.getY()));
+        pos.add(NbtDouble.of(p.getZ()));
         player.put("Pos", pos);
         data.put("Player", player);
 
@@ -338,7 +337,18 @@ public class SaveManager {
         }
 
         chunk.put("sections", sections);
-        chunk.put("block_entities", new NbtList());
+
+        NbtList blockEntities = new NbtList();
+        wc.getBlockEntities().forEach((posE, be) -> {
+            NbtCompound beNbt = be.createNbtWithIdentifyingData(wc.getWorld().getRegistryManager());
+            beNbt.putInt("x", posE.getX());
+            beNbt.putInt("y", posE.getY());
+            beNbt.putInt("z", posE.getZ());
+            blockEntities.add(beNbt);
+        });
+
+        chunk.put("block_entities", blockEntities);
+
         chunk.put("entities", new NbtList());
         chunk.put("Heightmaps", new NbtCompound());
         chunk.putByte("isLightOn", (byte) 0);

@@ -33,13 +33,13 @@ public abstract class GameMenuScreenMixin extends Screen{
 
     @Unique
     private String getName() {
-        if(!SaveManager.getIsSaving()) return "Start Downloading Chunks";
+        if(!SaveManager.isSaving) return "Start Downloading Chunks";
         else return "Stop Downloading Chunks";
     }
     @Unique
     private void refresh() {
         Identifier icon = START;
-        if(SaveManager.getIsSaving()) icon = STOP;
+        if(SaveManager.isSaving) icon = STOP;
         TextIconButtonWidget iconButton = this.addDrawableChild(TextIconButtonWidget.builder(Text.of(getName()), (button) -> {
             SaveManager.toggle();
             button.setFocused(false);

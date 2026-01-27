@@ -20,7 +20,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "onChunkData", at = @At("TAIL"))
     private void onChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
-        if(!SaveManager.getIsSaving()) return;
+        if(!SaveManager.isSaving) return;
 
         MinecraftClient mc = MinecraftClient.getInstance();
         if(mc.isInSingleplayer() || mc.getCurrentServerEntry() == null) return;
