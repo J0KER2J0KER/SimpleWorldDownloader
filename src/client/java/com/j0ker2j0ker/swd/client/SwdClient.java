@@ -6,15 +6,14 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.component.Component;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.Objects;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 
 public class SwdClient implements ClientModInitializer {
 
@@ -25,7 +24,7 @@ public class SwdClient implements ClientModInitializer {
         CONFIG = SwdConfig.load();
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            if (client.getServer() == null) {
+            if (client.getSingleplayerServer() == null) {
                 SaveManager.stop();
             }
         });
@@ -52,7 +51,7 @@ public class SwdClient implements ClientModInitializer {
                             .then(literal("help")
                                     .executes(ctx -> {
                                         ctx.getSource().sendFeedback(
-                                                Text.of("/swd help - Shows this menu.\n/swd saveWorldTo <World Name> - Set the name of the saved world. If a world with this name already exists, the new chunks overwrite parts of that world. Reset it with /swd default.\n/swd default - Worlds will now be saved with the default name again.")
+                                                Component.nullToEmpty("/swd help - Shows this menu.\n/swd saveWorldTo <World Name> - Set the name of the saved world. If a world with this name already exists, the new chunks overwrite parts of that world. Reset it with /swd default.\n/swd default - Worlds will now be saved with the default name again.")
                                         );
                                         return 1;
                                     })
@@ -67,7 +66,7 @@ public class SwdClient implements ClientModInitializer {
                                                 else old = "\"" + old + "\"";
                                                 CONFIG.saveWorldTo = text;
                                                 ctx.getSource().sendFeedback(
-                                                        Text.of("Your worlds will now be saved as \"" + text + "\". It was on " + old + " before. Reset it with /swd default.\n§cWarning: If a world with the name \"" + text + "\" already exists, the chunks will overwrite parts of it instead of creating a new world.")
+                                                        Component.nullToEmpty("Your worlds will now be saved as \"" + text + "\". It was on " + old + " before. Reset it with /swd default.\n§cWarning: If a world with the name \"" + text + "\" already exists, the chunks will overwrite parts of it instead of creating a new world.")
                                                 );
                                                 return 1;
                                             })
@@ -81,7 +80,7 @@ public class SwdClient implements ClientModInitializer {
                                     else old = "\"" + old + "\"";
                                     CONFIG.saveWorldTo = "";
                                     ctx.getSource().sendFeedback(
-                                            Text.of("Your worlds will now be saved as default. It was on " + old + " before.")
+                                            Component.nullToEmpty("Your worlds will now be saved as default. It was on " + old + " before.")
                                     );
                                     return 1;
                                 })
