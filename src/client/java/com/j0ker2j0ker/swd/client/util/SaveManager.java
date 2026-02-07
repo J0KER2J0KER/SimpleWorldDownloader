@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Locale;
 
 public class SaveManager {
 
@@ -55,8 +56,9 @@ public class SaveManager {
             }else {
                 name = SwdClient.CONFIG.saveWorldTo;
             }
-            path = mc.getLevelStorage().getSavesDirectory().resolve(name).toString();
-            regionPath = Paths.get(path, "region").toString();
+            Path resolvedPath = mc.getLevelStorage().getSavesDirectory().resolve(name);
+            path = normalizePathForOs(resolvedPath);
+            regionPath = normalizePathForOs(Paths.get(path, "region"));
 
             try {
                 if(!Files.exists(Path.of(path))) {
@@ -386,6 +388,16 @@ public class SaveManager {
             }
         }
         return data;
+    }
+
+    private static String normalizePathForOs(Path path) {
+        String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
+        String normalized = path.toAbsolutePath().normalize().toString();
+        if (os.contains("win")) return normalized;
+        if (os.contains("mac") || os.contains("darwin") || os.contains("nux") || os.contains("nix")) {
+            return normalized.replace('\\', '/');
+        }
+        return normalized.replace('\\', '/');
     }
 
     private record ChunkSaveTask(ChunkPos pos, NbtCompound nbt) {
