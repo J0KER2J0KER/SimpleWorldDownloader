@@ -19,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Locale;
@@ -74,6 +75,24 @@ public class SaveManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            if(Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
+                Path packTempPath = SwdClient.resourcepack_locations;
+                if(!Files.exists(Path.of(path).resolve("resourcepacks"))) {
+                    try {
+                        Files.createDirectory(Path.of(path).resolve("resourcepacks"));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                Path packTargetPath = Path.of(path).resolve("resourcepacks").resolve("resources.zip");
+                try {
+                    Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
 
             printStatus("§a> Started saving chunks...");
             saveChunksAround(12);

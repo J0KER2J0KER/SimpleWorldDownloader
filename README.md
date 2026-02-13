@@ -1,6 +1,6 @@
 The saved world will be in the same folder as your singleplayer worlds.
 
-This Mod adds a button to the Escape-Menu which allows you to download a copy of the Server you are on to Singleplayer. Currently the Mod only copies Blocks. Entities as well as items in containers are ignored for now.
+This Mod adds a button to the Escape-Menu which allows you to download a copy of the Server you are on to Singleplayer. Currently the Mod only copies Blocks & Resourcepacks (Minecraft 26.1 and above needed for resourcepack saving). Entities as well as items in containers are ignored for now.
 
 Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
 

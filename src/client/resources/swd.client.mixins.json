@@ -4,13 +4,16 @@
   "package": "com.j0ker2j0ker.swd.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PauseScreenMixin",
-    "ClientPacketListenerMixin"
+    "ClientPacketListenerMixin",
+    "PauseScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "ClientCommonPacketListenerImplMixin"
+  ]
 }
