@@ -14,15 +14,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.*;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.Strategy;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
 
 import java.io.FileOutputStream;
@@ -38,8 +35,8 @@ import java.util.Locale;
 
 public class SaveManager {
 
-    private static final int dataVersion = 4774;
-    private static final String versionName = "26.1 Snapshot 6";
+    private static final int dataVersion = 4775;
+    private static final String versionName = "26.1 Snapshot 7";
     private static final byte isSnapshot = (byte)1;
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
