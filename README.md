@@ -7,11 +7,11 @@ Currently the Mod only copies:
 - BlockEntities (Minecraft 1.21.11 and above; no container content is saved)
 - Resourcepacks (Minecraft 26.1 and above)
 - Player Inventory (Minecraft 26.1 and above)
+- Entities (Minecraft 26.1 and above)
 
 Coming soon:
-- Entities (including Armorstands, Items on Ground, ...)
 - Containers (Chests, Barrels, ...)
-- Enderchest
+- Enderchest Inventory
 - Biome
 
 Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader), [CurseForge](https://www.curseforge.com/minecraft/mc-mods/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).

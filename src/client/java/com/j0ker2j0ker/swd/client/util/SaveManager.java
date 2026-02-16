@@ -1,8 +1,10 @@
 package com.j0ker2j0ker.swd.client.util;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.Strategy;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import java.io.FileOutputStream;
@@ -46,6 +49,7 @@ public class SaveManager {
     public static String name;
     public static String path;
     public static String regionPath;
+    public static String entitiesPath;
 
     private static final Minecraft mc = Minecraft.getInstance();
 
@@ -70,10 +74,13 @@ public class SaveManager {
             Path resolvedPath = mc.getLevelSource().getBaseDir().resolve(name);
             path = normalizePathForOs(resolvedPath);
             regionPath = normalizePathForOs(Paths.get(path, "dimensions", "minecraft", "overworld", "region"));
+            entitiesPath = normalizePathForOs(Paths.get(path, "dimensions", "minecraft", "overworld", "entities"));
 
             try {
                 if(!Files.exists(Path.of(path))) {
-                    Files.createDirectories(Path.of(regionPath));
+                    Files.createDirectories(Path.of(path));
+                    if(!Files.exists(Path.of(regionPath))) Files.createDirectories(Path.of(regionPath));
+                    if(!Files.exists(Path.of(entitiesPath))) Files.createDirectories(Path.of(entitiesPath));
                     createLevelDat(Path.of(path), name, mc.player);
                     if(mc.getCurrentServer().getIconBytes() != null) {
                         byte[] icon = mc.getCurrentServer().getIconBytes();
@@ -313,24 +320,30 @@ public class SaveManager {
     }
 
     public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
-        CompoundTag nbt = buildChunkNbt(wc);
-        saveQueue.add(new ChunkSaveTask(wc.getPos(), nbt));
+        CompoundTag blockNbt = buildChunkNbt(wc);
+        CompoundTag entityNbt = buildEntityChunkNbt(wc);
+
+        saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt));
 
         if (saveThread == null || !saveThread.isAlive()) {
             Path regionDir = Paths.get(worldFolder, "dimensions", "minecraft", "overworld", "region");
-            saveThread = new Thread(() -> processQueue(regionDir));
+            Path entityDir = Paths.get(worldFolder, "dimensions", "minecraft", "overworld", "entities");
+            saveThread = new Thread(() -> processQueue(regionDir, entityDir)); // Pass both paths
             saveThread.start();
         }
 
         if (showMessage) printStatus("§a> Saving chunk " + wc.getPos());
     }
 
-    private static void processQueue(Path regionDir) {
-        try (RegionStorage storage = new RegionStorage(regionDir)) {
+    private static void processQueue(Path regionDir, Path entityDir) {
+        try (RegionStorage blockStorage = new RegionStorage(regionDir);
+             RegionStorage entityStorage = new RegionStorage(entityDir)) {
+
             while (!saveQueue.isEmpty() && isSaving) {
                 ChunkSaveTask task = saveQueue.poll();
                 if (task != null) {
-                    storage.write(task.pos, task.nbt);
+                    blockStorage.write(task.pos, task.blockNbt);
+                    entityStorage.write(task.pos, task.entityNbt);
                 }
             }
         } catch (IOException e) {
@@ -626,6 +639,41 @@ public class SaveManager {
         NbtIo.writeCompressed(root, world_gen_settingsDat);
     }
 
+    public static CompoundTag buildEntityChunkNbt(LevelChunk wc) {
+        CompoundTag chunk = new CompoundTag();
+
+        chunk.putInt("DataVersion", dataVersion);
+
+        ChunkPos pos = wc.getPos();
+        chunk.putIntArray("Position", new int[]{pos.x(), pos.z()});
+
+        ListTag entityList = new ListTag();
+
+        net.minecraft.world.phys.AABB chunkBox = new net.minecraft.world.phys.AABB(
+                wc.getPos().getMinBlockX(), wc.getLevel().getMinY(), wc.getPos().getMinBlockZ(),
+                wc.getPos().getMaxBlockX(), wc.getLevel().getMaxY(), wc.getPos().getMaxBlockZ()
+        );
+        wc.getLevel().getEntities(null, chunkBox).forEach(entity -> {
+            if (!(entity instanceof net.minecraft.world.entity.player.Player)) {
+                try (var reporter = new net.minecraft.util.ProblemReporter.ScopedCollector(
+                        entity.problemPath(), com.mojang.logging.LogUtils.getLogger())) {
+
+                    TagValueOutput output = TagValueOutput.createWithContext(
+                            reporter,
+                            wc.getLevel().registryAccess()
+                    );
+                    entity.save(output);
+
+                    CompoundTag entityNbt = output.buildResult();
+                    entityList.add(entityNbt);
+                }
+            }
+        });
+
+        chunk.put("Entities", entityList);
+
+        return chunk;
+    }
 
     public static CompoundTag buildChunkNbt(LevelChunk wc) {
         ChunkPos pos = wc.getPos();
@@ -663,7 +711,7 @@ public class SaveManager {
             Strategy<Holder<Biome>> biomeStrategy = Strategy.createForBiomes(biomeRegistry.asHolderIdMap());
 
             var biomeCodec = PalettedContainer.codecRW(
-                    Biome.CODEC, // Use the registry-aware Biome codec
+                    Biome.CODEC,
                     biomeStrategy,
                     biomeRegistry.getOrThrow(Biomes.PLAINS)
             );
@@ -684,38 +732,6 @@ public class SaveManager {
         return chunk;
     }
 
-    private static int ceilLog2(int n) {
-        int v = n - 1;
-        return 32 - Integer.numberOfLeadingZeros(v);
-    }
-
-    private static long[] packIndicesVanilla(int[] indices, int bits) {
-        if (bits <= 0 || bits > 32) throw new IllegalArgumentException("bits must be 1..32");
-        final int entriesPerLong = 64 / bits;
-
-        final int total = indices.length;
-        final int longs = (total + entriesPerLong - 1) / entriesPerLong;
-        long[] data = new long[longs];
-
-        long mask = (1L << bits) - 1;
-
-        int entryInLong = 0;
-        int longIndex = 0;
-
-        for (int idx : indices) {
-            int shift = entryInLong * bits;
-
-            data[longIndex] |= ((long) idx & mask) << shift;
-
-            entryInLong++;
-            if (entryInLong == entriesPerLong) {
-                entryInLong = 0;
-                longIndex++;
-            }
-        }
-        return data;
-    }
-
     private static String normalizePathForOs(Path path) {
         String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
         String normalized = path.toAbsolutePath().normalize().toString();
@@ -726,7 +742,6 @@ public class SaveManager {
         return normalized.replace('\\', '/');
     }
 
-    private record ChunkSaveTask(ChunkPos pos, CompoundTag nbt) {
-    }
+    private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }
 
 }

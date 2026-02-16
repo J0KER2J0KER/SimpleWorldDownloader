@@ -2,7 +2,6 @@ package com.j0ker2j0ker.swd.client.mixin;
 
 import com.google.common.hash.Hashing;
 import com.j0ker2j0ker.swd.client.SwdClient;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.server.ServerPackManager;
 import net.minecraft.server.packs.DownloadQueue;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Map;
 
 @Mixin(ServerPackManager.class)
 public class ClientCommonPacketListenerImplMixin {
