@@ -5,7 +5,7 @@ This Mod adds a button to the Escape-Menu which allows you to download a copy of
 Currently the Mod only copies:
 - Blocks
 - BlockEntities (Minecraft 1.21.11 and above; no container content is saved)
-- Resourcepacks (Minecraft 26.1 and above)
+- Resourcepacks (Minecraft 1.21.11 and above)
 - Player Inventory (Minecraft 26.1 and above)
 - Entities (Minecraft 26.1 and above)
 
