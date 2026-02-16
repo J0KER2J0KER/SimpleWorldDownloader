@@ -6,9 +6,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.component.Component;
 import net.minecraft.text.Text;
 
+import java.nio.file.Path;
 import java.util.Objects;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
@@ -19,6 +19,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 public class SwdClient implements ClientModInitializer {
 
     public static SwdConfig CONFIG;
+    public static Path resourcepack_locations;
 
     @Override
     public void onInitializeClient() {

@@ -1,8 +1,20 @@
 The saved world will be in the same folder as your singleplayer worlds.
 
-This Mod adds a button to the Escape-Menu which allows you to download a copy of the Server you are on to Singleplayer. Currently the Mod only copies Blocks. Entities as well as items in containers are ignored for now.
+This Mod adds a button to the Escape-Menu which allows you to download a copy of the Server you are on to Singleplayer.
 
-Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
+Currently the Mod only copies:
+- Blocks
+- BlockEntities (Minecraft 1.21.11 and above; no container content is saved)
+- Resourcepacks (Minecraft 1.21.11 and above)
+- Player Inventory (Minecraft 26.1 and above)
+
+Coming soon:
+- Entities (including Armorstands, Items on Ground, ...)
+- Containers (Chests, Barrels, ...)
+- Enderchest
+- Biome
+
+Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader), [CurseForge](https://www.curseforge.com/minecraft/mc-mods/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
 
 # Fabric API
 The Fabric API is required for this Mod to work. It can be downloaded [here](https://modrinth.com/mod/fabric-api).
