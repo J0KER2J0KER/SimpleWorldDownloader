@@ -1,10 +1,8 @@
 package com.j0ker2j0ker.swd.client.util;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
@@ -34,7 +32,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.Locale;
 
 public class SaveManager {
 
@@ -47,9 +44,7 @@ public class SaveManager {
 
     public static boolean isSaving = false;
     public static String name;
-    public static String path;
-    public static String regionPath;
-    public static String entitiesPath;
+    public static Path path;
 
     private static final Minecraft mc = Minecraft.getInstance();
 
@@ -63,45 +58,46 @@ public class SaveManager {
             isSaving = true;
             if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
                 name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
-                if(Files.exists(Paths.get("saves").resolve(name))) {
+                Path saves = Paths.get("saves");
+                if(Files.exists(saves.resolve(name))) {
                     int i = 1;
-                    while(Files.exists(Paths.get("saves").resolve(name + " " + i))) i++;
+                    while(Files.exists(saves.resolve(name + " " + i))) i++;
                     name += " " + i;
                 }
             }else {
                 name = SwdClient.CONFIG.saveWorldTo;
             }
-            Path resolvedPath = mc.getLevelSource().getBaseDir().resolve(name);
-            path = normalizePathForOs(resolvedPath);
-            regionPath = normalizePathForOs(Paths.get(path, "dimensions", "minecraft", "overworld", "region"));
-            entitiesPath = normalizePathForOs(Paths.get(path, "dimensions", "minecraft", "overworld", "entities"));
+            path = mc.getLevelSource().getBaseDir().resolve(name);
 
             try {
-                if(!Files.exists(Path.of(path))) {
-                    Files.createDirectories(Path.of(path));
-                    if(!Files.exists(Path.of(regionPath))) Files.createDirectories(Path.of(regionPath));
-                    if(!Files.exists(Path.of(entitiesPath))) Files.createDirectories(Path.of(entitiesPath));
-                    createLevelDat(Path.of(path), name, mc.player);
-                    if(mc.getCurrentServer().getIconBytes() != null) {
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                    createLevelDat(path, name, mc.player);
+
+                    if (mc.getCurrentServer() != null && mc.getCurrentServer().getIconBytes() != null) {
                         byte[] icon = mc.getCurrentServer().getIconBytes();
-                        FileOutputStream fos = new FileOutputStream(Paths.get(path).resolve("icon.png").toFile());
-                        fos.write(icon);
+                        Path iconPath = path.resolve("icon.png");
+
+                        try (FileOutputStream fos = new FileOutputStream(iconPath.toFile())) {
+                            fos.write(icon);
+                        }
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                SwdClient.LOGGER.error("Can't create save directory or write icon!", e);
             }
 
-            if(Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
+            if(Minecraft.getInstance().getCurrentServer() != null && Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
                 Path packTempPath = SwdClient.resourcepack_locations;
-                if(!Files.exists(Path.of(path).resolve("resourcepacks"))) {
+                Path pathResourcepacks = path.resolve("resourcepacks");
+                if(!Files.exists(pathResourcepacks)) {
                     try {
-                        Files.createDirectory(Path.of(path).resolve("resourcepacks"));
+                        Files.createDirectory(pathResourcepacks);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                Path packTargetPath = Path.of(path).resolve("resourcepacks").resolve("resources.zip");
+                Path packTargetPath = pathResourcepacks.resolve("resources.zip");
                 try {
                     Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
@@ -116,14 +112,15 @@ public class SaveManager {
         }
     }
 
-    private static void createPlayerDataFile(String path) {
+    private static void createPlayerDataFile(Path path) {
         Path playerdataPath;
         try {
-            playerdataPath = Files.createDirectories(Path.of(path).resolve("players").resolve("data"));
+            playerdataPath = Files.createDirectories(path.resolve("players").resolve("data"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        if(mc.level == null || mc.player == null) return;
         var ops = mc.level.registryAccess().createSerializationContext(NbtOps.INSTANCE);
 
         CompoundTag root = new CompoundTag();
@@ -166,7 +163,8 @@ public class SaveManager {
         root.putInt("XpSeed", 0);
         root.putInt("XpTotal", mc.player.totalExperience);
         root.putIntArray("UUID",  new int[]{0, 0, 0, 0});
-        root.putInt("playerGameType", mc.player.gameMode().getId());
+        if(mc.player.gameMode() == null) root.putInt("playerGameType", 1);
+        else root.putInt("playerGameType", mc.player.gameMode().getId());
         root.putByte("seenCredits", (byte) 0);
 
         ListTag motion = new ListTag();
@@ -193,9 +191,7 @@ public class SaveManager {
         root.putShort("Air", (short) mc.player.getAirSupply());
         if(mc.player.onGround()) root.putByte("ground", (byte) 1);
         else root.putByte("ground", (byte) 0);
-        root.putString("Dimension", "minecraft:overworld");
-        //TODO player would spawn in different dimensions correctly, however the chunks are always saved to the overworld
-        //root.putString("Dimension", mc.level.dimension().identifier().toString());
+        root.putString("Dimension", mc.level.dimension().identifier().toString());
 
         ListTag rotation = new ListTag();
         rotation.add(FloatTag.valueOf(mc.player.getYRot()));
@@ -222,6 +218,7 @@ public class SaveManager {
         root.putShort("Fire", (short) mc.player.getRemainingFireTicks());
         root.putFloat("XpP", mc.player.experienceProgress);
 
+        //TODO Containers
         //TODO ender chest
         ListTag enderItems = new ListTag();
         root.put("EnderItems", enderItems);
@@ -293,9 +290,7 @@ public class SaveManager {
     }
 
     public static void printStatus(String msg) {
-        if(mc != null && mc.gui != null) {
-            mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
-        }
+        mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
     }
 
     public static void saveChunksAround(int radius) {
@@ -313,49 +308,62 @@ public class SaveManager {
 
                 LevelChunk chunk = world.getChunkSource().getChunkNow(chunkX, chunkZ);
                 if (chunk != null) {
-                    saveChunkToRegion(path, chunk, false);
+                    saveChunkToRegion(path, chunk, false, world.dimension());
                 }
             }
         }
     }
 
-    public static void saveChunkToRegion(String worldFolder, LevelChunk wc, boolean showMessage) {
+    public static void saveChunkToRegion(Path worldFolder, LevelChunk wc, boolean showMessage, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
         CompoundTag blockNbt = buildChunkNbt(wc);
         CompoundTag entityNbt = buildEntityChunkNbt(wc);
 
         saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt));
 
         if (saveThread == null || !saveThread.isAlive()) {
-            Path regionDir = Paths.get(worldFolder, "dimensions", "minecraft", "overworld", "region");
-            Path entityDir = Paths.get(worldFolder, "dimensions", "minecraft", "overworld", "entities");
-            saveThread = new Thread(() -> processQueue(regionDir, entityDir)); // Pass both paths
+            String dim = "overworld";
+            if(dimension != null && dimension == ClientLevel.NETHER) dim = "the_nether";
+            if(dimension != null && dimension == ClientLevel.END) dim = "the_end";
+            Path regionDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("region");
+            Path entityDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("entities");
+            checkPathExists(regionDir);
+            checkPathExists(entityDir);
+            saveThread = new Thread(() -> processQueue(regionDir, entityDir, dimension));
             saveThread.start();
         }
 
         if (showMessage) printStatus("§a> Saving chunk " + wc.getPos());
     }
 
-    private static void processQueue(Path regionDir, Path entityDir) {
+    private static void checkPathExists(Path path) {
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void processQueue(Path regionDir, Path entityDir, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
         try (RegionStorage blockStorage = new RegionStorage(regionDir);
              RegionStorage entityStorage = new RegionStorage(entityDir)) {
 
             while (!saveQueue.isEmpty() && isSaving) {
                 ChunkSaveTask task = saveQueue.poll();
                 if (task != null) {
-                    blockStorage.write(task.pos, task.blockNbt);
-                    entityStorage.write(task.pos, task.entityNbt);
+                    blockStorage.write(task.pos, task.blockNbt, dimension);
+                    entityStorage.write(task.pos, task.entityNbt, dimension);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            SwdClient.LOGGER.error("Failed to process chunk save queue!", e);
         }
     }
 
 
     public static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
         Files.createDirectories(worldFolder);
-        Files.createDirectories(worldFolder.resolve("dimensions").resolve("minecraft").resolve("overworld").resolve("region"));
-
         CompoundTag data = new CompoundTag();
 
         data.putInt("DataVersion", dataVersion);
@@ -578,18 +586,6 @@ public class SaveManager {
         data.putLong("seed", 0);
         CompoundTag dimensions = new  CompoundTag();
 
-        // this is a default overworld, however a void world is needed
-        /*overworld = new CompoundTag();
-        overworld.putString("type", "minecraft:overworld");
-        CompoundTag generator  = new  CompoundTag();
-        generator.putString("settings", "minecraft:overworld");
-        generator.putString("type", "minecraft:noise");
-        CompoundTag biome_source = new  CompoundTag();
-        biome_source.putString("preset",  "minecraft:overworld");
-        biome_source.putString("type", "minecraft:multi_noise");
-        generator.put("biome_source", biome_source);
-        overworld.put("generator", generator);
-        dimensions.put("minecraft:overworld", overworld);*/
         overworld = new CompoundTag();
         overworld.putString("type", "minecraft:overworld");
         CompoundTag generator  = new  CompoundTag();
@@ -610,25 +606,33 @@ public class SaveManager {
         CompoundTag the_nether = new CompoundTag();
         the_nether.putString("type", "minecraft:the_nether");
         generator  = new  CompoundTag();
-        generator.putString("settings", "minecraft:nether");
-        generator.putString("type", "minecraft:noise");
-        CompoundTag biome_source = new  CompoundTag();
-        biome_source.putString("preset",  "minecraft:nether");
-        biome_source.putString("type", "minecraft:multi_noise");
-        generator.put("biome_source", biome_source);
+        generator.putString("type", "minecraft:flat");
+        settings = new  CompoundTag();
+        settings.putString("biome", "minecraft:the_nether");
+        settings.put("layers", new ListTag());
+        settings.putByte("features", (byte) 0);
+        settings.putByte("lakes", (byte) 0);
+        generator.put("settings", settings);
         the_nether.put("generator", generator);
         dimensions.put("minecraft:the_nether", the_nether);
 
         the_end = new CompoundTag();
         the_end.putString("type", "minecraft:the_end");
         generator  = new  CompoundTag();
-        generator.putString("settings", "minecraft:end");
-        generator.putString("type", "minecraft:noise");
-        biome_source = new  CompoundTag();
-        biome_source.putString("type", "minecraft:the_end");
-        generator.put("biome_source", biome_source);
+        generator.putString("type", "minecraft:flat");
+        settings = new CompoundTag();
+        settings.putString("biome", "minecraft:the_end");
+        settings.put("layers", new ListTag());
+        settings.putByte("features", (byte) 0);
+        settings.putByte("lakes", (byte) 0);
+
+        ListTag end_structure_overrides = new ListTag();
+        settings.put("structure_overrides", end_structure_overrides);
+
+        generator.put("settings", settings);
         the_end.put("generator", generator);
         dimensions.put("minecraft:the_end", the_end);
+
         data.put("dimensions", dimensions);
 
         root = new CompoundTag();
@@ -637,6 +641,24 @@ public class SaveManager {
 
         Path world_gen_settingsDat = datFolder.resolve("world_gen_settings.dat");
         NbtIo.writeCompressed(root, world_gen_settingsDat);
+
+        // ender_dragon_fight.dat
+        Path endData = path.resolve("dimensions").resolve("minecraft").resolve("the_end").resolve("data").resolve("minecraft");
+        if(!Files.exists(endData)) Files.createDirectories(endData);
+
+        data = new CompoundTag();
+        data.putByte("dragon_killed",  (byte) 1);
+        data.putByte("needs_state_scanning",  (byte) 0);
+        data.putInt("respawn_time",  0);
+        data.putByte("previously_killed",  (byte) 1);
+        data.put("gateways",  new  ListTag());
+
+        root = new CompoundTag();
+        root.put("data", data);
+        root.putInt("DataVersion", dataVersion);
+
+        Path dragonDat = endData.resolve("ender_dragon_fight.dat");
+        NbtIo.writeCompressed(root, dragonDat);
     }
 
     public static CompoundTag buildEntityChunkNbt(LevelChunk wc) {
@@ -724,22 +746,10 @@ public class SaveManager {
         chunk.put("sections", sections);
 
         ListTag blockEntities = new ListTag();
-        wc.getBlockEntities().forEach((posE, be) -> {
-            blockEntities.add(be.saveWithFullMetadata(registries));
-        });
+        wc.getBlockEntities().forEach((posE, be) -> blockEntities.add(be.saveWithFullMetadata(registries)));
         chunk.put("block_entities", blockEntities);
 
         return chunk;
-    }
-
-    private static String normalizePathForOs(Path path) {
-        String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
-        String normalized = path.toAbsolutePath().normalize().toString();
-        if (os.contains("win")) return normalized;
-        if (os.contains("mac") || os.contains("darwin") || os.contains("nux") || os.contains("nix")) {
-            return normalized.replace('\\', '/');
-        }
-        return normalized.replace('\\', '/');
     }
 
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }

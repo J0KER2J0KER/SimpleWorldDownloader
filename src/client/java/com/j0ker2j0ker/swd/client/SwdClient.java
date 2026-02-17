@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.network.chat.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.Objects;
@@ -20,6 +22,9 @@ public class SwdClient implements ClientModInitializer {
 
     public static SwdConfig CONFIG;
     public static Path resourcepack_locations;
+
+    public static final String MOD_ID = "swd";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
     public void onInitializeClient() {

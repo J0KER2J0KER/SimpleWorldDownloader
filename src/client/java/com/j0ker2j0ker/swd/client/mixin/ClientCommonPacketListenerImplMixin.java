@@ -22,6 +22,7 @@ public class ClientCommonPacketListenerImplMixin {
             try {
 
                 byte[] fileBytes = Files.readAllBytes(tempPath);
+                @Deprecated
                 String actualSha1 = Hashing.sha1().hashBytes(fileBytes).toString();
 
                 if(tempPath.endsWith(actualSha1)) {
@@ -29,6 +30,7 @@ public class ClientCommonPacketListenerImplMixin {
                 }
 
             } catch (IOException e) {
+                SwdClient.LOGGER.warn("Error trying to save server resourcepack.", e);
             }
         });
     }

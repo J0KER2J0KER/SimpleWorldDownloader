@@ -27,8 +27,8 @@ public abstract class ClientPacketListenerMixin {
         int chunkX = packet.getX();
         int chunkZ = packet.getZ();
         LevelChunk wc = this.level.getChunkSource().getChunk(chunkX, chunkZ, false);
-        if (wc == null || wc.isEmpty()) return;
+        if (wc == null || wc.isEmpty() || mc.level == null) return;
 
-        SaveManager.saveChunkToRegion(SaveManager.path, wc, true);
+        SaveManager.saveChunkToRegion(SaveManager.path, wc, true, mc.level.dimension());
     }
 }

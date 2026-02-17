@@ -3,7 +3,6 @@ package com.j0ker2j0ker.swd.client.util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.storage.RegionFile;
 import net.minecraft.world.level.chunk.storage.RegionStorageInfo;
 
@@ -18,10 +17,10 @@ public class RegionStorage implements AutoCloseable {
         this.directory = directory;
     }
 
-    public void write(ChunkPos pos, CompoundTag nbt) throws IOException {
+    public void write(ChunkPos pos, CompoundTag nbt, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) throws IOException {
         Path path = directory.resolve("r." + pos.getRegionX() + "." + pos.getRegionZ() + ".mca");
         try (RegionFile rf = new RegionFile(
-                new RegionStorageInfo("swd", Level.OVERWORLD, "chunk"),
+                new RegionStorageInfo("swd", dimension, "chunk"),
                 path, directory, false)) {
             try (var out = rf.getChunkDataOutputStream(pos)) {
                 NbtIo.write(nbt, (DataOutput) out);
@@ -30,6 +29,6 @@ public class RegionStorage implements AutoCloseable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close(){
     }
 }
