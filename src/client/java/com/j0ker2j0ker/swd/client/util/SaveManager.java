@@ -35,9 +35,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int dataVersion = 4784;
-    private static final String versionName = "26.1 Release Candidate 2";
-    private static final byte isSnapshot = (byte)1;
+    private static final int dataVersion = 4786;
+    private static final String versionName = "26.1";
+    private static final byte isSnapshot = (byte)0;
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
     private static Thread saveThread = null;
