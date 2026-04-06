@@ -31,9 +31,10 @@ public class SwdClient implements ClientModInitializer {
         CONFIG = SwdConfig.load();
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            if (client.getSingleplayerServer() == null) {
+            /*if (client.getSingleplayerServer() == null) {
                 SaveManager.stop();
-            }
+            }*/
+            SaveManager.stop();
         });
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             if(SaveManager.isSaving) {

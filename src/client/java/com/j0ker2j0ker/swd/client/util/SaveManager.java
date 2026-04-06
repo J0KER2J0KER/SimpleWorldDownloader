@@ -54,10 +54,11 @@ public class SaveManager {
     }
 
     public static void start() {
-        if(!isSaving && mc.getCurrentServer() != null && mc.player != null) {
+        if(!isSaving && mc.player != null) {
             isSaving = true;
             if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
-                name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
+                if(mc.getCurrentServer() != null) name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
+                else name = mc.getSingleplayerServer().getWorldData().getLevelName().replaceAll("[\\\\/:*?\"<>|]", "_");
                 Path saves = Paths.get("saves");
                 if(Files.exists(saves.resolve(name))) {
                     int i = 1;

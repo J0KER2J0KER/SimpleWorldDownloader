@@ -30,5 +30,8 @@ Set the name for the saved world. If a world with this name already exists, the 
 /swd default<br>
 Worlds will now be saved with the default name again.
 
+# Flashback
+You can download the world from a [Flashback](https://github.com/Moulberry/Flashback) recording. Just open the Flashback Replay Viewer in-game and press escape. There will be a download button in the bottom left.
+
 # Images
 <img width="2560" height="1440" alt="screenshot" src="https://github.com/user-attachments/assets/1a0f8344-ac26-4c8d-918b-1615f5816d4e" />
