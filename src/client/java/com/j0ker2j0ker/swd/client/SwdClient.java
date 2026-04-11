@@ -6,6 +6,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,10 @@ public class SwdClient implements ClientModInitializer {
             if(SaveManager.isSaving) {
                 SaveManager.stop();
                 SaveManager.start();
+            }else {
+                if(CONFIG.autoDownload && !Minecraft.getInstance().isLocalServer()) {
+                    SaveManager.start();
+                }
             }
         });
 
@@ -59,7 +64,7 @@ public class SwdClient implements ClientModInitializer {
                             .then(literal("help")
                                     .executes(ctx -> {
                                         ctx.getSource().sendFeedback(
-                                                Component.nullToEmpty("/swd help - Shows this menu.\n/swd saveWorldTo <World Name> - Set the name of the saved world. If a world with this name already exists, the new chunks overwrite parts of that world. Reset it with /swd default.\n/swd default - Worlds will now be saved with the default name again.")
+                                                Component.nullToEmpty("/swd help - Shows this menu.\n/swd saveWorldTo <World Name> - Set the name of the saved world. If a world with this name already exists, the new chunks overwrite parts of that world. Reset it with /swd default.\n/swd default - Worlds will now be saved with the default name again.\n/swd autoDownload <true|false> - Set whether worlds should be downloaded automatically on server joining.")
                                         );
                                         return 1;
                                     })
@@ -92,6 +97,26 @@ public class SwdClient implements ClientModInitializer {
                                     );
                                     return 1;
                                 })
+                            )
+                            .then(literal("autoDownload")
+                                    .then(literal("true")
+                                            .executes(ctx -> {
+                                                CONFIG.autoDownload = true;
+                                                ctx.getSource().sendFeedback(
+                                                        Component.nullToEmpty("Worlds will be downloaded automatically upon joining a server.")
+                                                );
+                                                return 1;
+                                            })
+                                    )
+                                    .then(literal("false")
+                                            .executes(ctx -> {
+                                                CONFIG.autoDownload = false;
+                                                ctx.getSource().sendFeedback(
+                                                        Component.nullToEmpty("Worlds will NOT be downloaded automatically upon joining a server.")
+                                                );
+                                                return 1;
+                                            })
+                                    )
                             )
             );
         });

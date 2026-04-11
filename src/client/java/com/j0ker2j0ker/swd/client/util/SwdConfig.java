@@ -11,6 +11,7 @@ import java.nio.file.Path;
 public class SwdConfig {
 
     public String saveWorldTo = "";
+    public boolean autoDownload = false;
 
     private static final Gson GSON =
             new GsonBuilder().setPrettyPrinting().create();

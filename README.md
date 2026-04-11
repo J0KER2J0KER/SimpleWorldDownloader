@@ -4,15 +4,13 @@ This Mod adds a button to the Escape-Menu which allows you to download a copy of
 
 Currently the Mod only copies:
 - Blocks
-- BlockEntities (Minecraft 1.21.11 and above; no container content is saved)
-- Resourcepacks (Minecraft 1.21.11 and above)
-- Player Inventory (Minecraft 26.1 and above)
-- Entities (Minecraft 26.1 and above)
+- BlockEntities (no container content is saved)
+- Resourcepacks
+- Player Inventory
+- Entities
 
 Coming soon:
 - Containers (Chests, Barrels, ...)
-- Enderchest Inventory
-- Biome
 
 Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader), [CurseForge](https://www.curseforge.com/minecraft/mc-mods/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
 
@@ -29,6 +27,9 @@ Set the name for the saved world. If a world with this name already exists, the 
 
 /swd default<br>
 Worlds will now be saved with the default name again.
+
+/swd autoDownload \<true|false><br>
+Set whether worlds are downloaded automatically upon joining.
 
 # Flashback
 You can download the world from a [Flashback](https://github.com/Moulberry/Flashback) recording. Just open the Flashback Replay Viewer in-game and press escape. There will be a download button in the bottom left.
