@@ -1,17 +1,28 @@
 package com.j0ker2j0ker.swd.client;
 
+import com.j0ker2j0ker.swd.client.screen.SwdConfigScreen;
 import com.j0ker2j0ker.swd.client.util.SaveManager;
 import com.j0ker2j0ker.swd.client.util.SwdConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
@@ -30,11 +41,7 @@ public class SwdClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         CONFIG = SwdConfig.load();
-
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            /*if (client.getSingleplayerServer() == null) {
-                SaveManager.stop();
-            }*/
             SaveManager.stop();
         });
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
@@ -48,76 +55,49 @@ public class SwdClient implements ClientModInitializer {
             }
         });
 
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
-            CONFIG.save();
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            ScreenEvents.remove(screen).register((closedScreen) -> {
+                SaveManager.onScreenClosed(closedScreen);
+            });
         });
 
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+            SaveManager.stop();
+            CONFIG.save();
+
+            if (SaveManager.saveThread != null && SaveManager.saveThread.isAlive()) {
+                try {
+                    SaveManager.saveThread.join(3000);
+                } catch (InterruptedException ignored) {}
+            }
+        });
+
+        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            SaveManager.lastClicked = hitResult.getBlockPos();
+            return InteractionResult.PASS;
+        });
+
+        UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
+            SaveManager.lastClicked = entity;
+            return InteractionResult.PASS;
+        });
 
         registerCommands();
     }
-
 
     private void registerCommands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                     literal("swd")
-                            .then(literal("help")
+                            .then(literal("config")
                                     .executes(ctx -> {
-                                        ctx.getSource().sendFeedback(
-                                                Component.nullToEmpty("/swd help - Shows this menu.\n/swd saveWorldTo <World Name> - Set the name of the saved world. If a world with this name already exists, the new chunks overwrite parts of that world. Reset it with /swd default.\n/swd default - Worlds will now be saved with the default name again.\n/swd autoDownload <true|false> - Set whether worlds should be downloaded automatically on server joining.")
+                                        Minecraft.getInstance().execute(() ->
+                                                Minecraft.getInstance().setScreen(
+                                                        new SwdConfigScreen(Minecraft.getInstance().screen)
+                                                )
                                         );
                                         return 1;
-                                    })
-                            )
-
-                            .then(literal("saveWorldTo")
-                                    .then(argument("World Name", greedyString())
-                                            .executes(ctx -> {
-                                                String text = getString(ctx, "World Name");
-                                                String old = CONFIG.saveWorldTo;
-                                                if(Objects.equals(old, "")) old = "default";
-                                                else old = "\"" + old + "\"";
-                                                CONFIG.saveWorldTo = text;
-                                                ctx.getSource().sendFeedback(
-                                                        Component.nullToEmpty("Your worlds will now be saved as \"" + text + "\". It was on " + old + " before. Reset it with /swd default.\n§cWarning: If a world with the name \"" + text + "\" already exists, the chunks will overwrite parts of it instead of creating a new world.")
-                                                );
-                                                return 1;
-                                            })
-                                    )
-                            )
-
-                            .then(literal("default")
-                                .executes(ctx -> {
-                                    String old = CONFIG.saveWorldTo;
-                                    if(Objects.equals(old, "")) old = "default";
-                                    else old = "\"" + old + "\"";
-                                    CONFIG.saveWorldTo = "";
-                                    ctx.getSource().sendFeedback(
-                                            Component.nullToEmpty("Your worlds will now be saved as default. It was on " + old + " before.")
-                                    );
-                                    return 1;
-                                })
-                            )
-                            .then(literal("autoDownload")
-                                    .then(literal("true")
-                                            .executes(ctx -> {
-                                                CONFIG.autoDownload = true;
-                                                ctx.getSource().sendFeedback(
-                                                        Component.nullToEmpty("Worlds will be downloaded automatically upon joining a server.")
-                                                );
-                                                return 1;
-                                            })
-                                    )
-                                    .then(literal("false")
-                                            .executes(ctx -> {
-                                                CONFIG.autoDownload = false;
-                                                ctx.getSource().sendFeedback(
-                                                        Component.nullToEmpty("Worlds will NOT be downloaded automatically upon joining a server.")
-                                                );
-                                                return 1;
-                                            })
-                                    )
-                            )
+                                    }))
             );
         });
     }

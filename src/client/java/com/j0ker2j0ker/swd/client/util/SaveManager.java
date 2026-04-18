@@ -1,6 +1,12 @@
 package com.j0ker2j0ker.swd.client.util;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
+import com.mojang.serialization.DynamicOps;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
+import net.minecraft.client.gui.screens.inventory.HorseInventoryScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.player.Abilities;
@@ -35,18 +41,34 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int dataVersion = 4786;
-    private static final String versionName = "26.1";
-    private static final byte isSnapshot = (byte)0;
+    private static final int DATA_VERSION = 4790;
+    private static final String VERSION_NAME = "26.1.2";
+    private static final byte IS_SNAPSHOT = (byte)0;
+
+    private static final int PLAYER_INVENTORY_SLOTS = 36;
+
+    private static final String OVERWORLD = "overworld";
+    private static final String NETHER = "the_nether";
+    private static final String END = "the_end";
+
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
-    private static Thread saveThread = null;
+    public static Thread saveThread = null;
 
-    public static boolean isSaving = false;
+    public static volatile boolean isSaving = false;
     public static String name;
     public static Path path;
 
+    private static CompoundTag cacheRootTag;
+    private static Path cachePlayerDatPath;
+
+    private static HashMap<BlockPos, List<ItemStack>> cacheBlockInventories;
+    private static HashMap<UUID, List<ItemStack>> cacheEntityInventories;
+
+    public static Object lastClicked;
+
     private static final Minecraft mc = Minecraft.getInstance();
+    private static DynamicOps<Tag> ops;
 
     public static void toggle() {
         if(isSaving) stop();
@@ -54,66 +76,296 @@ public class SaveManager {
     }
 
     public static void start() {
-        if(!isSaving && mc.player != null) {
-            isSaving = true;
-            if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
-                if(mc.getCurrentServer() != null) name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
-                else name = mc.getSingleplayerServer().getWorldData().getLevelName().replaceAll("[\\\\/:*?\"<>|]", "_");
-                Path saves = Paths.get("saves");
-                if(Files.exists(saves.resolve(name))) {
-                    int i = 1;
-                    while(Files.exists(saves.resolve(name + " " + i))) i++;
-                    name += " " + i;
-                }
-            }else {
-                name = SwdClient.CONFIG.saveWorldTo;
+        if(isSaving || mc.player == null) return;
+
+        ops = Objects.requireNonNull(mc.level).registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        isSaving = true;
+
+        determineWorldName();
+        path = mc.getLevelSource().getBaseDir().resolve(name);
+
+        setupWorldFolder();
+        createPlayerDataCache(path);
+
+        cacheBlockInventories = new HashMap<>();
+        cacheEntityInventories = new HashMap<>();
+
+        printStatus("§a> Started saving chunks...");
+        saveChunksAround(12);
+    }
+
+    public static void stop() {
+        if (!isSaving) return;
+        isSaving = false;
+
+        createPlayerDataFile();
+        printStatus("§c> Stopped saving chunks.");
+
+        if (cacheBlockInventories != null) cacheBlockInventories.clear();
+        if (cacheEntityInventories != null) cacheEntityInventories.clear();
+    }
+
+    public static void onScreenClosed(Screen screen) {
+        if (!SaveManager.isSaving) return;
+
+        String title = screen.getTitle().getString();
+
+        if (screen instanceof AbstractContainerScreen<?> container && title.equals(Component.translatable("container.enderchest").getString())) {
+            printStatus("§a> Enderchest content saved.");
+            cacheEnderItems(container.getMenu().getItems());
+            return;
+        }
+
+        List<ItemStack> items = extractContainerItems(screen);
+        if (items == null) return;
+
+        trimPlayerInventory(items);
+
+        if (lastClicked instanceof BlockPos blockPos) {
+            handleBlockContainer(blockPos, items);
+        } else if (lastClicked instanceof net.minecraft.world.entity.Entity entity) {
+            handleEntityContainer(entity, items);
+        }
+    }
+
+    private static List<ItemStack> extractContainerItems(Screen screen) {
+        if (screen instanceof AbstractFurnaceScreen<?> fs) {
+            printStatus("§a> Container content saved.");
+            return fs.getMenu().getItems();
+        }
+        if (screen instanceof AbstractContainerScreen<?> cs && screen.getClass().getSimpleName().equals("ContainerScreen")) {
+            printStatus("§a> Container content saved.");
+            return cs.getMenu().getItems();
+        }
+        if (screen instanceof HorseInventoryScreen hs) {
+            printStatus("§a> Container content saved.");
+            List<ItemStack> items = hs.getMenu().getItems();
+            items.removeFirst();
+            items.removeFirst();
+            return items;
+        }
+        return null;
+    }
+
+    private static void trimPlayerInventory(List<ItemStack> items) {
+        for (int i = 0; i < PLAYER_INVENTORY_SLOTS && !items.isEmpty(); i++) {
+            items.removeLast();
+        }
+    }
+
+    private static void handleBlockContainer(BlockPos pos, List<ItemStack> items) {
+        cacheBlockInventories.put(pos, new ArrayList<>(items)); // defensive copy
+        saveChunkNow(pos);
+    }
+
+    private static void handleEntityContainer(net.minecraft.world.entity.Entity entity, List<ItemStack> items) {
+        cacheEntityInventories.put(entity.getUUID(), new ArrayList<>(items));
+        saveChunkNow(entity.blockPosition());
+    }
+
+    private static void saveChunkNow(BlockPos pos) {
+        LevelChunk wc = mc.level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        if (wc != null) {
+            saveChunkToRegion(path, wc, false, mc.level.dimension());
+        }
+    }
+
+    public static CompoundTag buildEntityChunkNbt(LevelChunk wc) {
+        CompoundTag chunk = new CompoundTag();
+
+        chunk.putInt("DataVersion", DATA_VERSION);
+
+        ChunkPos pos = wc.getPos();
+        chunk.putIntArray("Position", new int[]{pos.x(), pos.z()});
+
+        ListTag entityList = new ListTag();
+
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(
+                pos.getMinBlockX(), wc.getLevel().getMinY(), pos.getMinBlockZ(),
+                pos.getMaxBlockX(), wc.getLevel().getMaxY(), pos.getMaxBlockZ()
+        );
+
+        wc.getLevel().getEntities(null, box).forEach(entity -> {
+            if (entity instanceof net.minecraft.world.entity.player.Player) return;
+
+            CompoundTag entityNbt = saveEntityToNbt(entity);
+            injectCachedEntityInventory(entity, entityNbt);
+            entityList.add(entityNbt);
+        });
+
+        chunk.put("Entities", entityList);
+
+        return chunk;
+    }
+
+    public static CompoundTag buildChunkNbt(LevelChunk wc) {
+        CompoundTag chunk = createBaseChunkNbt(wc);
+
+        ListTag blockEntities = new ListTag();
+        wc.getBlockEntities().forEach((bePos, be) -> {
+            CompoundTag beTag = be.saveWithFullMetadata(wc.getLevel().registryAccess());
+            injectCachedBlockInventory(bePos, beTag);
+            blockEntities.add(beTag);
+        });
+        chunk.put("block_entities", blockEntities);
+        return chunk;
+    }
+
+    private static CompoundTag createBaseChunkNbt(LevelChunk wc) {
+        ChunkPos pos = wc.getPos();
+        CompoundTag chunk = new CompoundTag();
+        chunk.putInt("DataVersion", DATA_VERSION);
+        chunk.putInt("xPos", pos.x());
+        chunk.putInt("zPos", pos.z());
+        chunk.putInt("yPos", wc.getMinSectionY());
+        chunk.putString("Status", "full");
+
+        var registries = wc.getLevel().registryAccess();
+
+        ListTag sections = new ListTag();
+        LevelChunkSection[] sectionArray = wc.getSections();
+        for (int secIndex = 0; secIndex < sectionArray.length; secIndex++) {
+            LevelChunkSection section = sectionArray[secIndex];
+            if (section == null) continue;
+
+            CompoundTag sec = new CompoundTag();
+            sec.putByte("Y", (byte) (secIndex + wc.getMinSectionY()));
+
+            Strategy<BlockState> blockStrategy = Strategy.createForBlockStates(Block.BLOCK_STATE_REGISTRY);
+
+            var blockCodec = PalettedContainer.codecRW(
+                    BlockState.CODEC,
+                    blockStrategy,
+                    Blocks.AIR.defaultBlockState()
+            );
+
+            blockCodec.encodeStart(ops, section.getStates())
+                    .result().ifPresent(tag -> sec.put("block_states", tag));
+
+            var biomeRegistry = registries.lookupOrThrow(Registries.BIOME);
+            Strategy<Holder<Biome>> biomeStrategy = Strategy.createForBiomes(biomeRegistry.asHolderIdMap());
+
+            var biomeCodec = PalettedContainer.codecRW(
+                    Biome.CODEC,
+                    biomeStrategy,
+                    biomeRegistry.getOrThrow(Biomes.PLAINS)
+            );
+
+            biomeCodec.encodeStart(ops, (PalettedContainer<Holder<Biome>>) section.getBiomes())
+                    .result().ifPresent(tag -> sec.put("biomes", tag));
+
+            sections.add(sec);
+        }
+        chunk.put("sections", sections);
+
+        return chunk;
+    }
+
+    private static CompoundTag saveEntityToNbt(net.minecraft.world.entity.Entity entity) {
+        try (var reporter = new net.minecraft.util.ProblemReporter.ScopedCollector(
+                entity.problemPath(),
+                com.mojang.logging.LogUtils.getLogger())) {
+
+            TagValueOutput output = TagValueOutput.createWithContext(
+                    reporter,
+                    entity.level().registryAccess()
+            );
+
+            entity.save(output);
+
+            return output.buildResult();
+        }
+    }
+
+    private static void injectCachedBlockInventory(BlockPos pos, CompoundTag beTag) {
+        if (cacheBlockInventories.containsKey(pos)) {
+            beTag.put("Items", buildItemsListTag(cacheBlockInventories.get(pos)));
+        }
+    }
+
+    private static void injectCachedEntityInventory(net.minecraft.world.entity.Entity entity, CompoundTag entityNbt) {
+        if (cacheEntityInventories.containsKey(entity.getUUID())) {
+            entityNbt.put("Items", buildItemsListTag(cacheEntityInventories.get(entity.getUUID())));
+        }
+    }
+
+    private static ListTag buildItemsListTag(List<ItemStack> items) {
+        ListTag list = new ListTag();
+        for (int i = 0; i < items.size(); i++) {
+            ItemStack stack = items.get(i);
+            if (!stack.isEmpty()) {
+                int finalI = i;
+                saveItem(stack, ops).ifPresent(tag -> {
+                    tag.putByte("Slot", (byte) finalI);
+                    list.add(tag);
+                });
             }
-            path = mc.getLevelSource().getBaseDir().resolve(name);
+        }
+        return list;
+    }
 
-            try {
-                if (!Files.exists(path)) {
-                    Files.createDirectories(path);
-                    createLevelDat(path, name, mc.player);
+    private static void setupWorldFolder() {
+        try {
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+                createLevelDat(path, name, mc.player);
 
-                    if (mc.getCurrentServer() != null && mc.getCurrentServer().getIconBytes() != null) {
-                        byte[] icon = mc.getCurrentServer().getIconBytes();
-                        Path iconPath = path.resolve("icon.png");
+                if (mc.getCurrentServer() != null && mc.getCurrentServer().getIconBytes() != null) {
+                    byte[] icon = mc.getCurrentServer().getIconBytes();
+                    Path iconPath = path.resolve("icon.png");
 
-                        try (FileOutputStream fos = new FileOutputStream(iconPath.toFile())) {
-                            fos.write(icon);
-                        }
+                    try (FileOutputStream fos = new FileOutputStream(iconPath.toFile())) {
+                        fos.write(icon);
                     }
                 }
-            } catch (IOException e) {
-                SwdClient.LOGGER.error("Can't create save directory or write icon!", e);
             }
 
-            if(Minecraft.getInstance().getCurrentServer() != null && Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
-                Path packTempPath = SwdClient.resourcepack_locations;
-                Path pathResourcepacks = path.resolve("resourcepacks");
-                if(!Files.exists(pathResourcepacks)) {
-                    try {
-                        Files.createDirectory(pathResourcepacks);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                Path packTargetPath = pathResourcepacks.resolve("resources.zip");
+            SwdWorldMarker.writeMarker(path);
+        } catch (IOException e) {
+            SwdClient.LOGGER.error("Can't create save directory or write icon!", e);
+        }
+
+        if(Minecraft.getInstance().getCurrentServer() != null && Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
+            Path packTempPath = SwdClient.resourcepack_locations;
+            Path pathResourcepacks = path.resolve("resourcepacks");
+            if(!Files.exists(pathResourcepacks)) {
                 try {
-                    Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
+                    Files.createDirectory(pathResourcepacks);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-
-            createPlayerDataFile(path);
-
-            printStatus("§a> Started saving chunks...");
-            saveChunksAround(12);
+            Path packTargetPath = pathResourcepacks.resolve("resources.zip");
+            try {
+                if(packTempPath != null) {
+                    Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private static void createPlayerDataFile(Path path) {
+    private static void determineWorldName() {
+        if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
+            if(mc.getCurrentServer() != null) name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
+            else {
+                if(mc.getSingleplayerServer() == null) name = "Replay Mod";
+                else if(mc.getSingleplayerServer().getWorldData().getLevelName().equalsIgnoreCase("Replay")) name = "Flashback";
+                else name = mc.getSingleplayerServer().getWorldData().getLevelName().replaceAll("[\\\\/:*?\"<>|]", "_");
+            }
+            Path saves = Paths.get("saves");
+            if(Files.exists(saves.resolve(name))) {
+                int i = 1;
+                while(Files.exists(saves.resolve(name + " " + i))) i++;
+                name += " " + i;
+            }
+        }else {
+            name = SwdClient.CONFIG.saveWorldTo;
+        }
+    }
+
+    private static void createPlayerDataCache(Path path) {
         Path playerdataPath;
         try {
             playerdataPath = Files.createDirectories(path.resolve("players").resolve("data"));
@@ -122,7 +374,6 @@ public class SaveManager {
         }
 
         if(mc.level == null || mc.player == null) return;
-        var ops = mc.level.registryAccess().createSerializationContext(NbtOps.INSTANCE);
 
         CompoundTag root = new CompoundTag();
 
@@ -165,7 +416,7 @@ public class SaveManager {
         root.putInt("XpTotal", mc.player.totalExperience);
         root.putIntArray("UUID",  new int[]{0, 0, 0, 0});
         if(mc.player.gameMode() == null) root.putInt("playerGameType", 1);
-        else root.putInt("playerGameType", mc.player.gameMode().getId());
+        else root.putInt("playerGameType", Objects.requireNonNull(mc.player.gameMode()).getId());
         root.putByte("seenCredits", (byte) 0);
 
         ListTag motion = new ListTag();
@@ -179,7 +430,6 @@ public class SaveManager {
         root.putFloat("foodSaturationLevel", mc.player.getFoodData().getSaturationLevel());
 
         CompoundTag equipment = new CompoundTag();
-
         saveItem(mc.player.getInventory().getItem(39), ops).ifPresent(t -> equipment.put("head", t));
         saveItem(mc.player.getInventory().getItem(38), ops).ifPresent(t -> equipment.put("chest", t));
         saveItem(mc.player.getInventory().getItem(37), ops).ifPresent(t -> equipment.put("legs", t));
@@ -219,11 +469,6 @@ public class SaveManager {
         root.putShort("Fire", (short) mc.player.getRemainingFireTicks());
         root.putFloat("XpP", mc.player.experienceProgress);
 
-        //TODO Containers
-        //TODO ender chest
-        ListTag enderItems = new ListTag();
-        root.put("EnderItems", enderItems);
-
         ListTag attributes = new ListTag();
 
         CompoundTag attributes0 = new CompoundTag();
@@ -248,7 +493,7 @@ public class SaveManager {
         attributes.add(attributes3);
         root.put("attributes", attributes);
 
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
         root.putInt("foodLevel", mc.player.getFoodData().getFoodLevel());
         root.putFloat("foodExhaustionLevel", 0f);
         root.putByte("spawn_extra_particles_on_fall", (byte) 0);
@@ -268,30 +513,31 @@ public class SaveManager {
 
         root.putInt("foodTickTimer", 0);
 
-        Path playerDat = playerdataPath.resolve(mc.player.getStringUUID() + ".dat");
-        try {
-            NbtIo.writeCompressed(root, playerDat);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        cachePlayerDatPath  = playerdataPath.resolve(mc.player.getStringUUID() + ".dat");
+        cacheRootTag = root;
     }
 
-    private static Optional<CompoundTag> saveItem(ItemStack stack, com.mojang.serialization.DynamicOps<Tag> ops) {
+    public static void cacheEnderItems(List<ItemStack> items) {
+        ListTag enderItems = new ListTag();
+        int i = 0;
+        for (ItemStack stack  : items) {
+            if(i>26) break;
+            int finalI = i;
+            saveItem(stack, ops).ifPresent(compound -> {
+                compound.putByte("Slot", (byte) finalI);
+                enderItems.add(compound);
+            });
+            i++;
+        }
+        cacheRootTag.put("EnderItems", enderItems);
+    }
+
+    private static Optional<CompoundTag> saveItem(ItemStack stack, DynamicOps<Tag> ops) {
         if (stack == null || stack.isEmpty()) return Optional.empty();
 
         return ItemStack.CODEC.encodeStart(ops, stack)
                 .resultOrPartial(err -> System.err.println("Failed to encode item: " + err))
                 .map(tag -> (CompoundTag) tag);
-    }
-
-    public static void stop() {
-        if (!isSaving) return;
-        isSaving = false;
-        printStatus("§c> Stopped saving chunks.");
-    }
-
-    public static void printStatus(String msg) {
-        mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
     }
 
     public static void saveChunksAround(int radius) {
@@ -336,38 +582,46 @@ public class SaveManager {
         if (showMessage) printStatus("§a> Saving chunk " + wc.getPos());
     }
 
-    private static void checkPathExists(Path path) {
-        if(!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     private static void processQueue(Path regionDir, Path entityDir, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
         try (RegionStorage blockStorage = new RegionStorage(regionDir);
              RegionStorage entityStorage = new RegionStorage(entityDir)) {
 
-            while (!saveQueue.isEmpty() && isSaving) {
+            while (true) {
                 ChunkSaveTask task = saveQueue.poll();
-                if (task != null) {
-                    blockStorage.write(task.pos, task.blockNbt, dimension);
-                    entityStorage.write(task.pos, task.entityNbt, dimension);
+                if (task == null) {
+                    if (!isSaving) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                    continue;
                 }
+
+                blockStorage.write(task.pos, task.blockNbt, dimension);
+                entityStorage.write(task.pos, task.entityNbt, dimension);
             }
         } catch (IOException e) {
             SwdClient.LOGGER.error("Failed to process chunk save queue!", e);
         }
     }
 
+    private static void createPlayerDataFile() {
+        try {
+            NbtIo.writeCompressed(cacheRootTag, cachePlayerDatPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
         Files.createDirectories(worldFolder);
         CompoundTag data = new CompoundTag();
 
-        data.putInt("DataVersion", dataVersion);
+        data.putInt("DataVersion", DATA_VERSION);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
@@ -391,10 +645,10 @@ public class SaveManager {
         data.put("spawn", spawn);
 
         CompoundTag version = new CompoundTag();
-        version.putString("Name", versionName);
-        version.putInt("Id", dataVersion);
+        version.putString("Name", VERSION_NAME);
+        version.putInt("Id", DATA_VERSION);
         version.putString("Series", "main");
-        version.putByte("Snapshot", isSnapshot);
+        version.putByte("Snapshot", IS_SNAPSHOT);
         data.put("Version", version);
 
         CompoundTag dataPacks = new CompoundTag();
@@ -430,7 +684,7 @@ public class SaveManager {
         // custom_boss_events.dat
         CompoundTag root = new CompoundTag();
         root.put("data", new ListTag());
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path custom_boss_eventsDat = datFolder.resolve("custom_boss_events.dat");
         NbtIo.writeCompressed(root, custom_boss_eventsDat);
@@ -498,7 +752,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path game_rulesDat = datFolder.resolve("game_rules.dat");
         NbtIo.writeCompressed(root, game_rulesDat);
@@ -514,7 +768,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path random_sequencesDat = datFolder.resolve("random_sequences.dat");
         NbtIo.writeCompressed(root, random_sequencesDat);
@@ -525,7 +779,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path scheduled_eventsDat = datFolder.resolve("scheduled_events.dat");
         NbtIo.writeCompressed(root, scheduled_eventsDat);
@@ -533,7 +787,7 @@ public class SaveManager {
         // scoreboard.dat
         root = new CompoundTag();
         root.put("data", new  ListTag());
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path scoreboardDat = datFolder.resolve("scoreboard.dat");
         NbtIo.writeCompressed(root, scoreboardDat);
@@ -544,7 +798,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path stopwatchesDat = datFolder.resolve("stopwatches.dat");
         NbtIo.writeCompressed(root, stopwatchesDat);
@@ -559,7 +813,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path weatherDat = datFolder.resolve("weather.dat");
         NbtIo.writeCompressed(root, weatherDat);
@@ -575,7 +829,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path world_clocksDat = datFolder.resolve("world_clocks.dat");
         NbtIo.writeCompressed(root, world_clocksDat);
@@ -638,7 +892,7 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path world_gen_settingsDat = datFolder.resolve("world_gen_settings.dat");
         NbtIo.writeCompressed(root, world_gen_settingsDat);
@@ -656,101 +910,24 @@ public class SaveManager {
 
         root = new CompoundTag();
         root.put("data", data);
-        root.putInt("DataVersion", dataVersion);
+        root.putInt("DataVersion", DATA_VERSION);
 
         Path dragonDat = endData.resolve("ender_dragon_fight.dat");
         NbtIo.writeCompressed(root, dragonDat);
     }
 
-    public static CompoundTag buildEntityChunkNbt(LevelChunk wc) {
-        CompoundTag chunk = new CompoundTag();
-
-        chunk.putInt("DataVersion", dataVersion);
-
-        ChunkPos pos = wc.getPos();
-        chunk.putIntArray("Position", new int[]{pos.x(), pos.z()});
-
-        ListTag entityList = new ListTag();
-
-        net.minecraft.world.phys.AABB chunkBox = new net.minecraft.world.phys.AABB(
-                wc.getPos().getMinBlockX(), wc.getLevel().getMinY(), wc.getPos().getMinBlockZ(),
-                wc.getPos().getMaxBlockX(), wc.getLevel().getMaxY(), wc.getPos().getMaxBlockZ()
-        );
-        wc.getLevel().getEntities(null, chunkBox).forEach(entity -> {
-            if (!(entity instanceof net.minecraft.world.entity.player.Player)) {
-                try (var reporter = new net.minecraft.util.ProblemReporter.ScopedCollector(
-                        entity.problemPath(), com.mojang.logging.LogUtils.getLogger())) {
-
-                    TagValueOutput output = TagValueOutput.createWithContext(
-                            reporter,
-                            wc.getLevel().registryAccess()
-                    );
-                    entity.save(output);
-
-                    CompoundTag entityNbt = output.buildResult();
-                    entityList.add(entityNbt);
-                }
-            }
-        });
-
-        chunk.put("Entities", entityList);
-
-        return chunk;
+    public static void printStatus(String msg) {
+        mc.gui.setOverlayMessage(Component.nullToEmpty(msg), false);
     }
 
-    public static CompoundTag buildChunkNbt(LevelChunk wc) {
-        ChunkPos pos = wc.getPos();
-        var registries = wc.getLevel().registryAccess();
-        var ops = registries.createSerializationContext(NbtOps.INSTANCE);
-
-        CompoundTag chunk = new CompoundTag();
-        chunk.putInt("DataVersion", dataVersion);
-        chunk.putInt("xPos", pos.x());
-        chunk.putInt("zPos", pos.z());
-        chunk.putInt("yPos", wc.getMinSectionY());
-        chunk.putString("Status", "full");
-
-        ListTag sections = new ListTag();
-        LevelChunkSection[] sectionArray = wc.getSections();
-        for (int secIndex = 0; secIndex < sectionArray.length; secIndex++) {
-            LevelChunkSection section = sectionArray[secIndex];
-            if (section == null) continue;
-
-            CompoundTag sec = new CompoundTag();
-            sec.putByte("Y", (byte) (secIndex + wc.getMinSectionY()));
-
-            Strategy<BlockState> blockStrategy = Strategy.createForBlockStates(Block.BLOCK_STATE_REGISTRY);
-
-            var blockCodec = PalettedContainer.codecRW(
-                    BlockState.CODEC,
-                    blockStrategy,
-                    Blocks.AIR.defaultBlockState()
-            );
-
-            blockCodec.encodeStart(ops, section.getStates())
-                    .result().ifPresent(tag -> sec.put("block_states", tag));
-
-            var biomeRegistry = registries.lookupOrThrow(Registries.BIOME);
-            Strategy<Holder<Biome>> biomeStrategy = Strategy.createForBiomes(biomeRegistry.asHolderIdMap());
-
-            var biomeCodec = PalettedContainer.codecRW(
-                    Biome.CODEC,
-                    biomeStrategy,
-                    biomeRegistry.getOrThrow(Biomes.PLAINS)
-            );
-
-            biomeCodec.encodeStart(ops, (PalettedContainer<Holder<Biome>>) section.getBiomes())
-                    .result().ifPresent(tag -> sec.put("biomes", tag));
-
-            sections.add(sec);
+    private static void checkPathExists(Path path) {
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        chunk.put("sections", sections);
-
-        ListTag blockEntities = new ListTag();
-        wc.getBlockEntities().forEach((posE, be) -> blockEntities.add(be.saveWithFullMetadata(registries)));
-        chunk.put("block_entities", blockEntities);
-
-        return chunk;
     }
 
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }
