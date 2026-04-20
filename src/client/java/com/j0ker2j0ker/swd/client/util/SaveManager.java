@@ -15,12 +15,15 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -46,6 +49,8 @@ public class SaveManager {
     private static final byte IS_SNAPSHOT = (byte)0;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
+    private static final int DOUBLE_CHEST_SLOTS = 54;
+    private static final int SINGLE_CHEST_SLOTS = 27;
 
     private static final String OVERWORLD = "overworld";
     private static final String NETHER = "the_nether";
@@ -154,8 +159,52 @@ public class SaveManager {
     }
 
     private static void handleBlockContainer(BlockPos pos, List<ItemStack> items) {
+        if (cachePairedChestInventories(pos, items)) {
+            return;
+        }
+
         cacheBlockInventories.put(pos, new ArrayList<>(items)); // defensive copy
         saveChunkNow(pos);
+    }
+
+    private static boolean cachePairedChestInventories(BlockPos pos, List<ItemStack> items) {
+        if (mc.level == null || items.size() < DOUBLE_CHEST_SLOTS) return false;
+
+        BlockState state = mc.level.getBlockState(pos);
+        if (!(state.getBlock() instanceof ChestBlock)
+                || !state.hasProperty(ChestBlock.TYPE)
+                || !state.hasProperty(ChestBlock.FACING)) {
+            return false;
+        }
+
+        ChestType type = state.getValue(ChestBlock.TYPE);
+        if (type == ChestType.SINGLE) return false;
+
+        Direction facing = state.getValue(ChestBlock.FACING);
+        Direction offset = type == ChestType.LEFT ? facing.getClockWise() : facing.getCounterClockWise();
+        BlockPos partnerPos = pos.relative(offset);
+
+        BlockState partnerState = mc.level.getBlockState(partnerPos);
+        if (!(partnerState.getBlock() instanceof ChestBlock)
+                || !partnerState.hasProperty(ChestBlock.TYPE)
+                || partnerState.getValue(ChestBlock.TYPE) == ChestType.SINGLE) {
+            return false;
+        }
+
+        List<ItemStack> leftHalf = new ArrayList<>(items.subList(0, SINGLE_CHEST_SLOTS));
+        List<ItemStack> rightHalf = new ArrayList<>(items.subList(SINGLE_CHEST_SLOTS, DOUBLE_CHEST_SLOTS));
+
+        if (type == ChestType.LEFT) {
+            cacheBlockInventories.put(pos, leftHalf);
+            cacheBlockInventories.put(partnerPos, rightHalf);
+        } else {
+            cacheBlockInventories.put(pos, rightHalf);
+            cacheBlockInventories.put(partnerPos, leftHalf);
+        }
+
+        saveChunkNow(pos);
+        saveChunkNow(partnerPos);
+        return true;
     }
 
     private static void handleEntityContainer(net.minecraft.world.entity.Entity entity, List<ItemStack> items) {
