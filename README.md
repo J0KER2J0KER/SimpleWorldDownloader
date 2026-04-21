@@ -10,11 +10,17 @@ The Mod downloads:
 - Entities
 - Enderchest Inventory
 - Containers (Chests, Barrels, ...)
+- Villagers
+- Advancements
+- Statistics
 
 Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader), [CurseForge](https://www.curseforge.com/minecraft/mc-mods/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
 
 # Containers
-Container inventories (Enderchest, Chests, Barrels, Chestboats, ...) can only be saved if you open the inventory at least once while the world download is running.
+Container inventories (Enderchest, Chests, Barrels, ...) can only be saved if you open the inventory at least once while the world download is running. This is also true for Entitiy Inventories (like Villagers, Chestboats, Horses, ...).
+
+# Advancements & Statistics
+Advancements and Statistics can only be saved if the corresponding UI's are opened at least once while the download is running.
 
 # Fabric API
 The Fabric API is required for this Mod to work. It can be downloaded [here](https://modrinth.com/mod/fabric-api).
