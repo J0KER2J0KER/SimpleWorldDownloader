@@ -4,7 +4,9 @@ import com.j0ker2j0ker.swd.client.util.SaveManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.protocol.game.ClientboundAwardStatsPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateAdvancementsPacket;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,5 +32,15 @@ public abstract class ClientPacketListenerMixin {
         if (wc == null || wc.isEmpty() || mc.level == null) return;
 
         SaveManager.saveChunkToRegion(SaveManager.path, wc, true, mc.level.dimension());
+    }
+
+    @Inject(method = "handleAwardStats", at = @At("TAIL"))
+    private void handleAwardStats(ClientboundAwardStatsPacket packet, CallbackInfo ci) {
+        SaveManager.cacheAwardStatsPacket(packet);
+    }
+
+    @Inject(method = "handleUpdateAdvancementsPacket", at = @At("TAIL"))
+    private void handleUpdateAdvancementsPacket(ClientboundUpdateAdvancementsPacket packet, CallbackInfo ci) {
+        SaveManager.cacheAdvancementPacket(packet);
     }
 }

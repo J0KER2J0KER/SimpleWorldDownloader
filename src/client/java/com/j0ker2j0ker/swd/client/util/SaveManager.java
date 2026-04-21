@@ -1,13 +1,23 @@
 package com.j0ker2j0ker.swd.client.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.j0ker2j0ker.swd.client.SwdClient;
 import com.mojang.serialization.DynamicOps;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.CriterionProgress;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screens.inventory.HorseInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.item.ItemStack;
@@ -15,12 +25,22 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundAwardStatsPacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateAdvancementsPacket;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.stats.Stat;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -28,6 +48,11 @@ import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.Strategy;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerData;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,7 +61,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
@@ -46,6 +75,13 @@ public class SaveManager {
     private static final byte IS_SNAPSHOT = (byte)0;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
+    private static final int DOUBLE_CHEST_SLOTS = 54;
+    private static final int SINGLE_CHEST_SLOTS = 27;
+    private static final long META_FLUSH_INTERVAL_MS = 5000L;
+    private static final DateTimeFormatter ADVANCEMENT_TIME_FORMAT = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss Z", Locale.ROOT)
+            .withZone(ZoneId.systemDefault());
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final String OVERWORLD = "overworld";
     private static final String NETHER = "the_nether";
@@ -64,6 +100,15 @@ public class SaveManager {
 
     private static HashMap<BlockPos, List<ItemStack>> cacheBlockInventories;
     private static HashMap<UUID, List<ItemStack>> cacheEntityInventories;
+    private static HashMap<UUID, CompoundTag> cacheEntityOverrides;
+    private static UUID cachePlayerUuid;
+    private static JsonObject cachedStatsByType;
+    private static JsonObject cachedAdvancements;
+    private static Set<String> removedAdvancements;
+    private static boolean advancementsResetThisSession;
+    private static boolean statsDirty;
+    private static boolean advancementsDirty;
+    private static long lastMetaFlushTimeMs;
 
     public static Object lastClicked;
 
@@ -89,6 +134,17 @@ public class SaveManager {
 
         cacheBlockInventories = new HashMap<>();
         cacheEntityInventories = new HashMap<>();
+        cacheEntityOverrides = new HashMap<>();
+        cachePlayerUuid = mc.player.getUUID();
+        cachedStatsByType = new JsonObject();
+        cachedAdvancements = new JsonObject();
+        removedAdvancements = new HashSet<>();
+        advancementsResetThisSession = false;
+        statsDirty = false;
+        advancementsDirty = false;
+        lastMetaFlushTimeMs = 0L;
+
+        bootstrapAdvancementsFromClientCache();
 
         printStatus("§a> Started saving chunks...");
         saveChunksAround(12);
@@ -96,6 +152,7 @@ public class SaveManager {
 
     public static void stop() {
         if (!isSaving) return;
+        flushPlayerMetaFiles(true);
         isSaving = false;
 
         createPlayerDataFile();
@@ -103,10 +160,134 @@ public class SaveManager {
 
         if (cacheBlockInventories != null) cacheBlockInventories.clear();
         if (cacheEntityInventories != null) cacheEntityInventories.clear();
+        if (cacheEntityOverrides != null) cacheEntityOverrides.clear();
+        cachePlayerUuid = null;
+        cachedStatsByType = null;
+        cachedAdvancements = null;
+        removedAdvancements = null;
+        advancementsResetThisSession = false;
+        statsDirty = false;
+        advancementsDirty = false;
+        lastMetaFlushTimeMs = 0L;
+    }
+
+    public static void cacheAwardStatsPacket(ClientboundAwardStatsPacket packet) {
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null) return;
+        if (cachedStatsByType == null) cachedStatsByType = new JsonObject();
+        if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
+
+        boolean changed = false;
+        for (Object2IntMap.Entry<Stat<?>> entry : packet.stats().object2IntEntrySet()) {
+            Stat<?> stat = entry.getKey();
+            String typeId = getStatTypeId(stat);
+            String valueId = getStatValueId(stat);
+            if (typeId == null || valueId == null) continue;
+
+            JsonObject typeObject = getOrCreateJsonObject(cachedStatsByType, typeId);
+            int incomingValue = entry.getIntValue();
+            int existingValue = getInt(typeObject, valueId, Integer.MIN_VALUE);
+            if (incomingValue > existingValue) {
+                typeObject.addProperty(valueId, incomingValue);
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            statsDirty = true;
+            maybeFlushPlayerMetaFiles();
+        }
+    }
+
+    public static void cacheAdvancementPacket(ClientboundUpdateAdvancementsPacket packet) {
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null) return;
+        if (cachedAdvancements == null) cachedAdvancements = new JsonObject();
+        if (removedAdvancements == null) removedAdvancements = new HashSet<>();
+        if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
+
+        boolean changed = false;
+        boolean hadProgressUpdates = !packet.getProgress().isEmpty();
+        boolean hadRemovals = !packet.getRemoved().isEmpty();
+
+        if (packet.shouldReset()) {
+            cachedAdvancements = new JsonObject();
+            removedAdvancements.clear();
+            advancementsResetThisSession = true;
+            if (hadProgressUpdates || hadRemovals) {
+                changed = true;
+            }
+        }
+
+        for (Identifier removedId : packet.getRemoved()) {
+            String key = removedId.toString();
+            cachedAdvancements.remove(key);
+            removedAdvancements.add(key);
+            changed = true;
+        }
+
+        packet.getProgress().forEach((advancementId, progress) -> {
+            String key = advancementId.toString();
+            JsonObject incoming = buildAdvancementJson(progress);
+            JsonObject existing = getObject(cachedAdvancements, key);
+            JsonObject merged = mergeAdvancementObjects(existing, incoming);
+            cachedAdvancements.add(key, merged);
+            removedAdvancements.remove(key);
+        });
+
+        if (hadProgressUpdates) {
+            changed = true;
+        }
+
+        if (changed) {
+            advancementsDirty = true;
+            maybeFlushPlayerMetaFiles();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void bootstrapAdvancementsFromClientCache() {
+        if (!isSaving || mc.getConnection() == null || cachedAdvancements == null) return;
+
+        try {
+            ClientPacketListener connection = mc.getConnection();
+            ClientAdvancements clientAdvancements = connection.getAdvancements();
+
+            var progressField = ClientAdvancements.class.getDeclaredField("progress");
+            progressField.setAccessible(true);
+
+            Map<AdvancementHolder, AdvancementProgress> progressMap =
+                    (Map<AdvancementHolder, AdvancementProgress>) progressField.get(clientAdvancements);
+
+            if (progressMap == null || progressMap.isEmpty()) return;
+
+            boolean seeded = false;
+            for (Map.Entry<AdvancementHolder, AdvancementProgress> entry : progressMap.entrySet()) {
+                AdvancementHolder holder = entry.getKey();
+                AdvancementProgress progress = entry.getValue();
+                if (holder == null || progress == null) continue;
+
+                String key = holder.id().toString();
+                JsonObject existing = getObject(cachedAdvancements, key);
+                JsonObject merged = mergeAdvancementObjects(existing, buildAdvancementJson(progress));
+                cachedAdvancements.add(key, merged);
+                seeded = true;
+            }
+
+            if (seeded) {
+                advancementsDirty = true;
+            }
+        } catch (ReflectiveOperationException e) {
+            SwdClient.LOGGER.warn("Failed to bootstrap advancements from client cache", e);
+        }
     }
 
     public static void onScreenClosed(Screen screen) {
         if (!SaveManager.isSaving) return;
+
+        if (screen instanceof MerchantScreen merchantScreen && lastClicked instanceof AbstractVillager villager) {
+            printStatus("§a> Villager trade data saved.");
+            cacheVillagerMerchantData(villager, merchantScreen.getMenu());
+            return;
+        }
 
         String title = screen.getTitle().getString();
 
@@ -133,7 +314,7 @@ public class SaveManager {
             printStatus("§a> Container content saved.");
             return fs.getMenu().getItems();
         }
-        if (screen instanceof AbstractContainerScreen<?> cs && screen.getClass().getSimpleName().equals("ContainerScreen")) {
+        if (screen instanceof AbstractContainerScreen<?> cs && isSupportedContainerScreen(screen)) {
             printStatus("§a> Container content saved.");
             return cs.getMenu().getItems();
         }
@@ -147,6 +328,20 @@ public class SaveManager {
         return null;
     }
 
+    private static boolean isSupportedContainerScreen(Screen screen) {
+        String simpleName = screen.getClass().getSimpleName();
+        return switch (simpleName) {
+            case "ContainerScreen",
+                 "HopperScreen",
+                 "ShulkerBoxScreen",
+                 "DispenserScreen",
+                 "DropperScreen",
+                 "BrewingStandScreen",
+                 "CrafterScreen" -> true;
+            default -> false;
+        };
+    }
+
     private static void trimPlayerInventory(List<ItemStack> items) {
         for (int i = 0; i < PLAYER_INVENTORY_SLOTS && !items.isEmpty(); i++) {
             items.removeLast();
@@ -154,13 +349,78 @@ public class SaveManager {
     }
 
     private static void handleBlockContainer(BlockPos pos, List<ItemStack> items) {
+        if (cachePairedChestInventories(pos, items)) {
+            return;
+        }
+
         cacheBlockInventories.put(pos, new ArrayList<>(items)); // defensive copy
         saveChunkNow(pos);
+    }
+
+    private static boolean cachePairedChestInventories(BlockPos pos, List<ItemStack> items) {
+        if (mc.level == null || items.size() < DOUBLE_CHEST_SLOTS) return false;
+
+        BlockState state = mc.level.getBlockState(pos);
+        if (!(state.getBlock() instanceof ChestBlock)
+                || !state.hasProperty(ChestBlock.TYPE)
+                || !state.hasProperty(ChestBlock.FACING)) {
+            return false;
+        }
+
+        ChestType type = state.getValue(ChestBlock.TYPE);
+        if (type == ChestType.SINGLE) return false;
+
+        Direction facing = state.getValue(ChestBlock.FACING);
+        Direction offset = type == ChestType.LEFT ? facing.getClockWise() : facing.getCounterClockWise();
+        BlockPos partnerPos = pos.relative(offset);
+
+        BlockState partnerState = mc.level.getBlockState(partnerPos);
+        if (!(partnerState.getBlock() instanceof ChestBlock)
+                || !partnerState.hasProperty(ChestBlock.TYPE)
+                || partnerState.getValue(ChestBlock.TYPE) == ChestType.SINGLE) {
+            return false;
+        }
+
+        List<ItemStack> leftHalf = new ArrayList<>(items.subList(0, SINGLE_CHEST_SLOTS));
+        List<ItemStack> rightHalf = new ArrayList<>(items.subList(SINGLE_CHEST_SLOTS, DOUBLE_CHEST_SLOTS));
+
+        if (type == ChestType.LEFT) {
+            cacheBlockInventories.put(pos, leftHalf);
+            cacheBlockInventories.put(partnerPos, rightHalf);
+        } else {
+            cacheBlockInventories.put(pos, rightHalf);
+            cacheBlockInventories.put(partnerPos, leftHalf);
+        }
+
+        saveChunkNow(pos);
+        saveChunkNow(partnerPos);
+        return true;
     }
 
     private static void handleEntityContainer(net.minecraft.world.entity.Entity entity, List<ItemStack> items) {
         cacheEntityInventories.put(entity.getUUID(), new ArrayList<>(items));
         saveChunkNow(entity.blockPosition());
+    }
+
+    private static void cacheVillagerMerchantData(AbstractVillager merchant, MerchantMenu menu) {
+        CompoundTag overlay = new CompoundTag();
+
+        MerchantOffers offers = menu.getOffers();
+        saveMerchantOffers(offers).ifPresent(tag -> overlay.put("Offers", tag));
+
+        overlay.putInt("Xp", menu.getTraderXp());
+        overlay.putInt("RestocksToday", readIntField(merchant, "numberOfRestocksToday"));
+        overlay.putLong("LastRestock", readLongField(merchant, "lastRestockGameTime"));
+        overlay.putLong("LastGossipDecay", readLongField(merchant, "lastGossipDecayTime"));
+
+        if (merchant instanceof Villager villager) {
+            VillagerData data = villager.getVillagerData().withLevel(menu.getTraderLevel());
+            saveVillagerData(data).ifPresent(tag -> overlay.put("VillagerData", tag));
+            overlay.putBoolean("VillagerDataFinalized", true);
+        }
+
+        cacheEntityOverrides.put(merchant.getUUID(), overlay);
+        saveChunkNow(merchant.blockPosition());
     }
 
     private static void saveChunkNow(BlockPos pos) {
@@ -286,6 +546,43 @@ public class SaveManager {
     private static void injectCachedEntityInventory(net.minecraft.world.entity.Entity entity, CompoundTag entityNbt) {
         if (cacheEntityInventories.containsKey(entity.getUUID())) {
             entityNbt.put("Items", buildItemsListTag(cacheEntityInventories.get(entity.getUUID())));
+        }
+        CompoundTag override = cacheEntityOverrides.get(entity.getUUID());
+        if (override != null) {
+            entityNbt.merge(override.copy());
+        }
+    }
+
+    private static Optional<CompoundTag> saveMerchantOffers(MerchantOffers offers) {
+        if (offers.isEmpty()) return Optional.empty();
+        return MerchantOffers.CODEC.encodeStart(ops, offers)
+                .resultOrPartial(err -> System.err.println("Failed to encode merchant offers: " + err))
+                .map(tag -> (CompoundTag) tag);
+    }
+
+    private static Optional<CompoundTag> saveVillagerData(VillagerData data) {
+        return VillagerData.CODEC.encodeStart(ops, data)
+                .resultOrPartial(err -> System.err.println("Failed to encode villager data: " + err))
+                .map(tag -> (CompoundTag) tag);
+    }
+
+    private static long readLongField(Object target, String fieldName) {
+        try {
+            var field = target.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.getLong(target);
+        } catch (ReflectiveOperationException e) {
+            return 0L;
+        }
+    }
+
+    private static int readIntField(Object target, String fieldName) {
+        try {
+            var field = target.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.getInt(target);
+        } catch (ReflectiveOperationException e) {
+            return 0;
         }
     }
 
@@ -538,6 +835,200 @@ public class SaveManager {
         return ItemStack.CODEC.encodeStart(ops, stack)
                 .resultOrPartial(err -> System.err.println("Failed to encode item: " + err))
                 .map(tag -> (CompoundTag) tag);
+    }
+
+    private static void maybeFlushPlayerMetaFiles() {
+        flushPlayerMetaFiles(false);
+    }
+
+    private static void flushPlayerMetaFiles(boolean force) {
+        if ((!statsDirty && !advancementsDirty) && !force) return;
+        if (path == null) return;
+
+        long now = System.currentTimeMillis();
+        if (!force && now - lastMetaFlushTimeMs < META_FLUSH_INTERVAL_MS) return;
+
+        UUID targetPlayerUuid = cachePlayerUuid;
+        if (targetPlayerUuid == null && mc.player != null) {
+            targetPlayerUuid = mc.player.getUUID();
+        }
+        if (targetPlayerUuid == null) return;
+
+        Path playersPath = path.resolve("players");
+        try {
+            if (statsDirty || force) {
+                writeStatsFile(playersPath.resolve("stats").resolve(targetPlayerUuid + ".json"));
+                statsDirty = false;
+            }
+
+            if (advancementsDirty || force) {
+                writeAdvancementsFile(playersPath.resolve("advancements").resolve(targetPlayerUuid + ".json"));
+                advancementsDirty = false;
+            }
+
+            lastMetaFlushTimeMs = now;
+        } catch (IOException e) {
+            SwdClient.LOGGER.error("Failed to write player advancement/stats files", e);
+        }
+    }
+
+    private static void writeStatsFile(Path statsFile) throws IOException {
+        JsonObject existingRoot = readJsonObject(statsFile);
+        JsonObject mergedStats = new JsonObject();
+
+        JsonObject existingStats = getObject(existingRoot, "stats");
+        if (existingStats != null) {
+            existingStats.entrySet().forEach(typeEntry -> {
+                if (!(typeEntry.getValue() instanceof JsonObject typeObj)) return;
+                mergedStats.add(typeEntry.getKey(), typeObj.deepCopy());
+            });
+        }
+
+        if (cachedStatsByType != null) {
+            cachedStatsByType.entrySet().forEach(typeEntry -> {
+                if (!(typeEntry.getValue() instanceof JsonObject incomingTypeObj)) return;
+
+                JsonObject mergedTypeObj = getOrCreateJsonObject(mergedStats, typeEntry.getKey());
+                incomingTypeObj.entrySet().forEach(statEntry -> {
+                    int incoming = statEntry.getValue().isJsonPrimitive() ? statEntry.getValue().getAsInt() : 0;
+                    int existing = getInt(mergedTypeObj, statEntry.getKey(), Integer.MIN_VALUE);
+                    if (incoming > existing) {
+                        mergedTypeObj.addProperty(statEntry.getKey(), incoming);
+                    }
+                });
+            });
+        }
+
+        JsonObject root = new JsonObject();
+        root.add("stats", mergedStats);
+        root.addProperty("DataVersion", DATA_VERSION);
+        writeJsonObject(statsFile, root);
+    }
+
+    private static void writeAdvancementsFile(Path advancementsFile) throws IOException {
+        JsonObject existingRoot = readJsonObject(advancementsFile);
+        JsonObject mergedRoot = new JsonObject();
+
+        if (!advancementsResetThisSession) {
+            existingRoot.entrySet().forEach(entry -> {
+                if ("DataVersion".equals(entry.getKey())) return;
+                mergedRoot.add(entry.getKey(), entry.getValue().deepCopy());
+            });
+        }
+
+        if (removedAdvancements != null) {
+            removedAdvancements.forEach(mergedRoot::remove);
+        }
+
+        if (cachedAdvancements != null) {
+            cachedAdvancements.entrySet().forEach(entry -> {
+                if (!(entry.getValue() instanceof JsonObject incomingObj)) return;
+                JsonObject existing = getObject(mergedRoot, entry.getKey());
+                mergedRoot.add(entry.getKey(), mergeAdvancementObjects(existing, incomingObj));
+            });
+        }
+
+        mergedRoot.addProperty("DataVersion", DATA_VERSION);
+        writeJsonObject(advancementsFile, mergedRoot);
+    }
+
+    private static JsonObject buildAdvancementJson(AdvancementProgress progress) {
+        JsonObject result = new JsonObject();
+        JsonObject criteria = new JsonObject();
+
+        for (String criterionName : progress.getCompletedCriteria()) {
+            CriterionProgress criterionProgress = progress.getCriterion(criterionName);
+            if (criterionProgress == null || !criterionProgress.isDone()) continue;
+            Instant obtained = criterionProgress.getObtained();
+            if (obtained != null) {
+                criteria.addProperty(criterionName, ADVANCEMENT_TIME_FORMAT.format(obtained));
+            }
+        }
+
+        result.add("criteria", criteria);
+        result.addProperty("done", progress.isDone());
+        return result;
+    }
+
+    private static JsonObject mergeAdvancementObjects(JsonObject base, JsonObject incoming) {
+        JsonObject merged = new JsonObject();
+
+        JsonObject baseCriteria = getObject(base, "criteria");
+        JsonObject incomingCriteria = getObject(incoming, "criteria");
+        JsonObject mergedCriteria = new JsonObject();
+
+        if (baseCriteria != null) {
+            baseCriteria.entrySet().forEach(entry -> mergedCriteria.add(entry.getKey(), entry.getValue().deepCopy()));
+        }
+        if (incomingCriteria != null) {
+            incomingCriteria.entrySet().forEach(entry -> mergedCriteria.add(entry.getKey(), entry.getValue().deepCopy()));
+        }
+
+        merged.add("criteria", mergedCriteria);
+        boolean done = getBoolean(base, "done") || getBoolean(incoming, "done");
+        merged.addProperty("done", done);
+        return merged;
+    }
+
+    private static String getStatTypeId(Stat<?> stat) {
+        Identifier typeId = BuiltInRegistries.STAT_TYPE.getKey(stat.getType());
+        return typeId == null ? null : typeId.toString();
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static String getStatValueId(Stat<?> stat) {
+        Identifier valueId = ((net.minecraft.core.Registry) stat.getType().getRegistry()).getKey(stat.getValue());
+        if (valueId != null) return valueId.toString();
+        Object rawValue = stat.getValue();
+        return rawValue == null ? null : rawValue.toString();
+    }
+
+    private static JsonObject getOrCreateJsonObject(JsonObject parent, String key) {
+        JsonObject existing = getObject(parent, key);
+        if (existing != null) return existing;
+
+        JsonObject created = new JsonObject();
+        parent.add(key, created);
+        return created;
+    }
+
+    private static JsonObject getObject(JsonObject object, String key) {
+        if (object == null) return null;
+        JsonElement value = object.get(key);
+        return value != null && value.isJsonObject() ? value.getAsJsonObject() : null;
+    }
+
+    private static int getInt(JsonObject object, String key, int fallback) {
+        if (object == null) return fallback;
+        JsonElement value = object.get(key);
+        if (value == null || !value.isJsonPrimitive()) return fallback;
+        try {
+            return value.getAsInt();
+        } catch (Exception ignored) {
+            return fallback;
+        }
+    }
+
+    private static boolean getBoolean(JsonObject object, String key) {
+        if (object == null) return false;
+        JsonElement value = object.get(key);
+        return value != null && value.isJsonPrimitive() && value.getAsBoolean();
+    }
+
+    private static JsonObject readJsonObject(Path file) throws IOException {
+        if (!Files.exists(file)) return new JsonObject();
+        try {
+            JsonElement element = JsonParser.parseString(Files.readString(file));
+            return element.isJsonObject() ? element.getAsJsonObject() : new JsonObject();
+        } catch (Exception e) {
+            SwdClient.LOGGER.warn("Invalid JSON at {}, starting from empty object", file, e);
+            return new JsonObject();
+        }
+    }
+
+    private static void writeJsonObject(Path file, JsonObject json) throws IOException {
+        Files.createDirectories(file.getParent());
+        Files.writeString(file, GSON.toJson(json));
     }
 
     public static void saveChunksAround(int radius) {
