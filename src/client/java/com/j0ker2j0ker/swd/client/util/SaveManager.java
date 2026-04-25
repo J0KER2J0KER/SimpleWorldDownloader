@@ -70,8 +70,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int DATA_VERSION = 4790;
-    private static final String VERSION_NAME = "26.1.2";
+    private static final int DATA_VERSION = 4671;
+    private static final String VERSION_NAME = "1.21.11";
     private static final byte IS_SNAPSHOT = (byte)0;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
@@ -436,7 +436,7 @@ public class SaveManager {
         chunk.putInt("DataVersion", DATA_VERSION);
 
         ChunkPos pos = wc.getPos();
-        chunk.putIntArray("Position", new int[]{pos.x(), pos.z()});
+        chunk.putIntArray("Position", new int[]{pos.x, pos.z});
 
         ListTag entityList = new ListTag();
 
@@ -475,8 +475,8 @@ public class SaveManager {
         ChunkPos pos = wc.getPos();
         CompoundTag chunk = new CompoundTag();
         chunk.putInt("DataVersion", DATA_VERSION);
-        chunk.putInt("xPos", pos.x());
-        chunk.putInt("zPos", pos.z());
+        chunk.putInt("xPos", pos.x);
+        chunk.putInt("zPos", pos.z);
         chunk.putInt("yPos", wc.getMinSectionY());
         chunk.putString("Status", "full");
 
@@ -665,7 +665,7 @@ public class SaveManager {
     private static void createPlayerDataCache(Path path) {
         Path playerdataPath;
         try {
-            playerdataPath = Files.createDirectories(path.resolve("players").resolve("data"));
+            playerdataPath = Files.createDirectories(path.resolve("playerdata"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -854,15 +854,14 @@ public class SaveManager {
         }
         if (targetPlayerUuid == null) return;
 
-        Path playersPath = path.resolve("players");
         try {
             if (statsDirty || force) {
-                writeStatsFile(playersPath.resolve("stats").resolve(targetPlayerUuid + ".json"));
+                writeStatsFile(path.resolve("stats").resolve(targetPlayerUuid + ".json"));
                 statsDirty = false;
             }
 
             if (advancementsDirty || force) {
-                writeAdvancementsFile(playersPath.resolve("advancements").resolve(targetPlayerUuid + ".json"));
+                writeAdvancementsFile(path.resolve("advancements").resolve(targetPlayerUuid + ".json"));
                 advancementsDirty = false;
             }
 
@@ -1036,8 +1035,8 @@ public class SaveManager {
 
         if (world == null || mc.player == null) return;
 
-        int playerChunkX = mc.player.chunkPosition().x();
-        int playerChunkZ = mc.player.chunkPosition().z();
+        int playerChunkX = mc.player.chunkPosition().x;
+        int playerChunkZ = mc.player.chunkPosition().z;
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
@@ -1059,11 +1058,9 @@ public class SaveManager {
         saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt));
 
         if (saveThread == null || !saveThread.isAlive()) {
-            String dim = "overworld";
-            if(dimension != null && dimension == ClientLevel.NETHER) dim = "the_nether";
-            if(dimension != null && dimension == ClientLevel.END) dim = "the_end";
-            Path regionDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("region");
-            Path entityDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("entities");
+            Path dimensionRoot = getLegacyDimensionRoot(worldFolder, dimension);
+            Path regionDir = dimensionRoot.resolve("region");
+            Path entityDir = dimensionRoot.resolve("entities");
             checkPathExists(regionDir);
             checkPathExists(entityDir);
             saveThread = new Thread(() -> processQueue(regionDir, entityDir, dimension));
@@ -1110,30 +1107,20 @@ public class SaveManager {
 
     public static void createLevelDat(Path worldFolder, String worldName, LocalPlayer p) throws IOException {
         Files.createDirectories(worldFolder);
-        CompoundTag data = new CompoundTag();
 
+        CompoundTag data = new CompoundTag();
         data.putInt("DataVersion", DATA_VERSION);
         data.putString("LevelName", worldName);
         data.putLong("LastPlayed", System.currentTimeMillis());
         data.putInt("version", 19133);
         data.putInt("GameType", 1);
-        data.putByte("initialized", (byte)1);
-        data.putByte("allowCommands", (byte)1);
-
-        CompoundTag difficulty_settings = new CompoundTag();
-        difficulty_settings.putString("difficulty", "normal");
-        difficulty_settings.putByte("hardcore", (byte)0);
-        difficulty_settings.putByte("locked", (byte)0);
-        data.put("difficulty_settings", difficulty_settings);
-
-        data.putLong("Time", 0);
-
-        CompoundTag spawn = new CompoundTag();
-        spawn.putFloat("pitch", 0);
-        spawn.putFloat("yaw", 0);
-        spawn.putString("dimension", "minecraft:overworld");
-        spawn.putIntArray("pos", new int[] {p.getBlockX(), p.getBlockY(), p.getBlockZ()});
-        data.put("spawn", spawn);
+        data.putInt("SpawnX", p.getBlockX());
+        data.putInt("SpawnY", p.getBlockY());
+        data.putInt("SpawnZ", p.getBlockZ());
+        data.putByte("Difficulty", (byte) 1);
+        data.putByte("initialized", (byte) 1);
+        data.putByte("hardcore", (byte) 0);
+        data.putByte("allowCommands", (byte) 1);
 
         CompoundTag version = new CompoundTag();
         version.putString("Name", VERSION_NAME);
@@ -1142,18 +1129,78 @@ public class SaveManager {
         version.putByte("Snapshot", IS_SNAPSHOT);
         data.put("Version", version);
 
+        CompoundTag gameRules = new CompoundTag();
+        gameRules.putString("doDaylightCycle", "true");
+        gameRules.putString("doWeatherCycle", "true");
+        data.put("GameRules", gameRules);
+
         CompoundTag dataPacks = new CompoundTag();
         ListTag enabled = new ListTag();
         enabled.add(StringTag.valueOf("vanilla"));
-        enabled.add(StringTag.valueOf("fabric-convention-tags-v2"));
-        enabled.add(StringTag.valueOf("fabric-gametest-api-v1"));
         dataPacks.put("Enabled", enabled);
-        ListTag disabled = new ListTag();
-        disabled.add(StringTag.valueOf("minecart_improvements"));
-        disabled.add(StringTag.valueOf("redstone_experiments"));
-        disabled.add(StringTag.valueOf("trade_rebalance"));
-        dataPacks.put("Disabled", disabled);
+        dataPacks.put("Disabled", new ListTag());
         data.put("DataPacks", dataPacks);
+
+        CompoundTag player = new CompoundTag();
+        player.putString("Dimension", "minecraft:overworld");
+        ListTag pos = new ListTag();
+        pos.add(DoubleTag.valueOf(p.getX()));
+        pos.add(DoubleTag.valueOf(p.getY()));
+        pos.add(DoubleTag.valueOf(p.getZ()));
+        player.put("Pos", pos);
+        data.put("Player", player);
+
+        CompoundTag worldGenSettings = new CompoundTag();
+        worldGenSettings.putLong("seed", 0L);
+        worldGenSettings.putByte("generate_features", (byte) 0);
+        worldGenSettings.putByte("bonus_chest", (byte) 0);
+
+        CompoundTag dimensions = new CompoundTag();
+
+        CompoundTag overworld = new CompoundTag();
+        overworld.putString("type", "minecraft:overworld");
+        CompoundTag overworldGenerator = new CompoundTag();
+        overworldGenerator.putString("type", "minecraft:flat");
+        CompoundTag overworldSettings = new CompoundTag();
+        overworldSettings.put("layers", new ListTag());
+        overworldSettings.putString("biome", "minecraft:plains");
+        overworldSettings.putByte("structure", (byte) 0);
+        overworldGenerator.put("settings", overworldSettings);
+        overworld.put("generator", overworldGenerator);
+        dimensions.put("minecraft:overworld", overworld);
+
+        CompoundTag nether = new CompoundTag();
+        nether.putString("type", "minecraft:the_nether");
+        CompoundTag netherGenerator = new CompoundTag();
+        netherGenerator.putString("type", "minecraft:noise");
+        netherGenerator.putString("settings", "minecraft:nether");
+        CompoundTag netherBiomeSource = new CompoundTag();
+        netherBiomeSource.putString("type", "minecraft:multi_noise");
+        netherBiomeSource.putString("preset", "minecraft:nether");
+        netherGenerator.put("biome_source", netherBiomeSource);
+        nether.put("generator", netherGenerator);
+        dimensions.put("minecraft:the_nether", nether);
+
+        CompoundTag end = new CompoundTag();
+        end.putString("type", "minecraft:the_end");
+        CompoundTag endGenerator = new CompoundTag();
+        endGenerator.putString("type", "minecraft:noise");
+        endGenerator.putString("settings", "minecraft:end");
+        CompoundTag endBiomeSource = new CompoundTag();
+        endBiomeSource.putString("type", "minecraft:the_end");
+        endGenerator.put("biome_source", endBiomeSource);
+        end.put("generator", endGenerator);
+        dimensions.put("minecraft:the_end", end);
+
+        worldGenSettings.put("dimensions", dimensions);
+        data.put("WorldGenSettings", worldGenSettings);
+
+        CompoundTag dragonFight = new CompoundTag();
+        dragonFight.putByte("NeedsStateScanning", (byte) 0);
+        dragonFight.putByte("DragonKilled", (byte) 0);
+        dragonFight.putByte("PreviouslyKilled", (byte) 0);
+        dragonFight.putByte("IsRespawning", (byte) 0);
+        data.put("DragonFight", dragonFight);
 
         CompoundTag root = new CompoundTag();
         root.put("Data", data);
@@ -1164,8 +1211,6 @@ public class SaveManager {
         long now = System.currentTimeMillis();
         ByteBuffer buf = ByteBuffer.allocate(8).putLong(now);
         Files.write(worldFolder.resolve("session.lock"), buf.array());
-
-        createNewDatFiles(worldFolder);
     }
 
     private static void createNewDatFiles(Path worldFolder) throws IOException {
@@ -1419,6 +1464,12 @@ public class SaveManager {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static Path getLegacyDimensionRoot(Path worldFolder, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+        if (dimension == ClientLevel.NETHER) return worldFolder.resolve("DIM-1");
+        if (dimension == ClientLevel.END) return worldFolder.resolve("DIM1");
+        return worldFolder;
     }
 
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }

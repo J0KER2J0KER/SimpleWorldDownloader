@@ -1,11 +1,13 @@
 package com.j0ker2j0ker.swd.client.screen;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -31,6 +33,16 @@ public class SwdConfigScreen extends Screen {
             Component.literal("Set whether worlds should be downloaded"),
             Component.literal("automatically on server joining.")
     );
+
+    private static final List<ClientTooltipComponent> NAME_TOOLTIP = NAME_DESC.stream()
+            .map(Component::getVisualOrderText)
+            .map(ClientTooltipComponent::create)
+            .toList();
+
+    private static final List<ClientTooltipComponent> AUTO_TOOLTIP = AUTO_DESC.stream()
+            .map(Component::getVisualOrderText)
+            .map(ClientTooltipComponent::create)
+            .toList();
 
     public SwdConfigScreen(Screen parent) {
         super(Component.literal("Simple World Downloader Config"));
@@ -88,14 +100,12 @@ public class SwdConfigScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractRenderState(graphics, mouseX, mouseY, a);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.render(graphics, mouseX, mouseY, partialTick);
 
-        graphics.nextStratum();
-
-        graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
-        graphics.text(this.font, Component.literal("Save world to:"), nameLabelX, nameLabelY, 0xFFFFFFFF);
-        graphics.text(this.font, Component.literal("Automatically download:"), autoLabelX, autoLabelY, 0xFFFFFFFF);
+        graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
+        graphics.drawString(this.font, Component.literal("Save world to:"), nameLabelX, nameLabelY, 0xFFFFFFFF);
+        graphics.drawString(this.font, Component.literal("Automatically download:"), autoLabelX, autoLabelY, 0xFFFFFFFF);
 
         // hover descriptions (over label text or over input widgets)
         boolean hoverNameLabel = isHovering(mouseX, mouseY, nameLabelX, nameLabelY, this.font.width("Save world to:"), 10);
@@ -105,9 +115,9 @@ public class SwdConfigScreen extends Screen {
         boolean hoverAutoCheckbox = this.autoDownloadCheckbox != null && this.autoDownloadCheckbox.isMouseOver(mouseX, mouseY);
 
         if (hoverNameLabel || hoverNameField) {
-            graphics.setComponentTooltipForNextFrame(this.font, NAME_DESC, mouseX, mouseY);
+            graphics.renderTooltip(this.font, NAME_TOOLTIP, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
         } else if (hoverAutoLabel || hoverAutoCheckbox) {
-            graphics.setComponentTooltipForNextFrame(this.font, AUTO_DESC, mouseX, mouseY);
+            graphics.renderTooltip(this.font, AUTO_TOOLTIP, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
         }
     }
 
