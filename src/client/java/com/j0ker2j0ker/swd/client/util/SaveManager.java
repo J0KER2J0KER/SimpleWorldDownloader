@@ -92,6 +92,7 @@ public class SaveManager {
     public static Thread saveThread = null;
 
     public static volatile boolean isSaving = false;
+    private static volatile net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> lastSavedDimension = null;
     public static String name;
     public static Path path;
 
@@ -143,6 +144,7 @@ public class SaveManager {
         statsDirty = false;
         advancementsDirty = false;
         lastMetaFlushTimeMs = 0L;
+        lastSavedDimension = mc.level != null ? mc.level.dimension() : null;
 
         bootstrapAdvancementsFromClientCache();
 
@@ -169,6 +171,7 @@ public class SaveManager {
         statsDirty = false;
         advancementsDirty = false;
         lastMetaFlushTimeMs = 0L;
+        lastSavedDimension = null;
     }
 
     public static void cacheAwardStatsPacket(ClientboundAwardStatsPacket packet) {
@@ -1056,27 +1059,31 @@ public class SaveManager {
         CompoundTag blockNbt = buildChunkNbt(wc);
         CompoundTag entityNbt = buildEntityChunkNbt(wc);
 
-        saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt));
+        saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt, dimension));
+
+        // Detect dimension change: when player enters a new dimension, trigger a batch save
+        if (lastSavedDimension != null && dimension != null && lastSavedDimension != dimension) {
+            printStatus("§e> Switched to dimension: " + dimension.location() + " — saving surrounding chunks...");
+            // Update player data cache with the new dimension
+            if (cacheRootTag != null) {
+                cacheRootTag.putString("Dimension", dimension.location().toString());
+            }
+            saveChunksAround(6);
+        }
+        lastSavedDimension = dimension;
 
         if (saveThread == null || !saveThread.isAlive()) {
-            String dim = "overworld";
-            if(dimension != null && dimension == ClientLevel.NETHER) dim = "the_nether";
-            if(dimension != null && dimension == ClientLevel.END) dim = "the_end";
-            Path regionDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("region");
-            Path entityDir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(dim).resolve("entities");
-            checkPathExists(regionDir);
-            checkPathExists(entityDir);
-            saveThread = new Thread(() -> processQueue(regionDir, entityDir, dimension));
+            saveThread = new Thread(() -> processQueue(worldFolder));
             saveThread.start();
         }
 
         if (showMessage) printStatus("§a> Saving chunk " + wc.getPos());
     }
 
-    private static void processQueue(Path regionDir, Path entityDir, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
-        try (RegionStorage blockStorage = new RegionStorage(regionDir);
-             RegionStorage entityStorage = new RegionStorage(entityDir)) {
-
+    private static void processQueue(Path worldFolder) {
+        java.util.Map<String, RegionStorage> blockStorages = new java.util.HashMap<>();
+        java.util.Map<String, RegionStorage> entityStorages = new java.util.HashMap<>();
+        try {
             while (true) {
                 ChunkSaveTask task = saveQueue.poll();
                 if (task == null) {
@@ -1092,11 +1099,31 @@ public class SaveManager {
                     continue;
                 }
 
-                blockStorage.write(task.pos, task.blockNbt, dimension);
-                entityStorage.write(task.pos, task.entityNbt, dimension);
+                String dimKey = task.dimension != null ? task.dimension.location().getPath() : "overworld";
+
+                RegionStorage blockStorage = blockStorages.computeIfAbsent(dimKey, d -> {
+                    Path dir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(d).resolve("region");
+                    checkPathExists(dir);
+                    return new RegionStorage(dir);
+                });
+                RegionStorage entityStorage = entityStorages.computeIfAbsent(dimKey, d -> {
+                    Path dir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(d).resolve("entities");
+                    checkPathExists(dir);
+                    return new RegionStorage(dir);
+                });
+
+                blockStorage.write(task.pos, task.blockNbt, task.dimension);
+                entityStorage.write(task.pos, task.entityNbt, task.dimension);
             }
         } catch (IOException e) {
             SwdClient.LOGGER.error("Failed to process chunk save queue!", e);
+        } finally {
+            for (RegionStorage rs : blockStorages.values()) {
+                try { rs.close(); } catch (Exception ignored) {}
+            }
+            for (RegionStorage rs : entityStorages.values()) {
+                try { rs.close(); } catch (Exception ignored) {}
+            }
         }
     }
 
@@ -1421,6 +1448,6 @@ public class SaveManager {
         }
     }
 
-    private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }
+    private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) { }
 
 }
