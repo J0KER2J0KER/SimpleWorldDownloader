@@ -89,6 +89,8 @@ public class SaveManager {
 
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
+    private static final java.util.Set<Long> queuedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private static final int MAX_QUEUE_SIZE = 4096;
     public static Thread saveThread = null;
 
     public static volatile boolean isSaving = false;
@@ -102,6 +104,8 @@ public class SaveManager {
     private static HashMap<BlockPos, List<ItemStack>> cacheBlockInventories;
     private static HashMap<UUID, List<ItemStack>> cacheEntityInventories;
     private static HashMap<UUID, CompoundTag> cacheEntityOverrides;
+    private static HashMap<BlockPos, CompoundTag> blockEntitySnapshots;
+    private static java.util.Set<UUID> interactedEntities;
     private static UUID cachePlayerUuid;
     private static JsonObject cachedStatsByType;
     private static JsonObject cachedAdvancements;
@@ -136,6 +140,8 @@ public class SaveManager {
         cacheBlockInventories = new HashMap<>();
         cacheEntityInventories = new HashMap<>();
         cacheEntityOverrides = new HashMap<>();
+        blockEntitySnapshots = new HashMap<>();
+        interactedEntities = new HashSet<>();
         cachePlayerUuid = mc.player.getUUID();
         cachedStatsByType = new JsonObject();
         cachedAdvancements = new JsonObject();
@@ -160,9 +166,12 @@ public class SaveManager {
         createPlayerDataFile();
         printStatus("§c> Stopped saving chunks.");
 
+        queuedChunks.clear();
         if (cacheBlockInventories != null) cacheBlockInventories.clear();
         if (cacheEntityInventories != null) cacheEntityInventories.clear();
         if (cacheEntityOverrides != null) cacheEntityOverrides.clear();
+        if (blockEntitySnapshots != null) blockEntitySnapshots.clear();
+        if (interactedEntities != null) interactedEntities.clear();
         cachePlayerUuid = null;
         cachedStatsByType = null;
         cachedAdvancements = null;
@@ -306,7 +315,7 @@ public class SaveManager {
         trimPlayerInventory(items);
 
         if (lastClicked instanceof BlockPos blockPos) {
-            handleBlockContainer(blockPos, items);
+            handleBlockContainer(blockPos, items, screen);
         } else if (lastClicked instanceof net.minecraft.world.entity.Entity entity) {
             handleEntityContainer(entity, items);
         }
@@ -351,13 +360,37 @@ public class SaveManager {
         }
     }
 
-    private static void handleBlockContainer(BlockPos pos, List<ItemStack> items) {
+    private static void handleBlockContainer(BlockPos pos, List<ItemStack> items, Screen screen) {
         if (cachePairedChestInventories(pos, items)) {
             return;
         }
 
         cacheBlockInventories.put(pos, new ArrayList<>(items)); // defensive copy
+
+        // Snapshot the full BlockEntity NBT for Crafter/Dropper/Dispenser.
+        // The server only sends inventory data during active GUI interaction;
+        // non-inventory fields (Crafter disabled/triggered, etc.) must come from
+        // the client-side BE at the moment the player closes the screen.
+        if (mc.level != null && isPrecisionBlockEntityScreen(screen)) {
+            var be = mc.level.getBlockEntity(pos);
+            if (be != null) {
+                CompoundTag snapshot = be.saveWithFullMetadata(mc.level.registryAccess());
+                // Remove the Items key from the snapshot — we'll inject from cache later.
+                snapshot.remove("Items");
+                blockEntitySnapshots.put(pos, snapshot);
+            }
+        }
+
         saveChunkNow(pos);
+    }
+
+    /** Returns true for containers whose BE carries critical non-inventory state. */
+    private static boolean isPrecisionBlockEntityScreen(Screen screen) {
+        if (screen == null) return false;
+        return switch (screen.getClass().getSimpleName()) {
+            case "CrafterScreen", "DispenserScreen", "DropperScreen" -> true;
+            default -> false;
+        };
     }
 
     private static boolean cachePairedChestInventories(BlockPos pos, List<ItemStack> items) {
@@ -401,7 +434,9 @@ public class SaveManager {
     }
 
     private static void handleEntityContainer(net.minecraft.world.entity.Entity entity, List<ItemStack> items) {
-        cacheEntityInventories.put(entity.getUUID(), new ArrayList<>(items));
+        UUID uuid = entity.getUUID();
+        cacheEntityInventories.put(uuid, new ArrayList<>(items));
+        interactedEntities.add(uuid);
         saveChunkNow(entity.blockPosition());
     }
 
@@ -423,7 +458,33 @@ public class SaveManager {
         }
 
         cacheEntityOverrides.put(merchant.getUUID(), overlay);
+        interactedEntities.add(merchant.getUUID());
         saveChunkNow(merchant.blockPosition());
+    }
+
+    /**
+     * Called when the player interacts with any entity (right-click).
+     * Caches entity-specific data (item frame contents, etc.) and
+     * marks the entity for persistence so it is included in future chunk saves.
+     */
+    public static void onEntityInteract(net.minecraft.world.entity.Entity entity) {
+        if (!isSaving || mc.level == null) return;
+
+        UUID uuid = entity.getUUID();
+        interactedEntities.add(uuid);
+
+        // ItemFrame / GlowItemFrame: cache the displayed item
+        if (entity instanceof net.minecraft.world.entity.decoration.ItemFrame frame) {
+            ItemStack displayed = frame.getItem();
+            if (!displayed.isEmpty()) {
+                List<ItemStack> items = new ArrayList<>();
+                items.add(displayed.copy());
+                cacheEntityInventories.put(uuid, items);
+                printStatus("§a> Item frame content saved.");
+            }
+        }
+
+        saveChunkNow(entity.blockPosition());
     }
 
     private static void saveChunkNow(BlockPos pos) {
@@ -452,7 +513,13 @@ public class SaveManager {
             if (entity instanceof net.minecraft.world.entity.player.Player) return;
 
             CompoundTag entityNbt = saveEntityToNbt(entity);
+
+            // Entity persistence: merge cached inventory/override data for interacted entities.
+            // The server sends complete data for basic entities (cows, sheep, zombies, etc.)
+            // but only sends inventory/trade data during active player interaction.
+            // The cache preserves this interaction data across chunk re-saves.
             injectCachedEntityInventory(entity, entityNbt);
+
             entityList.add(entityNbt);
         });
 
@@ -541,8 +608,18 @@ public class SaveManager {
     }
 
     private static void injectCachedBlockInventory(BlockPos pos, CompoundTag beTag) {
+        // 1. Inject cached Items (from player screen-close interaction).
         if (cacheBlockInventories.containsKey(pos)) {
             beTag.put("Items", buildItemsListTag(cacheBlockInventories.get(pos)));
+        }
+
+        // 2. Merge interaction-moment BE snapshot for non-inventory fields.
+        //    Works on a copy so the stored snapshot is never mutated.
+        CompoundTag snapshot = blockEntitySnapshots.get(pos);
+        if (snapshot != null) {
+            CompoundTag merged = snapshot.copy();   // clone to avoid mutating stored snapshot
+            merged.merge(beTag);                   // beTag wins conflicts (live state preserved)
+            beTag.merge(merged);                   // write back: adds only keys beTag lacks
         }
     }
 
@@ -1056,21 +1133,35 @@ public class SaveManager {
     }
 
     public static void saveChunkToRegion(Path worldFolder, LevelChunk wc, boolean showMessage, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+        // Dedup: skip if this exact chunk+dimension is already queued
+        long dedupKey = packChunkDimKey(wc.getPos(), dimension);
+        if (!queuedChunks.add(dedupKey)) {
+            return; // already queued, skip
+        }
+        if (saveQueue.size() >= MAX_QUEUE_SIZE) {
+            queuedChunks.remove(dedupKey);
+            if (showMessage) printStatus("§c> Save queue full, skipping chunk " + wc.getPos());
+            return;
+        }
+
         CompoundTag blockNbt = buildChunkNbt(wc);
         CompoundTag entityNbt = buildEntityChunkNbt(wc);
 
         saveQueue.add(new ChunkSaveTask(wc.getPos(), blockNbt, entityNbt, dimension));
 
-        // Detect dimension change: when player enters a new dimension, trigger a batch save
-        if (lastSavedDimension != null && dimension != null && lastSavedDimension != dimension) {
-            printStatus("§e> Switched to dimension: " + dimension.location() + " — saving surrounding chunks...");
+        // Detect dimension change: when player enters a new dimension, trigger a batch save.
+        // Update lastSavedDimension BEFORE saveChunksAround to prevent re-entrant triggering.
+        var previousDim = lastSavedDimension;
+        lastSavedDimension = dimension;
+
+        if (previousDim != null && dimension != null && previousDim != dimension) {
+            printStatus("§e> Switched to dimension: " + dimension.identifier() + " — saving surrounding chunks...");
             // Update player data cache with the new dimension
             if (cacheRootTag != null) {
-                cacheRootTag.putString("Dimension", dimension.location().toString());
+                cacheRootTag.putString("Dimension", dimension.identifier().toString());
             }
             saveChunksAround(6);
         }
-        lastSavedDimension = dimension;
 
         if (saveThread == null || !saveThread.isAlive()) {
             saveThread = new Thread(() -> processQueue(worldFolder));
@@ -1081,8 +1172,8 @@ public class SaveManager {
     }
 
     private static void processQueue(Path worldFolder) {
-        java.util.Map<String, RegionStorage> blockStorages = new java.util.HashMap<>();
-        java.util.Map<String, RegionStorage> entityStorages = new java.util.HashMap<>();
+        java.util.Map<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>, RegionStorage> blockStorages = new java.util.HashMap<>();
+        java.util.Map<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>, RegionStorage> entityStorages = new java.util.HashMap<>();
         try {
             while (true) {
                 ChunkSaveTask task = saveQueue.poll();
@@ -1099,21 +1190,28 @@ public class SaveManager {
                     continue;
                 }
 
-                String dimKey = task.dimension != null ? task.dimension.location().getPath() : "overworld";
+                var dimKey = task.dimension != null ? task.dimension : net.minecraft.world.level.Level.OVERWORLD;
 
-                RegionStorage blockStorage = blockStorages.computeIfAbsent(dimKey, d -> {
-                    Path dir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(d).resolve("region");
+                RegionStorage blockStorage = blockStorages.computeIfAbsent(dimKey, dk -> {
+                    String ns = dk.identifier().getNamespace();
+                    String p = dk.identifier().getPath();
+                    Path dir = worldFolder.resolve("dimensions").resolve(ns).resolve(p).resolve("region");
                     checkPathExists(dir);
                     return new RegionStorage(dir);
                 });
-                RegionStorage entityStorage = entityStorages.computeIfAbsent(dimKey, d -> {
-                    Path dir = worldFolder.resolve("dimensions").resolve("minecraft").resolve(d).resolve("entities");
+                RegionStorage entityStorage = entityStorages.computeIfAbsent(dimKey, dk -> {
+                    String ns = dk.identifier().getNamespace();
+                    String p = dk.identifier().getPath();
+                    Path dir = worldFolder.resolve("dimensions").resolve(ns).resolve(p).resolve("entities");
                     checkPathExists(dir);
                     return new RegionStorage(dir);
                 });
 
                 blockStorage.write(task.pos, task.blockNbt, task.dimension);
                 entityStorage.write(task.pos, task.entityNbt, task.dimension);
+
+                // Remove from dedup set after successful write
+                queuedChunks.remove(packChunkDimKey(task.pos, task.dimension));
             }
         } catch (IOException e) {
             SwdClient.LOGGER.error("Failed to process chunk save queue!", e);
@@ -1446,6 +1544,17 @@ public class SaveManager {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * Pack a ChunkPos + dimension into a single long for dedup set lookups.
+     * Layout: [16 bits dim hash | 24 bits chunkX | 24 bits chunkZ].
+     */
+    private static long packChunkDimKey(ChunkPos pos, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim) {
+        int dimHash = dim != null ? dim.hashCode() : 0;
+        long x = pos.x() & 0xFFFFFFL;
+        long z = pos.z() & 0xFFFFFFL;
+        return ((long)(dimHash & 0xFFFF) << 48) | (x << 24) | z;
     }
 
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) { }

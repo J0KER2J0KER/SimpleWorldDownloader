@@ -79,6 +79,7 @@ public class SwdClient implements ClientModInitializer {
 
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             SaveManager.lastClicked = entity;
+            SaveManager.onEntityInteract(entity);
             return InteractionResult.PASS;
         });
 
