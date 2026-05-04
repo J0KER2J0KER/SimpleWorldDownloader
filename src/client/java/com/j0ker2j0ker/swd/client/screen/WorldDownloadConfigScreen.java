@@ -46,30 +46,26 @@ public class WorldDownloadConfigScreen extends Screen {
     private void addSettingsWidgets() {
         int centerX = this.width / 2;
         int y = 70;
+        int leftRow = centerX-155;
+        int rightRow = centerX+5;
 
         // Settings
         addRenderableWidget(createCheckbox(
                 Component.literal("Entities"), null,
-                centerX-155, y,
+                leftRow, y,
                 config.includeEntities, (_, val) -> config.includeEntities = val
         ));
         addRenderableWidget(createCheckbox(
                 Component.literal("Player data"), Component.literal("This option includes:\n- General player data\n- Advancements\n- Statistics"),
-                centerX+5, y,
-                config.includeEntities, (_, val) -> config.includeEntities = val
+                rightRow, y,
+                config.includePlayerData, (_, val) -> config.includePlayerData = val
         ));
-        this.addRenderableWidget(Checkbox.builder(Component.literal("Player data"), font)
-                .tooltip(Tooltip.create(Component.literal("This option includes:")))
-                .selected(config.includePlayerData)
-                .onValueChange((_, val) -> config.includePlayerData = val)
-                .pos(centerX+5, y).maxWidth(150).build()
-        );
         y += CHECKBOX_Y_SPACE;
-        this.addRenderableWidget(Checkbox.builder(Component.literal("Resource packs"), font)
-                .selected(config.includeResourcePacks)
-                .onValueChange((_, val) -> config.includeResourcePacks = val)
-                .pos(centerX-155, y).maxWidth(150).build()
-        );
+        addRenderableWidget(createCheckbox(
+                Component.literal("Resource packs"), null,
+                leftRow, y,
+                config.includeResourcePacks, (_, val) -> config.includeResourcePacks = val
+        ));
     }
 
     private Checkbox createCheckbox(Component name, Component tooltip, int x, int y, boolean initialValue, Checkbox.OnValueChange valueChange) {
