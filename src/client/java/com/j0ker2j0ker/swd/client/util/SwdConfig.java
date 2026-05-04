@@ -2,6 +2,7 @@ package com.j0ker2j0ker.swd.client.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.j0ker2j0ker.swd.client.save.SaveConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class SwdConfig {
 
     public String saveWorldTo = "";
     public boolean autoDownload = false;
+    public SaveConfig defaultSaveConfig = new SaveConfig();
 
     private static final Gson GSON =
             new GsonBuilder().setPrettyPrinting().create();

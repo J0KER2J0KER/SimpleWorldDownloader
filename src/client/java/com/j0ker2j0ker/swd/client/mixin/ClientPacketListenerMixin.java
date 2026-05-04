@@ -1,6 +1,6 @@
 package com.j0ker2j0ker.swd.client.mixin;
 
-import com.j0ker2j0ker.swd.client.util.SaveManager;
+import com.j0ker2j0ker.swd.client.save.SaveManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ClientLevel;

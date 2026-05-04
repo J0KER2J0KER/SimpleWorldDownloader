@@ -1,4 +1,4 @@
-package com.j0ker2j0ker.swd.client.util;
+package com.j0ker2j0ker.swd.client.save;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.j0ker2j0ker.swd.client.SwdClient;
+import com.j0ker2j0ker.swd.client.util.RegionStorage;
+import com.j0ker2j0ker.swd.client.util.SwdWorldMarker;
 import com.mojang.serialization.DynamicOps;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.advancements.AdvancementProgress;
@@ -95,6 +97,8 @@ public class SaveManager {
     public static String name;
     public static Path path;
 
+    private static SaveConfig saveConfig;
+
     private static CompoundTag cacheRootTag;
     private static Path cachePlayerDatPath;
 
@@ -102,9 +106,9 @@ public class SaveManager {
     private static HashMap<UUID, List<ItemStack>> cacheEntityInventories;
     private static HashMap<UUID, CompoundTag> cacheEntityOverrides;
     private static UUID cachePlayerUuid;
-    private static JsonObject cachedStatsByType;
-    private static JsonObject cachedAdvancements;
-    private static Set<String> removedAdvancements;
+    private static JsonObject cachedStatsByType = null;
+    private static JsonObject cachedAdvancements = null;
+    private static Set<String> removedAdvancements = null;
     private static boolean advancementsResetThisSession;
     private static boolean statsDirty;
     private static boolean advancementsDirty;
@@ -115,13 +119,10 @@ public class SaveManager {
     private static final Minecraft mc = Minecraft.getInstance();
     private static DynamicOps<Tag> ops;
 
-    public static void toggle() {
-        if(isSaving) stop();
-        else start();
-    }
-
-    public static void start() {
+    public static void start(SaveConfig config) {
         if(isSaving || mc.player == null) return;
+
+        saveConfig = config;
 
         ops = Objects.requireNonNull(mc.level).registryAccess().createSerializationContext(NbtOps.INSTANCE);
         isSaving = true;
@@ -136,9 +137,6 @@ public class SaveManager {
         cacheEntityInventories = new HashMap<>();
         cacheEntityOverrides = new HashMap<>();
         cachePlayerUuid = mc.player.getUUID();
-        cachedStatsByType = new JsonObject();
-        cachedAdvancements = new JsonObject();
-        removedAdvancements = new HashSet<>();
         advancementsResetThisSession = false;
         statsDirty = false;
         advancementsDirty = false;
@@ -147,7 +145,7 @@ public class SaveManager {
         bootstrapAdvancementsFromClientCache();
 
         printStatus("§a> Started saving chunks...");
-        saveChunksAround(12);
+        saveChunksAround(mc.options.renderDistance().get());
     }
 
     public static void stop() {
@@ -172,7 +170,7 @@ public class SaveManager {
     }
 
     public static void cacheAwardStatsPacket(ClientboundAwardStatsPacket packet) {
-        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null) return;
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includeStatistics) return;
         if (cachedStatsByType == null) cachedStatsByType = new JsonObject();
         if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
 
@@ -199,7 +197,7 @@ public class SaveManager {
     }
 
     public static void cacheAdvancementPacket(ClientboundUpdateAdvancementsPacket packet) {
-        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null) return;
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includeAdvancements) return;
         if (cachedAdvancements == null) cachedAdvancements = new JsonObject();
         if (removedAdvancements == null) removedAdvancements = new HashSet<>();
         if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
@@ -245,7 +243,7 @@ public class SaveManager {
 
     @SuppressWarnings("unchecked")
     private static void bootstrapAdvancementsFromClientCache() {
-        if (!isSaving || mc.getConnection() == null || cachedAdvancements == null) return;
+        if (!isSaving || mc.getConnection() == null || cachedAdvancements == null || !saveConfig.includeAdvancements) return;
 
         try {
             ClientPacketListener connection = mc.getConnection();
@@ -622,23 +620,25 @@ public class SaveManager {
             SwdClient.LOGGER.error("Can't create save directory or write icon!", e);
         }
 
-        if(Minecraft.getInstance().getCurrentServer() != null && Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
-            Path packTempPath = SwdClient.resourcepack_locations;
-            Path pathResourcepacks = path.resolve("resourcepacks");
-            if(!Files.exists(pathResourcepacks)) {
+        if (saveConfig.includeResourcePacks) {
+            if(Minecraft.getInstance().getCurrentServer() != null && Minecraft.getInstance().getCurrentServer().getResourcePackStatus().name().equalsIgnoreCase("ENABLED")) {
+                Path packTempPath = SwdClient.resourcepack_locations;
+                Path pathResourcepacks = path.resolve("resourcepacks");
+                if(!Files.exists(pathResourcepacks)) {
+                    try {
+                        Files.createDirectory(pathResourcepacks);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                Path packTargetPath = pathResourcepacks.resolve("resources.zip");
                 try {
-                    Files.createDirectory(pathResourcepacks);
+                    if(packTempPath != null) {
+                        Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            Path packTargetPath = pathResourcepacks.resolve("resources.zip");
-            try {
-                if(packTempPath != null) {
-                    Files.copy(packTempPath, packTargetPath, StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -663,6 +663,7 @@ public class SaveManager {
     }
 
     private static void createPlayerDataCache(Path path) {
+        if (!saveConfig.includePlayerData) return;
         Path playerdataPath;
         try {
             playerdataPath = Files.createDirectories(path.resolve("players").resolve("data"));
@@ -1093,7 +1094,7 @@ public class SaveManager {
                 }
 
                 blockStorage.write(task.pos, task.blockNbt, dimension);
-                entityStorage.write(task.pos, task.entityNbt, dimension);
+                if (saveConfig.includeEntities) entityStorage.write(task.pos, task.entityNbt, dimension);
             }
         } catch (IOException e) {
             SwdClient.LOGGER.error("Failed to process chunk save queue!", e);

@@ -1,6 +1,7 @@
 package com.j0ker2j0ker.swd.client.mixin;
 
-import com.j0ker2j0ker.swd.client.util.SaveManager;
+import com.j0ker2j0ker.swd.client.save.SaveManager;
+import com.j0ker2j0ker.swd.client.screen.WorldDownloadConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,12 +14,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.j0ker2j0ker.swd.client.SwdClient.CONFIG;
+
 @Mixin(PauseScreen.class)
-public abstract class PauseScreenMixin extends Screen{
+public abstract class PauseScreenMixin extends Screen {
 
     protected PauseScreenMixin(Component title) {
         super(title);
     }
+
     @Unique
     private static final Identifier START = Identifier.fromNamespaceAndPath("swd", "icon/start");
     @Unique
@@ -33,20 +37,24 @@ public abstract class PauseScreenMixin extends Screen{
     }
 
     @Unique
-    private String getName() {
-        if(!SaveManager.isSaving) return "Start Downloading Chunks";
-        else return "Stop Downloading Chunks";
+    private Component getTooltip() {
+        if(!SaveManager.isSaving) return Component.translatable("simplewdl.download.menu");
+        else return Component.translatable("simplewdl.download.stop");
     }
+
     @Unique
     private void refresh() {
         Identifier icon = START;
         if(SaveManager.isSaving) icon = STOP;
-        SpriteIconButton iconButton = this.addRenderableWidget(SpriteIconButton.builder(Component.nullToEmpty(getName()), (button) -> {
-            SaveManager.toggle();
+        SpriteIconButton iconButton = this.addRenderableWidget(SpriteIconButton.builder(getTooltip(), button -> {
+            if (SaveManager.isSaving) SaveManager.stop(); else {
+                minecraft.setScreen(new WorldDownloadConfigScreen(this, CONFIG.defaultSaveConfig));
+            }
+
             button.setFocused(false);
-            button.setMessage(Component.nullToEmpty(getName()));
+            button.setMessage(getTooltip());
             refresh();
-        }, true).width(20).sprite(icon, 16, 16).build());
+        }, true).width(20).sprite(icon, 16, 16).withTootip().build());
         iconButton.setPosition(4, height-24);
     }
 

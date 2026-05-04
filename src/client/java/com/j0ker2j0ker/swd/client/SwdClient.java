@@ -1,7 +1,7 @@
 package com.j0ker2j0ker.swd.client;
 
 import com.j0ker2j0ker.swd.client.screen.SwdConfigScreen;
-import com.j0ker2j0ker.swd.client.util.SaveManager;
+import com.j0ker2j0ker.swd.client.save.SaveManager;
 import com.j0ker2j0ker.swd.client.util.SwdConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -11,23 +11,12 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static com.mojang.brigadier.arguments.StringArgumentType.getString;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 
 public class SwdClient implements ClientModInitializer {
@@ -47,10 +36,10 @@ public class SwdClient implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             if(SaveManager.isSaving) {
                 SaveManager.stop();
-                SaveManager.start();
+                SaveManager.start(CONFIG.defaultSaveConfig);
             }else {
                 if(CONFIG.autoDownload && !Minecraft.getInstance().isLocalServer()) {
-                    SaveManager.start();
+                    SaveManager.start(CONFIG.defaultSaveConfig);
                 }
             }
         });
