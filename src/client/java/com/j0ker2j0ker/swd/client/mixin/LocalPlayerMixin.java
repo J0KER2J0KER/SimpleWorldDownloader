@@ -13,6 +13,12 @@ public class LocalPlayerMixin {
 
     @Inject(method = "sendOpenInventory", at = @At("HEAD"))
     public void sendOpenInventory(CallbackInfo ci) {
-        SaveManager.lastClicked = Minecraft.getInstance().player.getVehicle();
+        if (Minecraft.getInstance().player != null) {
+            var vehicle = Minecraft.getInstance().player.getVehicle();
+            SaveManager.lastClicked = vehicle;
+            if (vehicle != null) {
+                SaveManager.onEntityInteract(vehicle);
+            }
+        }
     }
 }

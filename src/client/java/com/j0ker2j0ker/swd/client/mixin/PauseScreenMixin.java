@@ -27,7 +27,8 @@ public abstract class PauseScreenMixin extends Screen{
     @Inject(at = @At("RETURN"), method = "createPauseMenu")
     public void addSaveButton(CallbackInfo ci) {
         // only shows the button if the player is on a multiplayer server or in a flashback replay
-        if (Minecraft.getInstance().isLocalServer() && !Minecraft.getInstance().getSingleplayerServer().getWorldData().getLevelName().equalsIgnoreCase("Replay")) return;
+        if (Minecraft.getInstance().getSingleplayerServer() != null && Minecraft.getInstance().isLocalServer() && !Minecraft.getInstance().getSingleplayerServer().getWorldData().getLevelName().equalsIgnoreCase("Replay"))
+            return;
 
         refresh();
     }

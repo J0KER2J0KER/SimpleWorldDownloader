@@ -56,9 +56,7 @@ public class SwdClient implements ClientModInitializer {
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            ScreenEvents.remove(screen).register((closedScreen) -> {
-                SaveManager.onScreenClosed(closedScreen);
-            });
+            ScreenEvents.remove(screen).register(SaveManager::onScreenClosed);
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {

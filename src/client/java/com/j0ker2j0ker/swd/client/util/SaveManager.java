@@ -89,12 +89,14 @@ public class SaveManager {
 
 
     private static final Queue<ChunkSaveTask> saveQueue = new ConcurrentLinkedQueue<>();
-    private static final java.util.Set<Long> queuedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private static final java.util.Set<String> queuedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private static final java.util.Set<String> touchedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private static final int MAX_QUEUE_SIZE = 4096;
     public static Thread saveThread = null;
 
     public static volatile boolean isSaving = false;
     private static volatile net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> lastSavedDimension = null;
+    private static boolean isResumingExistingWorld = false;
     public static String name;
     public static Path path;
 
@@ -154,8 +156,12 @@ public class SaveManager {
 
         bootstrapAdvancementsFromClientCache();
 
-        printStatus("§a> Started saving chunks...");
-        saveChunksAround(12);
+        if (isResumingExistingWorld) {
+            printStatus("§a> Resumed saving — only touched chunks are written.");
+        } else {
+            printStatus("§a> Started saving chunks...");
+            saveChunksAround(12);
+        }
     }
 
     public static void stop() {
@@ -167,6 +173,7 @@ public class SaveManager {
         printStatus("§c> Stopped saving chunks.");
 
         queuedChunks.clear();
+        touchedChunks.clear();
         if (cacheBlockInventories != null) cacheBlockInventories.clear();
         if (cacheEntityInventories != null) cacheEntityInventories.clear();
         if (cacheEntityOverrides != null) cacheEntityOverrides.clear();
@@ -181,6 +188,7 @@ public class SaveManager {
         advancementsDirty = false;
         lastMetaFlushTimeMs = 0L;
         lastSavedDimension = null;
+        isResumingExistingWorld = false;
     }
 
     public static void cacheAwardStatsPacket(ClientboundAwardStatsPacket packet) {
@@ -435,12 +443,15 @@ public class SaveManager {
 
     private static void handleEntityContainer(net.minecraft.world.entity.Entity entity, List<ItemStack> items) {
         UUID uuid = entity.getUUID();
+        if (!interactedEntities.contains(uuid)) return;
         cacheEntityInventories.put(uuid, new ArrayList<>(items));
         interactedEntities.add(uuid);
         saveChunkNow(entity.blockPosition());
     }
 
     private static void cacheVillagerMerchantData(AbstractVillager merchant, MerchantMenu menu) {
+        if (!interactedEntities.contains(merchant.getUUID())) return;
+
         CompoundTag overlay = new CompoundTag();
 
         MerchantOffers offers = menu.getOffers();
@@ -488,10 +499,21 @@ public class SaveManager {
     }
 
     private static void saveChunkNow(BlockPos pos) {
+        if (mc.level == null) return;
         LevelChunk wc = mc.level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
         if (wc != null) {
+            touchChunk(wc.getPos(), mc.level.dimension());
+            // Clear dedup so that subsequent saveChunkNow calls with fresh
+            // cache data (from onScreenClosed → cacheVillagerMerchantData,
+            // handleBlockContainer, etc.) are not silently dropped.
+            queuedChunks.remove(packChunkDimKey(wc.getPos(), mc.level.dimension()));
             saveChunkToRegion(path, wc, false, mc.level.dimension());
         }
+    }
+
+    /** Mark a chunk as "touched" so that even on resume it will be saved. */
+    private static void touchChunk(ChunkPos pos, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim) {
+        touchedChunks.add(packChunkDimKey(pos, dim));
     }
 
     public static CompoundTag buildEntityChunkNbt(LevelChunk wc) {
@@ -607,6 +629,174 @@ public class SaveManager {
         }
     }
 
+    /**
+     * Merge old (disk) and new (server + cache) entity chunk NBTs.
+     * Matches entities by type + block position; old entities with cached
+     * inventory/trade data are preserved unless the new data has fresh cache.
+     */
+    private static CompoundTag mergeEntityChunkNbt(CompoundTag oldChunk, CompoundTag newChunk) {
+        ListTag oldList = oldChunk.getList("Entities").orElse(new ListTag());
+        ListTag newList = newChunk.getList("Entities").orElse(new ListTag());
+
+        java.util.Map<String, CompoundTag> oldByKey = new java.util.HashMap<>();
+        for (int i = 0; i < oldList.size(); i++) {
+            CompoundTag nbt = oldList.getCompound(i).orElseThrow();
+            String key = entityMatchKey(nbt);
+            if (!key.isEmpty()) oldByKey.put(key, nbt);
+        }
+
+        java.util.Set<String> matchedNewKeys = new java.util.HashSet<>();
+        ListTag merged = new ListTag();
+
+        // Process new entities
+        for (int i = 0; i < newList.size(); i++) {
+            CompoundTag newNbt = newList.getCompound(i).orElseThrow();
+            String key = entityMatchKey(newNbt);
+            CompoundTag oldNbt = key.isEmpty() ? null : oldByKey.get(key);
+
+            if (oldNbt != null) {
+                // Entity matched by stable key → keep the current server packet as the base,
+                // and only restore interaction-only fields when the server packet is empty.
+                CompoundTag mergedEntity = newNbt.copy();
+
+                Tag oldItems = copyTag(oldNbt, "Items");
+                if (!hasNonEmptyList(newNbt, "Items") && oldItems != null) {
+                    mergedEntity.put("Items", oldItems);
+                }
+
+                Tag oldOffers = copyTag(oldNbt, "Offers");
+                if (!newNbt.contains("Offers") && oldOffers != null) {
+                    mergedEntity.put("Offers", oldOffers);
+                }
+
+                Tag oldVillagerData = copyTag(oldNbt, "VillagerData");
+                if (!newNbt.contains("VillagerData") && oldVillagerData != null) {
+                    mergedEntity.put("VillagerData", oldVillagerData);
+                }
+
+                merged.add(mergedEntity);
+                matchedNewKeys.add(key);
+            } else {
+                // No old match → new entity, keep as-is
+                merged.add(newNbt);
+            }
+        }
+
+        // Add old entities that weren't matched by any new entity
+        for (var entry : oldByKey.entrySet()) {
+            if (!matchedNewKeys.contains(entry.getKey())) {
+                merged.add(entry.getValue());
+            }
+        }
+
+        CompoundTag result = oldChunk.copy();
+        result.put("Entities", merged);
+        return result;
+    }
+
+    /**
+     * Build a stable match key from entity NBT: use UUID, fall back to type@blockPos.
+     */
+    private static String entityMatchKey(CompoundTag nbt) {
+        try {
+            if (nbt.contains("UUID")) {
+                var uuidTag = nbt.get("UUID");
+                if (uuidTag instanceof IntArrayTag arr && arr.size() >= 4) {
+                    int[] uuid = arr.getAsIntArray();
+                    return new UUID(
+                        ((long)uuid[0] << 32) | (uuid[1] & 0xFFFFFFFFL),
+                        ((long)uuid[2] << 32) | (uuid[3] & 0xFFFFFFFFL)
+                    ).toString();
+                }
+            }
+            // Fallback for entities without UUID
+            String id = nbt.getString("id").orElse("");
+            if (id.isEmpty()) return "";
+            ListTag pos = nbt.getList("Pos").orElse(new ListTag());
+            if (pos.isEmpty()) return "";
+            int bx = (int) Math.floor(pos.getDouble(0).orElse(0.0));
+            int by = (int) Math.floor(pos.getDouble(1).orElse(0.0));
+            int bz = (int) Math.floor(pos.getDouble(2).orElse(0.0));
+            return id + "@" + bx + "," + by + "," + bz;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+     * Merge old (disk) and new (server + live BE) block chunk NBTs.
+     * Matches block entities by id + x/y/z; old cached fields (Items,
+     * Disabled, Triggered) are preserved unless the new data carries fresh values.
+     */
+    private static CompoundTag mergeBlockChunkNbt(CompoundTag oldChunk, CompoundTag newChunk) {
+        ListTag oldList = oldChunk.getList("block_entities").orElse(new ListTag());
+        ListTag newList = newChunk.getList("block_entities").orElse(new ListTag());
+
+        java.util.Map<String, CompoundTag> oldByKey = new java.util.HashMap<>();
+        for (int i = 0; i < oldList.size(); i++) {
+            CompoundTag nbt = oldList.getCompound(i).orElseThrow();
+            String key = beMatchKey(nbt);
+            if (!key.isEmpty()) oldByKey.put(key, nbt);
+        }
+
+        java.util.Set<String> matchedNewKeys = new java.util.HashSet<>();
+        ListTag merged = new ListTag();
+
+        for (int i = 0; i < newList.size(); i++) {
+            CompoundTag newNbt = newList.getCompound(i).orElseThrow();
+            String key = beMatchKey(newNbt);
+            CompoundTag oldNbt = key.isEmpty() ? null : oldByKey.get(key);
+
+            if (oldNbt != null) {
+                boolean newHasInv = newNbt.contains("Items") && !newNbt.getList("Items").orElse(new ListTag()).isEmpty();
+                // Keep the current server packet as the base so empty packets do not
+                // roll the block entity back to an older snapshot.
+                CompoundTag mergedBe = newNbt.copy();
+
+                Tag oldItems = copyTag(oldNbt, "Items");
+                Tag oldDisabled = copyTag(oldNbt, "Disabled");
+                Tag oldTriggered = copyTag(oldNbt, "Triggered");
+                Tag oldCrafting = copyTag(oldNbt, "crafting_ticks_remaining");
+
+                if (!newHasInv && oldItems != null) mergedBe.put("Items", oldItems);
+                if (!newNbt.contains("Disabled") && oldDisabled != null) mergedBe.put("Disabled", oldDisabled);
+                if (!newNbt.contains("Triggered") && oldTriggered != null) mergedBe.put("Triggered", oldTriggered);
+                if (!newNbt.contains("crafting_ticks_remaining") && oldCrafting != null) mergedBe.put("crafting_ticks_remaining", oldCrafting);
+
+                merged.add(mergedBe);
+                matchedNewKeys.add(key);
+            } else {
+                merged.add(newNbt);
+            }
+        }
+
+        // Retain old BEs not matched (may have been removed/not in render distance).
+        for (var entry : oldByKey.entrySet()) {
+            if (!matchedNewKeys.contains(entry.getKey())) {
+                merged.add(entry.getValue());
+            }
+        }
+
+        CompoundTag result = oldChunk.copy();
+        result.put("block_entities", merged);
+        return result;
+    }
+
+    /** Match key for block entities: "id@x,y,z". */
+    private static String beMatchKey(CompoundTag nbt) {
+        try {
+            String id = nbt.getString("id").orElse("");
+            if (id.isEmpty()) return "";
+            int bx = nbt.getInt("x").orElse(Integer.MIN_VALUE);
+            int by = nbt.getInt("y").orElse(Integer.MIN_VALUE);
+            int bz = nbt.getInt("z").orElse(Integer.MIN_VALUE);
+            if (bx == Integer.MIN_VALUE) return "";
+            return id + "@" + bx + "," + by + "," + bz;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     private static void injectCachedBlockInventory(BlockPos pos, CompoundTag beTag) {
         // 1. Inject cached Items (from player screen-close interaction).
         if (cacheBlockInventories.containsKey(pos)) {
@@ -614,16 +804,18 @@ public class SaveManager {
         }
 
         // 2. Merge interaction-moment BE snapshot for non-inventory fields.
-        //    Works on a copy so the stored snapshot is never mutated.
+        //    Snapshot (Disabled, Triggered, etc.) must win over live server data,
+        //    because the server sends incomplete/inaccurate values for these keys.
         CompoundTag snapshot = blockEntitySnapshots.get(pos);
         if (snapshot != null) {
-            CompoundTag merged = snapshot.copy();   // clone to avoid mutating stored snapshot
-            merged.merge(beTag);                   // beTag wins conflicts (live state preserved)
-            beTag.merge(merged);                   // write back: adds only keys beTag lacks
+            // beTag is the base (live server data); snapshot overwrites on conflict.
+            beTag.merge(snapshot);
         }
     }
 
     private static void injectCachedEntityInventory(net.minecraft.world.entity.Entity entity, CompoundTag entityNbt) {
+        if (!interactedEntities.contains(entity.getUUID())) return;
+
         if (cacheEntityInventories.containsKey(entity.getUUID())) {
             entityNbt.put("Items", buildItemsListTag(cacheEntityInventories.get(entity.getUUID())));
         }
@@ -724,6 +916,7 @@ public class SaveManager {
     }
 
     private static void determineWorldName() {
+        isResumingExistingWorld = false;
         if(SwdClient.CONFIG.saveWorldTo.isEmpty()) {
             if(mc.getCurrentServer() != null) name = mc.getCurrentServer().ip.replaceAll("[\\\\/:*?\"<>|]", "_");
             else {
@@ -732,12 +925,22 @@ public class SaveManager {
                 else name = mc.getSingleplayerServer().getWorldData().getLevelName().replaceAll("[\\\\/:*?\"<>|]", "_");
             }
             Path saves = Paths.get("saves");
+            // Reuse existing SWD world: if a directory with the base name was already
+            // saved by this mod, continue writing into it instead of creating a new one.
+            if (SwdWorldMarker.isMarked(saves.resolve(name))) {
+                isResumingExistingWorld = true;
+                return;
+            }
             if(Files.exists(saves.resolve(name))) {
                 int i = 1;
                 while(Files.exists(saves.resolve(name + " " + i))) i++;
                 name += " " + i;
             }
         }else {
+            Path saves = Paths.get("saves");
+            if (SwdWorldMarker.isMarked(saves.resolve(SwdClient.CONFIG.saveWorldTo))) {
+                isResumingExistingWorld = true;
+            }
             name = SwdClient.CONFIG.saveWorldTo;
         }
     }
@@ -791,7 +994,7 @@ public class SaveManager {
         root.putShort("DeathTime", (short) mc.player.deathTime);
         root.putInt("XpSeed", 0);
         root.putInt("XpTotal", mc.player.totalExperience);
-        root.putIntArray("UUID",  new int[]{0, 0, 0, 0});
+        root.putIntArray("UUID", uuidToIntArray(mc.player.getUUID()));
         if(mc.player.gameMode() == null) root.putInt("playerGameType", 1);
         else root.putInt("playerGameType", Objects.requireNonNull(mc.player.gameMode()).getId());
         root.putByte("seenCredits", (byte) 0);
@@ -891,6 +1094,21 @@ public class SaveManager {
         root.putInt("foodTickTimer", 0);
 
         cachePlayerDatPath  = playerdataPath.resolve(mc.player.getStringUUID() + ".dat");
+
+        // Preserve EnderItems from previous session when resuming an existing world.
+        if (isResumingExistingWorld && Files.exists(cachePlayerDatPath)) {
+            try {
+                CompoundTag oldDat = NbtIo.readCompressed(cachePlayerDatPath, NbtAccounter.create(Long.MAX_VALUE));
+                if (oldDat.contains("EnderItems")) {
+                    Tag oldEnderItems = oldDat.get("EnderItems");
+                    if (oldEnderItems != null) {
+                        root.put("EnderItems", oldEnderItems.copy());
+                    }
+                }
+            } catch (IOException ignored) {
+            }
+        }
+
         cacheRootTag = root;
     }
 
@@ -1078,6 +1296,16 @@ public class SaveManager {
         return value != null && value.isJsonObject() ? value.getAsJsonObject() : null;
     }
 
+    private static Tag copyTag(CompoundTag object, String key) {
+        if (object == null || !object.contains(key)) return null;
+        Tag tag = object.get(key);
+        return tag == null ? null : tag.copy();
+    }
+
+    private static boolean hasNonEmptyList(CompoundTag object, String key) {
+        return object != null && object.getList(key).orElse(new ListTag()).size() > 0;
+    }
+
     private static int getInt(JsonObject object, String key, int fallback) {
         if (object == null) return fallback;
         JsonElement value = object.get(key);
@@ -1126,6 +1354,11 @@ public class SaveManager {
 
                 LevelChunk chunk = world.getChunkSource().getChunkNow(chunkX, chunkZ);
                 if (chunk != null) {
+                    // Only auto-touch on fresh saves; on resume, chunks must be
+                    // explicitly touched via player interaction (container close etc.).
+                    if (!isResumingExistingWorld) {
+                        touchChunk(chunk.getPos(), world.dimension());
+                    }
                     saveChunkToRegion(path, chunk, false, world.dimension());
                 }
             }
@@ -1133,8 +1366,15 @@ public class SaveManager {
     }
 
     public static void saveChunkToRegion(Path worldFolder, LevelChunk wc, boolean showMessage, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+        // On resume: only save chunks the player has actively interacted with.
+        // This prevents overwriting previously-saved container/entity data with
+        // empty caches when chunks merely load via handleLevelChunkWithLight.
+        String dedupKey = packChunkDimKey(wc.getPos(), dimension);
+        if (isResumingExistingWorld && !touchedChunks.contains(dedupKey)) {
+            return;
+        }
+
         // Dedup: skip if this exact chunk+dimension is already queued
-        long dedupKey = packChunkDimKey(wc.getPos(), dimension);
         if (!queuedChunks.add(dedupKey)) {
             return; // already queued, skip
         }
@@ -1207,8 +1447,35 @@ public class SaveManager {
                     return new RegionStorage(dir);
                 });
 
-                blockStorage.write(task.pos, task.blockNbt, task.dimension);
-                entityStorage.write(task.pos, task.entityNbt, task.dimension);
+                // Block entity merge on resume: same strategy as entities.
+                // Read old block NBT, match BEs by id+position, preserve old
+                // Items/Disabled/Triggered for un-reopened containers.
+                CompoundTag finalBlockNbt = task.blockNbt;
+                if (isResumingExistingWorld && task.blockNbt != null) {
+                    try {
+                        CompoundTag oldBlockNbt = blockStorage.read(task.pos, task.dimension);
+                        if (oldBlockNbt != null) {
+                            finalBlockNbt = mergeBlockChunkNbt(oldBlockNbt, task.blockNbt);
+                        }
+                    } catch (IOException ignored) {
+                    }
+                }
+                blockStorage.write(task.pos, finalBlockNbt, task.dimension);
+
+                // Entity merge on resume: read existing entity NBT from disk, merge
+                // old (cached) entity data with new server data, so un-interacted
+                // entities keep their previously saved inventory/trade data.
+                CompoundTag finalEntityNbt = task.entityNbt;
+                if (isResumingExistingWorld && task.entityNbt != null) {
+                    try {
+                        CompoundTag oldEntityNbt = entityStorage.read(task.pos, task.dimension);
+                        if (oldEntityNbt != null) {
+                            finalEntityNbt = mergeEntityChunkNbt(oldEntityNbt, task.entityNbt);
+                        }
+                    } catch (IOException ignored) {
+                    }
+                }
+                entityStorage.write(task.pos, finalEntityNbt, task.dimension);
 
                 // Remove from dedup set after successful write
                 queuedChunks.remove(packChunkDimKey(task.pos, task.dimension));
@@ -1547,14 +1814,19 @@ public class SaveManager {
     }
 
     /**
-     * Pack a ChunkPos + dimension into a single long for dedup set lookups.
-     * Layout: [16 bits dim hash | 24 bits chunkX | 24 bits chunkZ].
+     * Pack a ChunkPos + dimension into a stable string key for dedup/lookups.
+     * This avoids any cross-dimension collision when chunk coordinates match.
      */
-    private static long packChunkDimKey(ChunkPos pos, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim) {
-        int dimHash = dim != null ? dim.hashCode() : 0;
-        long x = pos.x() & 0xFFFFFFL;
-        long z = pos.z() & 0xFFFFFFL;
-        return ((long)(dimHash & 0xFFFF) << 48) | (x << 24) | z;
+    private static String packChunkDimKey(ChunkPos pos, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim) {
+        String dimId = dim != null ? dim.identifier().toString() : "minecraft:overworld";
+        return dimId + "|" + pos.x() + "," + pos.z();
+    }
+
+    /** Convert a UUID into the 4-int NBT array format Minecraft expects. */
+    private static int[] uuidToIntArray(UUID uuid) {
+        long most = uuid.getMostSignificantBits();
+        long least = uuid.getLeastSignificantBits();
+        return new int[] { (int)(most >> 32), (int)most, (int)(least >> 32), (int)least };
     }
 
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) { }
