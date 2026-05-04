@@ -7,9 +7,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.MutableComponent;
+import org.jspecify.annotations.NonNull;
 
 import static com.j0ker2j0ker.swd.client.SwdClient.CONFIG;
 
@@ -32,7 +32,7 @@ public class WorldDownloadConfigScreen extends Screen {
         addSettingsWidgets();
 
         // Action buttons
-        this.addRenderableWidget(Button.builder(Component.literal("Cancel"), _ -> onClose())
+        this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, _ -> onClose())
                 .pos(centerX - 155, this.height - 50).width(150).build());
 
         this.addRenderableWidget(Button.builder(Component.literal("Start Downloading"), _ -> {
@@ -78,7 +78,7 @@ public class WorldDownloadConfigScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         int centerX = this.width / 2;
 

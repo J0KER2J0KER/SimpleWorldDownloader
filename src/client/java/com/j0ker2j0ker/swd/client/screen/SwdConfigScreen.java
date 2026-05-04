@@ -6,7 +6,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -76,19 +78,19 @@ public class SwdConfigScreen extends Screen {
                 .build();
         this.addRenderableWidget(this.autoDownloadCheckbox);
 
-        this.addRenderableWidget(Button.builder(Component.literal("Save"), b -> {
+        this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, b -> this.onClose())
+                .pos(centerX + -155, this.height - 50).width(150).build());
+
+        this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> {
             SwdClient.CONFIG.saveWorldTo = this.nameField.getValue().trim();
             SwdClient.CONFIG.autoDownload = this.autoDownloadCheckbox.selected();
             SwdClient.CONFIG.save();
             this.onClose();
-        }).pos(centerX - 155, this.height - 50).width(150).build());
-
-        this.addRenderableWidget(Button.builder(Component.literal("Cancel"), b -> this.onClose())
-                .pos(centerX + 5, this.height - 50).width(150).build());
+        }).pos(centerX + 5, this.height - 50).width(150).build());
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
         graphics.nextStratum();
