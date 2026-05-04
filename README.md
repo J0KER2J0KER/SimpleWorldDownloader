@@ -17,7 +17,7 @@ The Mod downloads:
 Download on [Modrinth](https://modrinth.com/mod/simple-world-downloader), [CurseForge](https://www.curseforge.com/minecraft/mc-mods/simple-world-downloader) or [Github](https://github.com/J0KER2J0KER/SimpleWorldDownloader/releases/latest).
 
 # Containers
-Container inventories (Enderchest, Chests, Barrels, ...) can only be saved if you open the inventory at least once while the world download is running. This is also true for Entitiy Inventories (like Villagers, Chestboats, Horses, ...).
+Container inventories (Enderchest, Chests, Barrels, ...) can only be saved if you open the inventory at least once while the world download is running. This is also true for Entity Inventories (like Villagers, Chestboats, Horses, ...).
 
 # Advancements & Statistics
 Advancements and Statistics can only be saved if the corresponding UI's are opened at least once while the download is running.
