@@ -5,8 +5,11 @@ import com.j0ker2j0ker.swd.client.save.SaveManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
 
 import static com.j0ker2j0ker.swd.client.SwdClient.CONFIG;
 
@@ -45,23 +48,18 @@ public class WorldDownloadConfigScreen extends Screen {
         int y = 70;
 
         // Settings
-        this.addRenderableWidget(Checkbox.builder(Component.literal("Entities"), font)
-                .selected(config.includeEntities)
-                .onValueChange((_, val) -> config.includeEntities = val)
-                .pos(centerX-155, y).maxWidth(150).build()
-        );
-        this.addRenderableWidget(Checkbox.builder(Component.literal("Statistics"), font)
-                .selected(config.includeStatistics)
-                .onValueChange((_, val) -> config.includeStatistics = val)
-                .pos(centerX+5, y).maxWidth(150).build()
-        );
-        y += CHECKBOX_Y_SPACE;
-        this.addRenderableWidget(Checkbox.builder(Component.literal("Advancements"), font)
-                .selected(config.includeAdvancements)
-                .onValueChange((_, val) -> config.includeAdvancements = val)
-                .pos(centerX-155, y).maxWidth(150).build()
-        );
+        addRenderableWidget(createCheckbox(
+                Component.literal("Entities"), null,
+                centerX-155, y,
+                config.includeEntities, (_, val) -> config.includeEntities = val
+        ));
+        addRenderableWidget(createCheckbox(
+                Component.literal("Player data"), Component.literal("This option includes:\n- General player data\n- Advancements\n- Statistics"),
+                centerX+5, y,
+                config.includeEntities, (_, val) -> config.includeEntities = val
+        ));
         this.addRenderableWidget(Checkbox.builder(Component.literal("Player data"), font)
+                .tooltip(Tooltip.create(Component.literal("This option includes:")))
                 .selected(config.includePlayerData)
                 .onValueChange((_, val) -> config.includePlayerData = val)
                 .pos(centerX+5, y).maxWidth(150).build()
@@ -72,6 +70,15 @@ public class WorldDownloadConfigScreen extends Screen {
                 .onValueChange((_, val) -> config.includeResourcePacks = val)
                 .pos(centerX-155, y).maxWidth(150).build()
         );
+    }
+
+    private Checkbox createCheckbox(Component name, Component tooltip, int x, int y, boolean initialValue, Checkbox.OnValueChange valueChange) {
+        Checkbox cb = Checkbox.builder(name, font)
+                .selected(initialValue)
+                .onValueChange(valueChange)
+                .pos(x, y).maxWidth(150).build();
+        if (tooltip != null) cb.setTooltip(Tooltip.create(tooltip));
+        return cb;
     }
 
     @Override

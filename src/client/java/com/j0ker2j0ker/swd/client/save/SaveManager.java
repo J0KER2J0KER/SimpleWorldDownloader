@@ -170,7 +170,7 @@ public class SaveManager {
     }
 
     public static void cacheAwardStatsPacket(ClientboundAwardStatsPacket packet) {
-        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includeStatistics) return;
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includePlayerData) return;
         if (cachedStatsByType == null) cachedStatsByType = new JsonObject();
         if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
 
@@ -197,7 +197,7 @@ public class SaveManager {
     }
 
     public static void cacheAdvancementPacket(ClientboundUpdateAdvancementsPacket packet) {
-        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includeAdvancements) return;
+        if (!isSaving || path == null || mc.player == null || mc.isLocalServer() || mc.getCurrentServer() == null || !saveConfig.includePlayerData) return;
         if (cachedAdvancements == null) cachedAdvancements = new JsonObject();
         if (removedAdvancements == null) removedAdvancements = new HashSet<>();
         if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
@@ -243,7 +243,7 @@ public class SaveManager {
 
     @SuppressWarnings("unchecked")
     private static void bootstrapAdvancementsFromClientCache() {
-        if (!isSaving || mc.getConnection() == null || cachedAdvancements == null || !saveConfig.includeAdvancements) return;
+        if (!isSaving || mc.getConnection() == null || cachedAdvancements == null || !saveConfig.includePlayerData) return;
 
         try {
             ClientPacketListener connection = mc.getConnection();
