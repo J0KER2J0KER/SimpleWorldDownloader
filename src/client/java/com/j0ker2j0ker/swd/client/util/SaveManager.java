@@ -1132,7 +1132,14 @@ public class SaveManager {
         CompoundTag gameRules = new CompoundTag();
         gameRules.putString("doDaylightCycle", "true");
         gameRules.putString("doWeatherCycle", "true");
+        gameRules.putString("randomTickSpeed", "0");
         data.put("GameRules", gameRules);
+
+        CompoundTag gameRulesV2 = new CompoundTag();
+        gameRulesV2.putByte("minecraft:do_daylight_cycle", (byte) 1);
+        gameRulesV2.putByte("minecraft:do_weather_cycle", (byte) 1);
+        gameRulesV2.putInt("minecraft:random_tick_speed", 0);
+        data.put("game_rules", gameRulesV2);
 
         CompoundTag dataPacks = new CompoundTag();
         ListTag enabled = new ListTag();
@@ -1475,3 +1482,4 @@ public class SaveManager {
     private record ChunkSaveTask(ChunkPos pos, CompoundTag blockNbt, CompoundTag entityNbt) { }
 
 }
+
