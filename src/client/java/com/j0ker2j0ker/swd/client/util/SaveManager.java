@@ -1276,7 +1276,7 @@ public class SaveManager {
         data.putByte("minecraft:universal_anger",  (byte) 0);
         data.putByte("minecraft:keep_inventory",  (byte) 0);
         data.putByte("minecraft:spawn_patrols",  (byte) 1);
-        data.putInt("minecraft:random_tick_speed",  3);
+        data.putInt("minecraft:random_tick_speed",  0);
         data.putByte("minecraft:fire_damage",  (byte) 1);
         data.putByte("minecraft:entity_drops",  (byte) 1);
         data.putByte("minecraft:advance_time",  (byte) 1);
