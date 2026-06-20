@@ -221,7 +221,7 @@ public class SwdConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.setScreenAndShow(parent);
     }
 
     private abstract static class SettingEntry {

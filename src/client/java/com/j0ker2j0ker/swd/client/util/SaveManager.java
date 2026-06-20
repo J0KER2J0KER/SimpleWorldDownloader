@@ -71,8 +71,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int DATA_VERSION = 4790;
-    private static final String VERSION_NAME = "26.1.2";
+    private static final int DATA_VERSION = 4903;
+    private static final String VERSION_NAME = "26.2";
     private static final byte IS_SNAPSHOT = (byte) 0;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
@@ -1657,7 +1657,7 @@ public class SaveManager {
     }
 
     public static void printStatus(Component msg) {
-        mc.gui.setOverlayMessage(msg, false);
+        mc.gui.hud.setOverlayMessage(msg, false);
     }
 
     private static void checkPathExists(Path path) {

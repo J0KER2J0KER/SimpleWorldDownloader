@@ -48,7 +48,7 @@ public abstract class PauseScreenMixin extends Screen{
         iconButton.setPosition(4, height-24);
 
         SpriteIconButton settingsButton = this.addRenderableWidget(SpriteIconButton.builder(Component.nullToEmpty(""), (button) -> {
-            Minecraft.getInstance().setScreen(new SwdConfigScreen(this));
+            Minecraft.getInstance().setScreenAndShow(new SwdConfigScreen(this));
             button.setFocused(false);
         }, true).width(20).sprite(SETTINGS, 16, 16).build());
         settingsButton.setPosition(26, height-24);

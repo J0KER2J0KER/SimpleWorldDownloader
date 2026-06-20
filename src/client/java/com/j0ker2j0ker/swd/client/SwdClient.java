@@ -91,8 +91,8 @@ public class SwdClient implements ClientModInitializer {
                             .then(literal("config")
                                     .executes(ctx -> {
                                         Minecraft.getInstance().execute(() ->
-                                                Minecraft.getInstance().setScreen(
-                                                        new SwdConfigScreen(Minecraft.getInstance().screen)
+                                                Minecraft.getInstance().setScreenAndShow(
+                                                        new SwdConfigScreen(Minecraft.getInstance().gui.screen())
                                                 )
                                         );
                                         return 1;
