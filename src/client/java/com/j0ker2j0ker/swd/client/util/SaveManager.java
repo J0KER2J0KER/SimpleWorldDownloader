@@ -1374,10 +1374,14 @@ public class SaveManager {
 
         data.putLong("Time", 0);
 
+        String spawnDimensionId = mc.level != null
+                ? mc.level.dimension().identifier().toString()
+                : "minecraft:overworld";
+
         CompoundTag spawn = new CompoundTag();
         spawn.putFloat("pitch", 0);
         spawn.putFloat("yaw", 0);
-        spawn.putString("dimension", "minecraft:overworld");
+        spawn.putString("dimension", spawnDimensionId);
         spawn.putIntArray("pos", new int[]{p.getBlockX(), p.getBlockY(), p.getBlockZ()});
         data.put("spawn", spawn);
 
@@ -1417,10 +1421,10 @@ public class SaveManager {
         ByteBuffer buf = ByteBuffer.allocate(8).putLong(now);
         Files.write(worldFolder.resolve("session.lock"), buf.array());
 
-        createNewDatFiles(worldFolder);
+        createNewDatFiles(worldFolder, spawnDimensionId);
     }
 
-    private static void createNewDatFiles(Path worldFolder) throws IOException {
+    private static void createNewDatFiles(Path worldFolder, String spawnDimensionId) throws IOException {
         Files.createDirectories(worldFolder.resolve("data").resolve("minecraft"));
         Path datFolder = worldFolder.resolve("data").resolve("minecraft");
 
@@ -1630,6 +1634,24 @@ public class SaveManager {
         generator.put("settings", settings);
         the_end.put("generator", generator);
         dimensions.put("minecraft:the_end", the_end);
+
+        if (!"minecraft:overworld".equals(spawnDimensionId)
+                && !"minecraft:the_nether".equals(spawnDimensionId)
+                && !"minecraft:the_end".equals(spawnDimensionId)) {
+            CompoundTag customDim = new CompoundTag();
+            customDim.putString("type", "minecraft:overworld");
+            CompoundTag customGenerator = new CompoundTag();
+            customGenerator.putString("type", "minecraft:flat");
+            CompoundTag customSettings = new CompoundTag();
+            customSettings.putByte("features", (byte) 0);
+            customSettings.putString("biome", "minecraft:plains");
+            customSettings.put("layers", new ListTag());
+            customSettings.putByte("lakes", (byte) 0);
+            customSettings.put("structure_overrides", new ListTag());
+            customGenerator.put("settings", customSettings);
+            customDim.put("generator", customGenerator);
+            dimensions.put(spawnDimensionId, customDim);
+        }
 
         data.put("dimensions", dimensions);
 
