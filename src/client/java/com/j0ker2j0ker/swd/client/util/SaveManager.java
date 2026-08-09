@@ -1191,7 +1191,7 @@ public class SaveManager {
                 int chunkZ = playerChunkZ + dz;
 
                 LevelChunk chunk = world.getChunkSource().getChunkNow(chunkX, chunkZ);
-                if (chunk != null) {
+                if (chunk != null && !chunk.isEmpty()) {
                     if (!isResumingExistingWorld || touchOnResume) {
                         touchChunk(chunk.getPos(), world.dimension());
                     }
@@ -1202,6 +1202,8 @@ public class SaveManager {
     }
 
     public static void saveChunkToRegion(Path worldFolder, LevelChunk wc, boolean showMessage, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+        if (wc.isEmpty()) return;
+
         String dedupKey = packChunkDimKey(wc.getPos(), dimension);
 
         // Dedup: skip if this exact chunk+dimension is already queued
@@ -1297,7 +1299,8 @@ public class SaveManager {
                     if (isResumingExistingWorld && touched && task.blockNbt != null) {
                         try {
                             CompoundTag mergeSource = oldBlockNbt != null ? oldBlockNbt : blockStorage.read(task.pos, task.dimension);
-                            if (mergeSource != null) {
+                            boolean mergeSourceEmpty = mergeSource != null && isEmptyChunkNbt(mergeSource);
+                            if (mergeSource != null && !mergeSourceEmpty) {
                                 finalBlockNbt = mergeBlockChunkNbt(mergeSource, task.blockNbt);
                             }
                         } catch (IOException ignored) {
@@ -1706,11 +1709,11 @@ public class SaveManager {
             CompoundTag sec = sections.getCompound(i).orElseThrow();
             Tag blockStatesTag = sec.get("block_states");
             if (!(blockStatesTag instanceof CompoundTag blockStates)) {
-                return false;
+                continue;
             }
             ListTag palette = blockStates.getList("palette").orElse(new ListTag());
             if (palette.isEmpty()) {
-                return false;
+                continue;
             }
             if (!isSingleAirPalette(palette)) {
                 return false;
@@ -1719,22 +1722,30 @@ public class SaveManager {
         return true;
     }
 
+    private static final java.util.Set<String> AIR_BLOCK_NAMES = java.util.Set.of(
+            "minecraft:air", "minecraft:cave_air", "minecraft:void_air");
+
     private static boolean isSingleAirPalette(ListTag palette) {
-        if (palette.size() != 1) return false;
-        Tag entry = palette.get(0);
+        if (palette.isEmpty()) return false;
+        for (int i = 0; i < palette.size(); i++) {
+            if (!isAirBlockEntry(palette.get(i))) return false;
+        }
+        return true;
+    }
+
+    private static boolean isAirBlockEntry(Tag entry) {
         if (entry instanceof CompoundTag compound) {
             String name = compound.getString("Name").orElse("");
-            return "minecraft:air".equals(name);
+            return AIR_BLOCK_NAMES.contains(name);
         }
         if (entry instanceof StringTag str) {
             String value = str.toString();
             if (value.length() >= 2 && value.startsWith("\"") && value.endsWith("\"")) {
                 value = value.substring(1, value.length() - 1);
             }
-            return "minecraft:air".equals(value);
+            return AIR_BLOCK_NAMES.contains(value);
         }
         return false;
     }
 
 }
-
