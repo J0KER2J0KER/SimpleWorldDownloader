@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Vendosni nëse të dhënat e lojëtarit duhet të ruhen",
   "swd.tooltip.include_player_data.2": "bashkë me botën e shkarkuar.",
   "swd.tooltip.include_resource_packs.1": "Vendosni nëse paketat e burimeve të serverit duhet",
-  "swd.tooltip.include_resource_packs.2": "të ruhen me botën e shkarkuar."
+  "swd.tooltip.include_resource_packs.2": "të ruhen me botën e shkarkuar.",
+  "swd.screen.config.label.notification_mode": "Njoftimet:",
+  "swd.screen.config.notification_mode.actionbar": "Rripi i veprimeve",
+  "swd.screen.config.notification_mode.bossbar": "Rripi i boss-it",
+  "swd.screen.config.notification_mode.off": "Fikur",
+  "swd.tooltip.notification_mode.1": "Zgjidhni se si shfaqen mesazhet e shkarkimit:",
+  "swd.tooltip.notification_mode.2": "rripi i veprimeve, rripi i boss-it, ose aspak."
 }

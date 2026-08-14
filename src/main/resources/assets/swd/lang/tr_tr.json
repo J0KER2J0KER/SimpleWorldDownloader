@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Eşya çerçevesi içeriği kaydedildi.",
   "swd.tooltip.resume_downloads.1": "Bu dünya için başka bir kayıt bulunursa",
   "swd.tooltip.resume_downloads.2": "kaydetme işleminin devam edip etmeyeceğini ayarlayın.",
-  "swd.screen.config.label.resume_downloads": "Kaydetmeye devam et:"
+  "swd.screen.config.label.resume_downloads": "Kaydetmeye devam et:",
+  "swd.screen.config.label.notification_mode": "Bildirimler:",
+  "swd.screen.config.notification_mode.actionbar": "Eylem Çubuğu",
+  "swd.screen.config.notification_mode.bossbar": "Boss Çubuğu",
+  "swd.screen.config.notification_mode.off": "Kapalı",
+  "swd.tooltip.notification_mode.1": "İndirme durumu mesajlarının nasıl gösterileceğini seçin:",
+  "swd.tooltip.notification_mode.2": "eylem çubuğu, boss çubuğu veya hiç gösterilmesin."
 }

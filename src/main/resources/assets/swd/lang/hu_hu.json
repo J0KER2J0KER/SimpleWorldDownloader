@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Állítsd be, hogy a játékosadatok mentésre kerüljenek-e",
   "swd.tooltip.include_player_data.2": "a letöltött világgal együtt.",
   "swd.tooltip.include_resource_packs.1": "Állítsd be, hogy a szerver erőforráscsomagjai",
-  "swd.tooltip.include_resource_packs.2": "mentésre kerüljenek-e a letöltött világgal."
+  "swd.tooltip.include_resource_packs.2": "mentésre kerüljenek-e a letöltött világgal.",
+  "swd.screen.config.label.notification_mode": "Értesítések:",
+  "swd.screen.config.notification_mode.actionbar": "Akciósáv",
+  "swd.screen.config.notification_mode.bossbar": "Főellenségsáv",
+  "swd.screen.config.notification_mode.off": "Ki",
+  "swd.tooltip.notification_mode.1": "Válaszd ki, hogyan jelenjenek meg a letöltési üzenetek:",
+  "swd.tooltip.notification_mode.2": "akciósávon, főellenségsávon vagy egyáltalán ne."
 }

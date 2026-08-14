@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Поставете дали податоците на играчот треба да се зачуваат",
   "swd.tooltip.include_player_data.2": "заедно со преземениот свет.",
   "swd.tooltip.include_resource_packs.1": "Поставете дали пакетите со ресурси на серверот треба",
-  "swd.tooltip.include_resource_packs.2": "да се зачуваат со преземениот свет."
+  "swd.tooltip.include_resource_packs.2": "да се зачуваат со преземениот свет.",
+  "swd.screen.config.label.notification_mode": "Известувања:",
+  "swd.screen.config.notification_mode.actionbar": "Лента за дејства",
+  "swd.screen.config.notification_mode.bossbar": "Лента за бос",
+  "swd.screen.config.notification_mode.off": "Исклучено",
+  "swd.tooltip.notification_mode.1": "Изберете како се прикажуваат пораките за статус на преземање:",
+  "swd.tooltip.notification_mode.2": "лента за дејства, лента за бос или воопшто не."
 }

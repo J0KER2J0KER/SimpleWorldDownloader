@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Ustaw, cy dane gracza majům być zachowane",
   "swd.tooltip.include_player_data.2": "razem z pobranym światym.",
   "swd.tooltip.include_resource_packs.1": "Ustaw, cy paki zasobůw serwera majům",
-  "swd.tooltip.include_resource_packs.2": "być zachowane z pobranym światym."
+  "swd.tooltip.include_resource_packs.2": "być zachowane z pobranym światym.",
+  "swd.screen.config.label.notification_mode": "Powiadomjyńo:",
+  "swd.screen.config.notification_mode.actionbar": "Pasek akcyje",
+  "swd.screen.config.notification_mode.bossbar": "Pasek bossa",
+  "swd.screen.config.notification_mode.off": "Wyłączōne",
+  "swd.tooltip.notification_mode.1": "Wyber jak pokazywać komunikaty ô pobyraniu:",
+  "swd.tooltip.notification_mode.2": "pasek akcyje, pasek bossa abo wcale."
 }

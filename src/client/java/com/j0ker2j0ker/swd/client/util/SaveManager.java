@@ -1682,7 +1682,11 @@ public class SaveManager {
     }
 
     public static void printStatus(Component msg) {
-        mc.gui.hud.setOverlayMessage(msg, false);
+        switch (SwdClient.CONFIG.notificationMode) {
+            case ACTIONBAR -> mc.gui.hud.setOverlayMessage(msg, false);
+            case BOSSBAR -> SwdBossBar.show(msg);
+            case OFF -> { /* no notification */ }
+        }
     }
 
     private static void checkPathExists(Path path) {

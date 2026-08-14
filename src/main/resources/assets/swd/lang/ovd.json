@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Sett um spelardata ska sparas",
   "swd.tooltip.include_player_data.2": "tillsamans með den niðerladdade werlden.",
   "swd.tooltip.include_resource_packs.1": "Sett um resurspaket frå tjeneren ska",
-  "swd.tooltip.include_resource_packs.2": "sparas með den niðerladdade werlden."
+  "swd.tooltip.include_resource_packs.2": "sparas með den niðerladdade werlden.",
+  "swd.screen.config.label.notification_mode": "Meldningger:",
+  "swd.screen.config.notification_mode.actionbar": "Gärninggsstyp",
+  "swd.screen.config.notification_mode.bossbar": "Boss-styp",
+  "swd.screen.config.notification_mode.off": "Av",
+  "swd.tooltip.notification_mode.1": "Wel ur dunnload-meddelan",
+  "swd.tooltip.notification_mode.2": "skulla wisa: gärninggsstyp, boss-styp elder int alls."
 }

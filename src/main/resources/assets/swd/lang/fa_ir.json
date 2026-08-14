@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> محتوای قاب آیتم ذخیره شد.",
   "swd.tooltip.resume_downloads.1": "تنظیم کنید که آیا در صورت یافتن ذخیره دیگری برای این جهان،",
   "swd.tooltip.resume_downloads.2": "ذخیره‌سازی باید از سر گرفته شود یا خیر.",
-  "swd.screen.config.label.resume_downloads": "از سرگیری ذخیره‌سازی:"
+  "swd.screen.config.label.resume_downloads": "از سرگیری ذخیره‌سازی:",
+  "swd.screen.config.label.notification_mode": "اعلان‌ها:",
+  "swd.screen.config.notification_mode.actionbar": "نوار اقدام",
+  "swd.screen.config.notification_mode.bossbar": "نوار رئیس",
+  "swd.screen.config.notification_mode.off": "خاموش",
+  "swd.tooltip.notification_mode.1": "نحوه نمایش پیام‌های وضعیت دانلود را انتخاب کنید:",
+  "swd.tooltip.notification_mode.2": "نوار اقدام، نوار رئیس، یا اصلاً نمایش داده نشود."
 }
 

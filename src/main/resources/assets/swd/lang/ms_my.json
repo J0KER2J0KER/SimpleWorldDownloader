@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Tetapkan sama ada data pemain perlu disimpan",
   "swd.tooltip.include_player_data.2": "bersama dengan dunia yang dimuat turun.",
   "swd.tooltip.include_resource_packs.1": "Tetapkan sama ada pek sumber pelayan perlu",
-  "swd.tooltip.include_resource_packs.2": "disimpan bersama dengan dunia yang dimuat turun."
+  "swd.tooltip.include_resource_packs.2": "disimpan bersama dengan dunia yang dimuat turun.",
+  "swd.screen.config.label.notification_mode": "Pemberitahuan:",
+  "swd.screen.config.notification_mode.actionbar": "Bar Tindakan",
+  "swd.screen.config.notification_mode.bossbar": "Bar Bos",
+  "swd.screen.config.notification_mode.off": "Padam",
+  "swd.tooltip.notification_mode.1": "Pilih bagaimana mesej status muat turun",
+  "swd.tooltip.notification_mode.2": "ditunjukkan: bar tindakan, bar bos, atau tidak langsung."
 }

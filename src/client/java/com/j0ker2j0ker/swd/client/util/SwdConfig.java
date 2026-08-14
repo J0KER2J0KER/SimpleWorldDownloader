@@ -10,9 +10,16 @@ import java.nio.file.Path;
 
 public class SwdConfig {
 
+    public enum NotificationMode {
+        ACTIONBAR,
+        BOSSBAR,
+        OFF
+    }
+
     public String saveWorldTo = "";
     public boolean autoDownload = false;
     public boolean resumeDownloads = true;
+    public NotificationMode notificationMode = NotificationMode.ACTIONBAR;
     public boolean includeEntities = true;
     public boolean includePlayerData = true;
     public boolean includeResourcePacks = true;

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Esemoraami sisu on salvestatud.",
   "swd.tooltip.resume_downloads.1": "Määra, kas salvestamist tuleks jätkata,",
   "swd.tooltip.resume_downloads.2": "kui maailma jaoks leitakse teine salvestus.",
-  "swd.screen.config.label.resume_downloads": "Jätka salvestamist:"
+  "swd.screen.config.label.resume_downloads": "Jätka salvestamist:",
+  "swd.screen.config.label.notification_mode": "Teavitused:",
+  "swd.screen.config.notification_mode.actionbar": "Tegevusriba",
+  "swd.screen.config.notification_mode.bossbar": "Pomeriba",
+  "swd.screen.config.notification_mode.off": "Väljas",
+  "swd.tooltip.notification_mode.1": "Vali, kuidas allalaadimise olekusõnumeid",
+  "swd.tooltip.notification_mode.2": "kuvatakse: tegevusribal, pomeribal või üldse mitte."
 }
 

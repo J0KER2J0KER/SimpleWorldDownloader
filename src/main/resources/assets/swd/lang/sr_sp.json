@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Поставите да ли подаци о играчу треба да се сачувају",
   "swd.tooltip.include_player_data.2": "заједно са преузетим светом.",
   "swd.tooltip.include_resource_packs.1": "Поставите да ли пакети ресурса сервера треба",
-  "swd.tooltip.include_resource_packs.2": "да се сачувају са преузетим светом."
+  "swd.tooltip.include_resource_packs.2": "да се сачувају са преузетим светом.",
+  "swd.screen.config.label.notification_mode": "Обавештења:",
+  "swd.screen.config.notification_mode.actionbar": "Трака радњи",
+  "swd.screen.config.notification_mode.bossbar": "Трака боса",
+  "swd.screen.config.notification_mode.off": "Искључено",
+  "swd.tooltip.notification_mode.1": "Изаберите како се приказују поруке о преузимању:",
+  "swd.tooltip.notification_mode.2": "трака радњи, трака боса или уопште не."
 }

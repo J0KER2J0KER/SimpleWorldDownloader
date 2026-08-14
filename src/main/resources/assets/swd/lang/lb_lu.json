@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Setzt ob Spillerdaten mat gespäichert solle ginn",
   "swd.tooltip.include_player_data.2": "zesumme mat der erofgeluedener Welt.",
   "swd.tooltip.include_resource_packs.1": "Setzt ob Server-Ressourcepakete mat gespäichert",
-  "swd.tooltip.include_resource_packs.2": "solle ginn mat der erofgeluedener Welt."
+  "swd.tooltip.include_resource_packs.2": "solle ginn mat der erofgeluedener Welt.",
+  "swd.screen.config.label.notification_mode": "Notifikatiounen:",
+  "swd.screen.config.notification_mode.actionbar": "Aktiounsleascht",
+  "swd.screen.config.notification_mode.bossbar": "Bossleascht",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Wielt wéi d'Download-Statusmeldungen",
+  "swd.tooltip.notification_mode.2": "gewisen ginn: Aktiounsleascht, Bossleascht oder gar net."
 }

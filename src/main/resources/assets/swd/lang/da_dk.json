@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Indhold i tingramme gemt.",
   "swd.tooltip.resume_downloads.1": "Indstil om gemning skal genoptages",
   "swd.tooltip.resume_downloads.2": "hvis der findes en anden gemt fil for verdenen.",
-  "swd.screen.config.label.resume_downloads": "Genoptag gemning:"
+  "swd.screen.config.label.resume_downloads": "Genoptag gemning:",
+  "swd.screen.config.label.notification_mode": "Meddelelser:",
+  "swd.screen.config.notification_mode.actionbar": "Handlingslinje",
+  "swd.screen.config.notification_mode.bossbar": "Boss-linje",
+  "swd.screen.config.notification_mode.off": "Fra",
+  "swd.tooltip.notification_mode.1": "Vælg hvordan downloadstatusbeskeder",
+  "swd.tooltip.notification_mode.2": "vises: handlingslinje, boss-linje eller slet ikke."
 }
 

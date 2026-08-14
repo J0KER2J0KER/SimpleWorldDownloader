@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Definissètz se las donadas del jogaire devon èsser salvadas",
   "swd.tooltip.include_player_data.2": "amb lo mond telecargat.",
   "swd.tooltip.include_resource_packs.1": "Definissètz se los pacòts de ressorsas del servidor",
-  "swd.tooltip.include_resource_packs.2": "devon èsser salvats amb lo mond telecargat."
+  "swd.tooltip.include_resource_packs.2": "devon èsser salvats amb lo mond telecargat.",
+  "swd.screen.config.label.notification_mode": "Notificacions :",
+  "swd.screen.config.notification_mode.actionbar": "Barra d'accion",
+  "swd.screen.config.notification_mode.bossbar": "Barra de cap",
+  "swd.screen.config.notification_mode.off": "Desactivat",
+  "swd.tooltip.notification_mode.1": "Causissètz coina los messatges de descarga",
+  "swd.tooltip.notification_mode.2": "son afichats : barra d'accion, barra de cap o pas gens."
 }

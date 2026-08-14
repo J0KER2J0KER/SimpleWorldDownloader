@@ -31,6 +31,13 @@
   "swd.status.itemframe_saved": "> Danvez ar sternad a zo bet enrollet.",
   "swd.tooltip.resume_downloads.1": "Lakaat mard eo ret kenderc'hel da enrollañ",
   "swd.tooltip.resume_downloads.2": "ma vez kavet un enrolladenn all evit ar bed-mañ.",
-  "swd.screen.config.label.resume_downloads": "Kenderc'hel da enrollañ :"
+  "swd.screen.config.label.resume_downloads": "Kenderc'hel da enrollañ :",
+  "swd.screen.config.label.notification_mode": "Kemennoù:",
+  "swd.screen.config.notification_mode.actionbar": "Barrenn oberiañ",
+  "swd.screen.config.notification_mode.bossbar": "Barrenn boss",
+  "swd.screen.config.notification_mode.off": "Diwazhiet",
+  "swd.tooltip.notification_mode.1": "Diuzit penaos e vez diskouezet kelaouennoù pellgargañ:",
+  "swd.tooltip.notification_mode.2": "barrenn oberiañ, barreun boss, pe netra ebet."
+}
 }
 

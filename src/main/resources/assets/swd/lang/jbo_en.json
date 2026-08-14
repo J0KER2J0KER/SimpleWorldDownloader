@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> kantu vreji",
   "swd.tooltip.resume_downloads.1": "stidi lo nu vreji di'a",
   "swd.tooltip.resume_downloads.2": "va'o lo nu facki lo drata vreji",
-  "swd.screen.config.label.resume_downloads": "vreji di'a:"
+  "swd.screen.config.label.resume_downloads": "vreji di'a:",
+  "swd.screen.config.label.notification_mode": "notci:",
+  "swd.screen.config.notification_mode.actionbar": "nu'u kibyca'i gerna",
+  "swd.screen.config.notification_mode.bossbar": "nolraitru gerna",
+  "swd.screen.config.notification_mode.off": "tolselyli'i",
+  "swd.tooltip.notification_mode.1": "ko cuxna lo du'u samxadni datni pe lo kibycazni",
+  "swd.tooltip.notification_mode.2": "cu jarco: kibyca'i gerna, nolraitru gerna, ja no da."
 }

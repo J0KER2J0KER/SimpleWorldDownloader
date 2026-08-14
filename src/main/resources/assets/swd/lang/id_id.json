@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Tetapkan apakah data pemain harus disimpan",
   "swd.tooltip.include_player_data.2": "bersama dengan dunia yang diunduh.",
   "swd.tooltip.include_resource_packs.1": "Tetapkan apakah paket sumber daya server harus",
-  "swd.tooltip.include_resource_packs.2": "disimpan bersama dengan dunia yang diunduh."
+  "swd.tooltip.include_resource_packs.2": "disimpan bersama dengan dunia yang diunduh.",
+  "swd.screen.config.label.notification_mode": "Notifikasi:",
+  "swd.screen.config.notification_mode.actionbar": "Bilah Tindakan",
+  "swd.screen.config.notification_mode.bossbar": "Bilah Bos",
+  "swd.screen.config.notification_mode.off": "Mati",
+  "swd.tooltip.notification_mode.1": "Pilih bagaimana pesan status unduhan",
+  "swd.tooltip.notification_mode.2": "ditampilkan: bilah tindakan, bilah bos, atau tidak sama sekali."
 }

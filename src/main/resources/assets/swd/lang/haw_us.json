@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Hoʻonohonoho inā e mālama ʻia nā ʻikepili o ka mea pāʻani",
   "swd.tooltip.include_player_data.2": "me ka honua i hoʻoiho ʻia.",
   "swd.tooltip.include_resource_packs.1": "Hoʻonohonoho inā e mālama ʻia nā ʻūpena kumu o ka kikowaena",
-  "swd.tooltip.include_resource_packs.2": "me ka honua i hoʻoiho ʻia."
+  "swd.tooltip.include_resource_packs.2": "me ka honua i hoʻoiho ʻia.",
+  "swd.screen.config.label.notification_mode": "Nā Hōʻike:",
+  "swd.screen.config.notification_mode.actionbar": "Pāʻoihana",
+  "swd.screen.config.notification_mode.bossbar": "Pā Tumuaki",
+  "swd.screen.config.notification_mode.off": "Off",
+  "swd.tooltip.notification_mode.1": "E koho pehea e hoʻohālikelike ai i nā meʻa hoʻoili:",
+  "swd.tooltip.notification_mode.2": "pāʻoihana, pā tumuaki, a i ʻole ʻaʻole loa."
 }

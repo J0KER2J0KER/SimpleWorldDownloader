@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Contenu du cadre d'objet sauvegardé.",
   "swd.tooltip.resume_downloads.1": "Définit si la sauvegarde doit reprendre",
   "swd.tooltip.resume_downloads.2": "si une autre sauvegarde pour ce monde est trouvée.",
-  "swd.screen.config.label.resume_downloads": "Reprendre la sauvegarde :"
+  "swd.screen.config.label.resume_downloads": "Reprendre la sauvegarde :",
+  "swd.screen.config.label.notification_mode": "Notifications :",
+  "swd.screen.config.notification_mode.actionbar": "Barre d'action",
+  "swd.screen.config.notification_mode.bossbar": "Barre de boss",
+  "swd.screen.config.notification_mode.off": "Désactivé",
+  "swd.tooltip.notification_mode.1": "Choisissez la façon dont les messages de téléchargement",
+  "swd.tooltip.notification_mode.2": "sont affichés : barre d'action, barre de boss ou aucun."
 }
 

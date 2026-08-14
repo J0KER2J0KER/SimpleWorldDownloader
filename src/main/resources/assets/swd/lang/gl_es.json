@@ -31,5 +31,11 @@
   "swd.tooltip.resume_downloads.2": "se se atopa outro gardado para o mundo.",
   "swd.screen.config.label.resume_downloads": "Retomar gardado:",
   "swd.tooltip.include_resource_packs.1": "Configura se os paquetes de recursos do servidor deben",
-  "swd.tooltip.include_resource_packs.2": "gardarse co mundo descargado."
+  "swd.tooltip.include_resource_packs.2": "gardarse co mundo descargado.",
+  "swd.screen.config.label.notification_mode": "Notificacións:",
+  "swd.screen.config.notification_mode.actionbar": "Barra de acción",
+  "swd.screen.config.notification_mode.bossbar": "Barra de xefes",
+  "swd.screen.config.notification_mode.off": "Desactivado",
+  "swd.tooltip.notification_mode.1": "Escolle como se amosan as mensaxes de descarga:",
+  "swd.tooltip.notification_mode.2": "barra de acción, barra de xefes ou ningunha."
 }

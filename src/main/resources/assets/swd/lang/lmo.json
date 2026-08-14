@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Imposta se i daa del zogadòr i dev èss salvaa",
   "swd.tooltip.include_player_data.2": "insema al mond scaricaa.",
   "swd.tooltip.include_resource_packs.1": "Imposta se i pachet de risorse del server",
-  "swd.tooltip.include_resource_packs.2": "i dev èss salvaa cunt el mond scaricaa."
+  "swd.tooltip.include_resource_packs.2": "i dev èss salvaa cunt el mond scaricaa.",
+  "swd.screen.config.label.notification_mode": "Notifegh:",
+  "swd.screen.config.notification_mode.actionbar": "Barra de accion",
+  "swd.screen.config.notification_mode.bossbar": "Barra del boss",
+  "swd.screen.config.notification_mode.off": "Disativad",
+  "swd.tooltip.notification_mode.1": "Sceern comè che i messagg de scaricament",
+  "swd.tooltip.notification_mode.2": "vengnen mostrad: barra de accion, barra del boss, o per nagott."
 }

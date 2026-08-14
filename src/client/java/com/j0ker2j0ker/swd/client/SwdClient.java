@@ -2,11 +2,13 @@ package com.j0ker2j0ker.swd.client;
 
 import com.j0ker2j0ker.swd.client.screen.SwdConfigScreen;
 import com.j0ker2j0ker.swd.client.util.SaveManager;
+import com.j0ker2j0ker.swd.client.util.SwdBossBar;
 import com.j0ker2j0ker.swd.client.util.SwdConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -79,6 +82,11 @@ public class SwdClient implements ClientModInitializer {
             SaveManager.lastClicked = entity;
             SaveManager.onEntityInteract(entity);
             return InteractionResult.PASS;
+        });
+
+        HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "bossbar"), (graphics, tickCounter) -> {
+            Minecraft client = Minecraft.getInstance();
+            SwdBossBar.render(graphics, client.font, client.getWindow().getGuiScaledWidth());
         });
 
         registerCommands();

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Əşya çərçivəsi məzmunu saxlanıldı.",
   "swd.tooltip.resume_downloads.1": "Saxlama prosesinin davam etdirilib-edilməyəcəyini təyin edin",
   "swd.tooltip.resume_downloads.2": "dünya üçün başqa bir qeyd tapılarsa.",
-  "swd.screen.config.label.resume_downloads": "Saxlamağa davam et:"
+  "swd.screen.config.label.resume_downloads": "Saxlamağa davam et:",
+  "swd.screen.config.label.notification_mode": "Bildirişlər:",
+  "swd.screen.config.notification_mode.actionbar": "Fəaliyyət paneli",
+  "swd.screen.config.notification_mode.bossbar": "Boss paneli",
+  "swd.screen.config.notification_mode.off": "Söndürülüb",
+  "swd.tooltip.notification_mode.1": "Yükləmə statusu mesajlarının necə göstəriləcəyini seçin:",
+  "swd.tooltip.notification_mode.2": "fəaliyyət paneli, boss paneli və ya heç biri."
 }
 

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Съдържанието на рамката за предмети е запазено.",
   "swd.tooltip.resume_downloads.1": "Задайте дали запазването трябва да се възобнови,",
   "swd.tooltip.resume_downloads.2": "ако бъде намерен друг запис за света.",
-  "swd.screen.config.label.resume_downloads": "Възобновяване на запазването:"
+  "swd.screen.config.label.resume_downloads": "Възобновяване на запазването:",
+  "swd.screen.config.label.notification_mode": "Известия:",
+  "swd.screen.config.notification_mode.actionbar": "Лента за действия",
+  "swd.screen.config.notification_mode.bossbar": "Лента на боса",
+  "swd.screen.config.notification_mode.off": "Изкл.",
+  "swd.tooltip.notification_mode.1": "Изберете как да се показват съобщенията за изтегляне:",
+  "swd.tooltip.notification_mode.2": "лента за действия, лента на боса или изобщо да не се показват."
 }
 

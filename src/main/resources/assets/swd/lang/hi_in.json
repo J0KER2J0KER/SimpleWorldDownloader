@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "निर्धारित करें कि डाउनलोड किए गए विश्व के साथ",
   "swd.tooltip.include_player_data.2": "खिलाड़ी डेटा भी सहेजा जाना चाहिए या नहीं।",
   "swd.tooltip.include_resource_packs.1": "निर्धारित करें कि सर्वर रिसोर्स पैक",
-  "swd.tooltip.include_resource_packs.2": "डाउनलोड किए गए विश्व के साथ सहेजे जाने चाहिए या नहीं।"
+  "swd.tooltip.include_resource_packs.2": "डाउनलोड किए गए विश्व के साथ सहेजे जाने चाहिए या नहीं।",
+  "swd.screen.config.label.notification_mode": "सूचनाएं:",
+  "swd.screen.config.notification_mode.actionbar": "एक्शन बार",
+  "swd.screen.config.notification_mode.bossbar": "बॉस बार",
+  "swd.screen.config.notification_mode.off": "बंद",
+  "swd.tooltip.notification_mode.1": "चुनें कि डाउनलोड स्थिति संदेश",
+  "swd.tooltip.notification_mode.2": "कैसे दिखाए जाएं: एक्शन बार, बॉस बार, या बिल्कुल नहीं।"
 }

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Әйбер ҡыҫмаһының эстәлеге һаҡланды.",
   "swd.tooltip.resume_downloads.1": "Һаҡлауҙы дауам итергә кәрәклеген көйләү",
   "swd.tooltip.resume_downloads.2": "донья өсөн башҡа һаҡлау табылһа.",
-  "swd.screen.config.label.resume_downloads": "Һаҡлауҙы дауам итергә:"
+  "swd.screen.config.label.resume_downloads": "Һаҡлауҙы дауам итергә:",
+  "swd.screen.config.label.notification_mode": "Уведомлениелар:",
+  "swd.screen.config.notification_mode.actionbar": "Действиелар панеле",
+  "swd.screen.config.notification_mode.bossbar": "Босс панеле",
+  "swd.screen.config.notification_mode.off": "Үк.",
+  "swd.tooltip.notification_mode.1": "Йөктәү статусы хәбәрҙәренең ничек күрһәтелеүен һайлағыҙ:",
+  "swd.tooltip.notification_mode.2": "действиелар панеле, босс панеле йәки юҡ."
 }
 

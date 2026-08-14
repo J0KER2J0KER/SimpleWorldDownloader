@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> PIKTUR FRAME IZ SAFED.",
   "swd.tooltip.resume_downloads.1": "Cheezburger or save again",
   "swd.tooltip.resume_downloads.2": "if we findz ur old save.",
-  "swd.screen.config.label.resume_downloads": "KEEP SAVIN:"
+  "swd.screen.config.label.resume_downloads": "KEEP SAVIN:",
+  "swd.screen.config.label.notification_mode": "NOTIFIKASHUNS:",
+  "swd.screen.config.notification_mode.actionbar": "AKSHUN BAR",
+  "swd.screen.config.notification_mode.bossbar": "BOSS BAR",
+  "swd.screen.config.notification_mode.off": "OFF",
+  "swd.tooltip.notification_mode.1": "CHOOZ HOW DOWLOOD MSGZ",
+  "swd.tooltip.notification_mode.2": "R SHOWN: AKSHUN BAR, BOSS BAR, OR NOES."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Nastavite, ali se naj podatki o igralcu shranijo",
   "swd.tooltip.include_player_data.2": "skupaj s prenesenem svetom.",
   "swd.tooltip.include_resource_packs.1": "Nastavite, ali se naj paketi virov strežnika",
-  "swd.tooltip.include_resource_packs.2": "shranijo s prenesenem svetom."
+  "swd.tooltip.include_resource_packs.2": "shranijo s prenesenem svetom.",
+  "swd.screen.config.label.notification_mode": "Obvestila:",
+  "swd.screen.config.notification_mode.actionbar": "Vrstica dejanj",
+  "swd.screen.config.notification_mode.bossbar": "Vrstica šefa",
+  "swd.screen.config.notification_mode.off": "Izklopljeno",
+  "swd.tooltip.notification_mode.1": "Izberite, kako se prikazujejo sporočila o statusu prenosa:",
+  "swd.tooltip.notification_mode.2": "vrstica dejanj, vrstica šefa ali sploh ne."
 }

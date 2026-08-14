@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> ნივთის ჩარჩოს შიგთავსი შენახულია.",
   "swd.tooltip.resume_downloads.1": "დააყენეთ, უნდა განახლდეს თუ არა შენახვა,",
   "swd.tooltip.resume_downloads.2": "თუ სამყაროსთვის სხვა შენახვა მოიძებნება.",
-  "swd.screen.config.label.resume_downloads": "შენახვის განახლება:"
+  "swd.screen.config.label.resume_downloads": "შენახვის განახლება:",
+  "swd.screen.config.label.notification_mode": "შეტყობინებები:",
+  "swd.screen.config.notification_mode.actionbar": "მოქმედებების ზოლი",
+  "swd.screen.config.notification_mode.bossbar": "ბოსის ზოლი",
+  "swd.screen.config.notification_mode.off": "გამორთული",
+  "swd.tooltip.notification_mode.1": "აირჩიეთ ჩამოტვირთვის სტატუსის შეტყობინებების",
+  "swd.tooltip.notification_mode.2": "ჩვენების წესი: მოქმედებების ზოლი, ბოსის ზოლი ან საერთოდ არ გამოჩნდეს."
 }

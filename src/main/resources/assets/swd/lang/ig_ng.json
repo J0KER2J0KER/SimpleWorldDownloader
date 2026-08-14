@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Tọọ ma e kwesịrị ichekwa data onye egwuregwu",
   "swd.tooltip.include_player_data.2": "yana ụwa emere ntanetị.",
   "swd.tooltip.include_resource_packs.1": "Tọọ ma a kwesịrị ichekwa ihe ndị sava",
-  "swd.tooltip.include_resource_packs.2": "yana ụwa emere ntanetị."
+  "swd.tooltip.include_resource_packs.2": "yana ụwa emere ntanetị.",
+  "swd.screen.config.label.notification_mode": "Arịrịọ:",
+  "swd.screen.config.notification_mode.actionbar": "Akwụkwọ omume",
+  "swd.screen.config.notification_mode.bossbar": "Akwụkwọ boss",
+  "swd.screen.config.notification_mode.off": "Mba",
+  "swd.tooltip.notification_mode.1": "Họrọ ka esi gosi ozi ọnọdụ nbudata:",
+  "swd.tooltip.notification_mode.2": "akwụkwọ omume, akwụkwọ boss, ma ọ bụ amaghị."
 }

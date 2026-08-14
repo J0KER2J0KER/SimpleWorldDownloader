@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Sett om spelardata skal lagrast",
   "swd.tooltip.include_player_data.2": "saman med den nedlasta verda.",
   "swd.tooltip.include_resource_packs.1": "Sett om ressurspakkar frå tenaren skal",
-  "swd.tooltip.include_resource_packs.2": "lagrast med den nedlasta verda."
+  "swd.tooltip.include_resource_packs.2": "lagrast med den nedlasta verda.",
+  "swd.screen.config.label.notification_mode": "Meldingar:",
+  "swd.screen.config.notification_mode.actionbar": "Handlingsfelt",
+  "swd.screen.config.notification_mode.bossbar": "Bossfelt",
+  "swd.screen.config.notification_mode.off": "Av",
+  "swd.tooltip.notification_mode.1": "Vel korleis nedlastingsstatusmeldingar",
+  "swd.tooltip.notification_mode.2": "vert viste: handlingsfelt, bossfelt eller ikkje i det heile."
 }

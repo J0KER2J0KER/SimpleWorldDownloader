@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Stilltu hvort leikmanagögn eigi að vistast",
   "swd.tooltip.include_player_data.2": "ásamt niðurhalað heiminum.",
   "swd.tooltip.include_resource_packs.1": "Stilltu hvort forðapakkar þjónsins eigi",
-  "swd.tooltip.include_resource_packs.2": "að vistast með niðurhalað heiminum."
+  "swd.tooltip.include_resource_packs.2": "að vistast með niðurhalað heiminum.",
+  "swd.screen.config.label.notification_mode": "Tilkynningar:",
+  "swd.screen.config.notification_mode.actionbar": "Aðgerðastika",
+  "swd.screen.config.notification_mode.bossbar": "Yfirmannsstika",
+  "swd.screen.config.notification_mode.off": "Slökkt",
+  "swd.tooltip.notification_mode.1": "Veldu hvernig skilaboð um stöðu niðurhals",
+  "swd.tooltip.notification_mode.2": "eru sýnd: aðgerðastika, yfirmannsstika eða alls ekki."
 }

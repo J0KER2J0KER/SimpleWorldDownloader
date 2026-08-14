@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "o pana seme tawa ni: sona pi jan musi li awen",
   "swd.tooltip.include_player_data.2": "lon poka ma ni.",
   "swd.tooltip.include_resource_packs.1": "o pana seme tawa ni: ilo pi ilo sona li awen",
-  "swd.tooltip.include_resource_packs.2": "lon poka ma ni."
+  "swd.tooltip.include_resource_packs.2": "lon poka ma ni.",
+  "swd.screen.config.label.notification_mode": "toki sina:",
+  "swd.screen.config.notification_mode.actionbar": "pali palisa",
+  "swd.screen.config.notification_mode.bossbar": "lawa palisa",
+  "swd.screen.config.notification_mode.off": "ala",
+  "swd.tooltip.notification_mode.1": "o sona e nasin pi toki tawa:",
+  "swd.tooltip.notification_mode.2": "pali palisa, lawa palisa, anu ala."
 }

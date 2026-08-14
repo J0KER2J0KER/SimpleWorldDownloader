@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Cadwyd cynnwys y ffrâm eitem.",
   "swd.tooltip.resume_downloads.1": "Gosodwch a ddylid ailddechrau cadw",
   "swd.tooltip.resume_downloads.2": "os canfyddir rhan arall sydd wedi'i chadw ar gyfer y byd.",
-  "swd.screen.config.label.resume_downloads": "Ailddechrau cadw:"
+  "swd.screen.config.label.resume_downloads": "Ailddechrau cadw:",
+  "swd.screen.config.label.notification_mode": "Hysbysiadau:",
+  "swd.screen.config.notification_mode.actionbar": "Bar gweithredu",
+  "swd.screen.config.notification_mode.bossbar": "Bar boss",
+  "swd.screen.config.notification_mode.off": "Diffodd",
+  "swd.tooltip.notification_mode.1": "Dewiswch sut mae negeseuon statws lawrlwytho",
+  "swd.tooltip.notification_mode.2": "yn cael eu dangos: bar gweithredu, bar boss, neu ddim o ewb."
 }
 

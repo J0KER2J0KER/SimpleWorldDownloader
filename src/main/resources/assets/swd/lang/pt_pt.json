@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Define se os dados do jogador devem ser guardados",
   "swd.tooltip.include_player_data.2": "juntamente com o mundo descarregado.",
   "swd.tooltip.include_resource_packs.1": "Define se os pacotes de recursos do servidor devem",
-  "swd.tooltip.include_resource_packs.2": "ser guardados com o mundo descarregado."
+  "swd.tooltip.include_resource_packs.2": "ser guardados com o mundo descarregado.",
+  "swd.screen.config.label.notification_mode": "Notificações:",
+  "swd.screen.config.notification_mode.actionbar": "Barra de ação",
+  "swd.screen.config.notification_mode.bossbar": "Barra de chefe",
+  "swd.screen.config.notification_mode.off": "Desativado",
+  "swd.tooltip.notification_mode.1": "Escolha como as mensagens de transferência",
+  "swd.tooltip.notification_mode.2": "são mostradas: barra de ação, barra de chefe ou desativado."
 }

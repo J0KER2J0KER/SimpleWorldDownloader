@@ -31,5 +31,12 @@
   "swd.status.itemframe_saved": "> Dalgh fram ehen gwithys.",
   "swd.tooltip.resume_downloads.1": "Settya mar pýth gwitha dastatlys",
   "swd.tooltip.resume_downloads.2": "mar keryr gwithans arall rag an býs.",
-  "swd.screen.config.label.resume_downloads": "Dastalleth gwitha:"
+  "swd.screen.config.label.resume_downloads": "Dastalleth gwitha:",
+  "swd.screen.config.label.notification_mode": "Avisyansow:",
+  "swd.screen.config.notification_mode.actionbar": "Bar gwres",
+  "swd.screen.config.notification_mode.bossbar": "Bar boss",
+  "swd.screen.config.notification_mode.off": "Eun",
+  "swd.tooltip.notification_mode.1": "Dewisva fatel fe mothow leundhewnans",
+  "swd.tooltip.notification_mode.2": "diskwedhys: bar gwres, bar boss, po na neb pypynag."
+}
 }

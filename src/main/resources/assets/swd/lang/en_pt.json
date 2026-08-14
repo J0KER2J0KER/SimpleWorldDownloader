@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Item frame loot saved.",
   "swd.tooltip.resume_downloads.1": "Set whether savin' should be resumed",
   "swd.tooltip.resume_downloads.2": "if another save fer th' world be found.",
-  "swd.screen.config.label.resume_downloads": "Resume savin':"
+  "swd.screen.config.label.resume_downloads": "Resume savin':",
+  "swd.screen.config.label.notification_mode": "Declarations:",
+  "swd.screen.config.notification_mode.actionbar": "Action Plank",
+  "swd.screen.config.notification_mode.bossbar": "Cap'n Bar",
+  "swd.screen.config.notification_mode.off": "Off",
+  "swd.tooltip.notification_mode.1": "Choose how fetchin' status scrawls",
+  "swd.tooltip.notification_mode.2": "be shown: action plank, cap'n bar, or sink 'em all."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Determinez kad datumi dil ludanto devas savesar",
   "swd.tooltip.include_player_data.2": "kun la downloadita mondo.",
   "swd.tooltip.include_resource_packs.1": "Determinez kad resurso-pakaji dil servilo devas",
-  "swd.tooltip.include_resource_packs.2": "savesar kun la downloadita mondo."
+  "swd.tooltip.include_resource_packs.2": "savesar kun la downloadita mondo.",
+  "swd.screen.config.label.notification_mode": "Notifikigi:",
+  "swd.screen.config.notification_mode.actionbar": "Agado-stango",
+  "swd.screen.config.notification_mode.bossbar": "Estro-stango",
+  "swd.screen.config.notification_mode.off": "Neaktivigita",
+  "swd.tooltip.notification_mode.1": "Elegez quale la mesaji di kapto-statuso",
+  "swd.tooltip.notification_mode.2": "esos montrata: agado-stango, estro-stango, od tote ne."
 }

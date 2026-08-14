@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> تم حفظ محتوى إطار العنصر.",
   "swd.tooltip.resume_downloads.1": "تعيين ما إذا كان يجب استئناف الحفظ",
   "swd.tooltip.resume_downloads.2": "إذا تم العثور على حفظ آخر للعالم.",
-  "swd.screen.config.label.resume_downloads": "استئناف الحفظ:"
+  "swd.screen.config.label.resume_downloads": "استئناف الحفظ:",
+  "swd.screen.config.label.notification_mode": "الإشعارات:",
+  "swd.screen.config.notification_mode.actionbar": "شريط الإجراءات",
+  "swd.screen.config.notification_mode.bossbar": "شريط الزعيم",
+  "swd.screen.config.notification_mode.off": "إيقاف",
+  "swd.tooltip.notification_mode.1": "اختر كيفية عرض رسائل حالة التنزيل:",
+  "swd.tooltip.notification_mode.2": "شريط الإجراءات، شريط الزعيم، أو عدم العرض."
 }
 

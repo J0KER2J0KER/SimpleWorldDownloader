@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Setați dacă datele jucătorului trebuie salvate",
   "swd.tooltip.include_player_data.2": "împreună cu lumea descărcată.",
   "swd.tooltip.include_resource_packs.1": "Setați dacă pachetele de resurse ale serverului trebuie",
-  "swd.tooltip.include_resource_packs.2": "salvate cu lumea descărcată."
+  "swd.tooltip.include_resource_packs.2": "salvate cu lumea descărcată.",
+  "swd.screen.config.label.notification_mode": "Notificări:",
+  "swd.screen.config.notification_mode.actionbar": "Bara de acțiuni",
+  "swd.screen.config.notification_mode.bossbar": "Bara bossului",
+  "swd.screen.config.notification_mode.off": "Oprit",
+  "swd.tooltip.notification_mode.1": "Alegeți cum sunt afișate mesajele privind descărcarea:",
+  "swd.tooltip.notification_mode.2": "bara de acțiuni, bara bossului sau deloc."
 }

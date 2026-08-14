@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Contentum fimbriae servatum est.",
   "swd.tooltip.resume_downloads.1": "Constitue an servatio redintegranda sit",
   "swd.tooltip.resume_downloads.2": "si alia servatio mundi inventa erit.",
-  "swd.screen.config.label.resume_downloads": "Redintegra servationem:"
+  "swd.screen.config.label.resume_downloads": "Redintegra servationem:",
+  "swd.screen.config.label.notification_mode": "Notitiae:",
+  "swd.screen.config.notification_mode.actionbar": "Tabula actionis",
+  "swd.screen.config.notification_mode.bossbar": "Tabula domini",
+  "swd.screen.config.notification_mode.off": "Inactivum",
+  "swd.tooltip.notification_mode.1": "Elige quomodo nuntii status deonerationis",
+  "swd.tooltip.notification_mode.2": "ostendantur: tabula actionis, tabula domini, aut nullo modo."
 }

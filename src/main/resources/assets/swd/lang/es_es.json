@@ -31,5 +31,12 @@
   "swd.status.itemframe_saved": "> Contenido del marco de objetos guardado.",
   "swd.tooltip.resume_downloads.1": "Establece si el guardado debe reanudarse",
   "swd.tooltip.resume_downloads.2": "si se encuentra otro guardado para el mundo.",
-  "swd.screen.config.label.resume_downloads": "Reanudar guardado:"
+  "swd.screen.config.label.resume_downloads": "Reanudar guardado:",
+  "swd.screen.config.label.notification_mode": "Notificaciones:",
+  "swd.screen.config.notification_mode.actionbar": "Barra de acción",
+  "swd.screen.config.notification_mode.bossbar": "Barra de jefes",
+  "swd.screen.config.notification_mode.off": "Desactivado",
+  "swd.tooltip.notification_mode.1": "Elige cómo se muestran los mensajes de descarga:",
+  "swd.tooltip.notification_mode.2": "en la barra de acción, barra de jefes o de ninguna manera."
+}
 }

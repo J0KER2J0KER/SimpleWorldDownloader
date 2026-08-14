@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> S'ha desat el contingut del marc d'objectes.",
   "swd.tooltip.resume_downloads.1": "Estableix si el desament s'ha de reprendre",
   "swd.tooltip.resume_downloads.2": "si es troba una altra partida desada per al món.",
-  "swd.screen.config.label.resume_downloads": "Reprendre desament:"
+  "swd.screen.config.label.resume_downloads": "Reprendre desament:",
+  "swd.screen.config.label.notification_mode": "Notificacions:",
+  "swd.screen.config.notification_mode.actionbar": "Barra d'acció",
+  "swd.screen.config.notification_mode.bossbar": "Barra de cap",
+  "swd.screen.config.notification_mode.off": "Desactivat",
+  "swd.tooltip.notification_mode.1": "Tria com es mostren els missatges de baixada:",
+  "swd.tooltip.notification_mode.2": "barra d'acció, barra de cap o de cap manera."
 }
 

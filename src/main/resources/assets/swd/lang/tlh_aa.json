@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "DIvI' vItlhpu' De' polHa'lu' 'Iv tu'lu' yIngu'",
   "swd.tooltip.include_player_data.2": "ngeHbogh DIvI'Daq.",
   "swd.tooltip.include_resource_packs.1": "server ngeH paqmey polHa'lu' 'Iv tu'lu' yIngu'",
-  "swd.tooltip.include_resource_packs.2": "ngeHbogh DIvI'Daq."
+  "swd.tooltip.include_resource_packs.2": "ngeHbogh DIvI'Daq.",
+  "swd.screen.config.label.notification_mode": "ghoq De':",
+  "swd.screen.config.notification_mode.actionbar": "vang bar",
+  "swd.screen.config.notification_mode.bossbar": "pIn bar",
+  "swd.screen.config.notification_mode.off": "Qotlh",
+  "swd.tooltip.notification_mode.1": "yIchargh chich yIchev:",
+  "swd.tooltip.notification_mode.2": "vang bar, pIn bar, pagh pagh."
 }

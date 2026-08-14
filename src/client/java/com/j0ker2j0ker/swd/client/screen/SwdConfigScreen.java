@@ -1,9 +1,11 @@
 package com.j0ker2j0ker.swd.client.screen;
 
 import com.j0ker2j0ker.swd.client.SwdClient;
+import com.j0ker2j0ker.swd.client.util.SwdConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -39,6 +41,11 @@ public class SwdConfigScreen extends Screen {
             Component.translatable("swd.tooltip.resume_downloads.2")
     );
 
+    private static final List<Component> NOTIFICATION_DESC = List.of(
+            Component.translatable("swd.tooltip.notification_mode.1"),
+            Component.translatable("swd.tooltip.notification_mode.2")
+    );
+
     private static final List<Component> ENTITIES_DESC = List.of(
             Component.translatable("swd.tooltip.include_entities.1"),
             Component.translatable("swd.tooltip.include_entities.2")
@@ -71,14 +78,16 @@ public class SwdConfigScreen extends Screen {
         int autoLabelY = 100;
         int resumeLabelX = centerX - 180;
         int resumeLabelY = 120;
+        int notificationLabelX = centerX - 180;
+        int notificationLabelY = 140;
         this.includesHeaderX = centerX - 180;
-        this.includesHeaderY = 145;
+        this.includesHeaderY = 165;
         int entitiesLabelX = centerX - 180;
-        int entitiesLabelY = 170;
+        int entitiesLabelY = 190;
         int playerDataLabelX = centerX - 180;
-        int playerDataLabelY = 190;
+        int playerDataLabelY = 210;
         int resourcePacksLabelX = centerX - 180;
-        int resourcePacksLabelY = 210;
+        int resourcePacksLabelY = 230;
 
         // move inputs right + smaller text box
         int nameFieldX = centerX - 20;
@@ -93,12 +102,15 @@ public class SwdConfigScreen extends Screen {
         int autoCheckboxY = 95;
         int resumeCheckboxX = centerX - 20;
         int resumeCheckboxY = 115;
+        int notificationButtonX = centerX - 20;
+        int notificationButtonY = 133;
+        int notificationButtonW = 150;
         int entitiesCheckboxX = centerX - 20;
-        int entitiesCheckboxY = 165;
+        int entitiesCheckboxY = 185;
         int playerDataCheckboxX = centerX - 20;
-        int playerDataCheckboxY = 185;
+        int playerDataCheckboxY = 205;
         int resourcePacksCheckboxX = centerX - 20;
-        int resourcePacksCheckboxY = 205;
+        int resourcePacksCheckboxY = 225;
 
         // dynamic settings list
         this.settings.add(new StringSettingEntry(
@@ -134,6 +146,20 @@ public class SwdConfigScreen extends Screen {
                 resumeCheckboxY,
                 () -> SwdClient.CONFIG.resumeDownloads,
                 value -> SwdClient.CONFIG.resumeDownloads = value
+        ));
+
+        this.settings.add(new EnumSettingEntry<>(
+                Component.translatable("swd.screen.config.label.notification_mode"),
+                NOTIFICATION_DESC,
+                notificationLabelX,
+                notificationLabelY,
+                notificationButtonX,
+                notificationButtonY,
+                notificationButtonW,
+                SwdConfig.NotificationMode.class,
+                mode -> Component.translatable("swd.screen.config.notification_mode." + mode.name().toLowerCase()),
+                () -> SwdClient.CONFIG.notificationMode,
+                value -> SwdClient.CONFIG.notificationMode = value
         ));
 
         this.settings.add(new BooleanSettingEntry(
@@ -351,5 +377,52 @@ public class SwdConfigScreen extends Screen {
             }
         }
     }
-}
 
+    private static final class EnumSettingEntry<T extends Enum<T>> extends SettingEntry {
+        private final int buttonX;
+        private final int buttonY;
+        private final int buttonW;
+        private final T[] values;
+        private final java.util.function.Function<T, Component> valueName;
+        private final java.util.function.Supplier<T> getter;
+        private final java.util.function.Consumer<T> setter;
+        private CycleButton<T> button;
+
+        private EnumSettingEntry(Component label, List<Component> tooltip, int labelX, int labelY,
+                                 int buttonX, int buttonY, int buttonW,
+                                 Class<T> enumClass,
+                                 java.util.function.Function<T, Component> valueName,
+                                 java.util.function.Supplier<T> getter,
+                                 java.util.function.Consumer<T> setter) {
+            super(label, tooltip, labelX, labelY);
+            this.buttonX = buttonX;
+            this.buttonY = buttonY;
+            this.buttonW = buttonW;
+            this.values = enumClass.getEnumConstants();
+            this.valueName = valueName;
+            this.getter = getter;
+            this.setter = setter;
+        }
+
+        @Override
+        public void addWidgets(SwdConfigScreen screen) {
+            this.button = CycleButton.builder(valueName, getter.get())
+                    .withValues(values)
+                    .displayOnlyValue()
+                    .create(buttonX, buttonY, buttonW, 20, Component.empty());
+            screen.addRenderableWidget(this.button);
+        }
+
+        @Override
+        protected boolean isWidgetHovered(int mouseX, int mouseY) {
+            return this.button != null && this.button.isMouseOver(mouseX, mouseY);
+        }
+
+        @Override
+        public void applyToConfig() {
+            if (this.button != null) {
+                setter.accept(this.button.getValue());
+            }
+        }
+    }
+}

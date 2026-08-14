@@ -31,6 +31,13 @@
   "swd.status.itemframe_saved": "> Inhoid vom Ramma gspeichat.",
   "swd.tooltip.resume_downloads.1": "Stell ei, ob as Speichan weidagemocht wern soi,",
   "swd.tooltip.resume_downloads.2": "wann a andana Speichastand fia de Wejd gfundn wead.",
-  "swd.screen.config.label.resume_downloads": "Speichan weidamocha:"
+  "swd.screen.config.label.resume_downloads": "Speichan weidamocha:",
+  "swd.screen.config.label.notification_mode": "Meldunga:",
+  "swd.screen.config.notification_mode.actionbar": "Aktionsleistn",
+  "swd.screen.config.notification_mode.bossbar": "Bossleistn",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Suach da aus, wia d'Download-Meldunga",
+  "swd.tooltip.notification_mode.2": "aungezeigt werdn: Aktionsleistn, Bossleistn oda gar ned."
+}
 }
 

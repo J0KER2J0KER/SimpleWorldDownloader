@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Esinekehyksen sisältö tallennettu.",
   "swd.tooltip.resume_downloads.1": "Määritä, pitäisikö tallennusta jatkaa,",
   "swd.tooltip.resume_downloads.2": "jos maailmalle löytyy toinen tallennus.",
-  "swd.screen.config.label.resume_downloads": "Jatka tallennusta:"
+  "swd.screen.config.label.resume_downloads": "Jatka tallennusta:",
+  "swd.screen.config.label.notification_mode": "Ilmoitukset:",
+  "swd.screen.config.notification_mode.actionbar": "Toimintapalkki",
+  "swd.screen.config.notification_mode.bossbar": "Pohjaspalkki",
+  "swd.screen.config.notification_mode.off": "Pois",
+  "swd.tooltip.notification_mode.1": "Valitse, miten lataustilaviestit",
+  "swd.tooltip.notification_mode.2": "näytetään: toimintapalkissa, pomopalkissa tai ei ollenkaan."
 }
 

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Змесціва рамкі для прадметаў захавана.",
   "swd.tooltip.resume_downloads.1": "Вызначце, ці варта працягваць захаванне,",
   "swd.tooltip.resume_downloads.2": "калі знойдзена іншае захаванне для гэтага свету.",
-  "swd.screen.config.label.resume_downloads": "Аднавіць захаванне:"
+  "swd.screen.config.label.resume_downloads": "Аднавіць захаванне:",
+  "swd.screen.config.label.notification_mode": "Паведамленні:",
+  "swd.screen.config.notification_mode.actionbar": "Панэль дзеянняў",
+  "swd.screen.config.notification_mode.bossbar": "Паласа боса",
+  "swd.screen.config.notification_mode.off": "Выкл.",
+  "swd.tooltip.notification_mode.1": "Выберыце, як адлюстроўваюцца паведамленні пра спампоўку:",
+  "swd.tooltip.notification_mode.2": "у панэлі дзеянняў, паласе боса ці наогул ніяк."
 }
 

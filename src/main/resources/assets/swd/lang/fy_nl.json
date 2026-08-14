@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Ynhâld fan itemlist is opslein.",
   "swd.tooltip.resume_downloads.1": "Stel yn oft it opslaan trochgean moat",
   "swd.tooltip.resume_downloads.2": "as der in oare opslach foar de wrâld fûn wurdt.",
-  "swd.screen.config.label.resume_downloads": "Trochgean mei opslaan:"
+  "swd.screen.config.label.resume_downloads": "Trochgean mei opslaan:",
+  "swd.screen.config.label.notification_mode": "Meldingen:",
+  "swd.screen.config.notification_mode.actionbar": "Aksjebalke",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalke",
+  "swd.screen.config.notification_mode.off": "Ut",
+  "swd.tooltip.notification_mode.1": "Kies hoe't ynlaadstatusberichten",
+  "swd.tooltip.notification_mode.2": "toand wurde: aksjebalke, baasbalke, of algaar net."
 }
 

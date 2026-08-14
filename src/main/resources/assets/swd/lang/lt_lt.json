@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Nustatykite, ar žaidėjo duomenys turi būti išsaugoti",
   "swd.tooltip.include_player_data.2": "kartu su atsisiųstu pasauliu.",
   "swd.tooltip.include_resource_packs.1": "Nustatykite, ar serverio išteklių paketai turi",
-  "swd.tooltip.include_resource_packs.2": "būti išsaugoti su atsisiųstu pasauliu."
+  "swd.tooltip.include_resource_packs.2": "būti išsaugoti su atsisiųstu pasauliu.",
+  "swd.screen.config.label.notification_mode": "Pranešimai:",
+  "swd.screen.config.notification_mode.actionbar": "Veiksmų juosta",
+  "swd.screen.config.notification_mode.bossbar": "Bosų juosta",
+  "swd.screen.config.notification_mode.off": "Išjungta",
+  "swd.tooltip.notification_mode.1": "Pasirinkite, kaip rodomi atsisiuntimo būsenos pranešimai:",
+  "swd.tooltip.notification_mode.2": "veiksmų juostoje, bosų juostoje arba nerodyti."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Establix si les dades del jugador s'han de desar",
   "swd.tooltip.include_player_data.2": "junt amb el món descarregat.",
   "swd.tooltip.include_resource_packs.1": "Establix si els paquets de recursos del servidor",
-  "swd.tooltip.include_resource_packs.2": "s'han de desar amb el món descarregat."
+  "swd.tooltip.include_resource_packs.2": "s'han de desar amb el món descarregat.",
+  "swd.screen.config.label.notification_mode": "Notificacions:",
+  "swd.screen.config.notification_mode.actionbar": "Barra d'acció",
+  "swd.screen.config.notification_mode.bossbar": "Barra de cap",
+  "swd.screen.config.notification_mode.off": "Desactivat",
+  "swd.tooltip.notification_mode.1": "Tria com es mostren els missatges de descàrrega:",
+  "swd.tooltip.notification_mode.2": "barra d'acció, barra de cap o de cap manera."
 }

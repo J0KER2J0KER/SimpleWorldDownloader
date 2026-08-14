@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Obsah rámečku na předměty byl uložen.",
   "swd.tooltip.resume_downloads.1": "Nastavte, zda má ukládání pokračovat,",
   "swd.tooltip.resume_downloads.2": "pokud je pro tento svět nalezeno jiné uložení.",
-  "swd.screen.config.label.resume_downloads": "Pokračovat v ukládání:"
+  "swd.screen.config.label.resume_downloads": "Pokračovat v ukládání:",
+  "swd.screen.config.label.notification_mode": "Oznámení:",
+  "swd.screen.config.notification_mode.actionbar": "Panel akcí",
+  "swd.screen.config.notification_mode.bossbar": "Ukazatel bosse",
+  "swd.screen.config.notification_mode.off": "Vypnuto",
+  "swd.tooltip.notification_mode.1": "Vyberte, jak se zobrazují zprávy o stavu stahování:",
+  "swd.tooltip.notification_mode.2": "panel akcí, ukazatel bosse nebo vůbec."
 }
 

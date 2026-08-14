@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Angi om spillerdata skal lagres",
   "swd.tooltip.include_player_data.2": "sammen med den nedlastede verdenen.",
   "swd.tooltip.include_resource_packs.1": "Angi om serverressurspakker skal",
-  "swd.tooltip.include_resource_packs.2": "lagres med den nedlastede verdenen."
+  "swd.tooltip.include_resource_packs.2": "lagres med den nedlastede verdenen.",
+  "swd.screen.config.label.notification_mode": "Meldinger:",
+  "swd.screen.config.notification_mode.actionbar": "Handlingslinje",
+  "swd.screen.config.notification_mode.bossbar": "Bosslinje",
+  "swd.screen.config.notification_mode.off": "Av",
+  "swd.tooltip.notification_mode.1": "Velg hvordan nedlastingsstatusmeldinger",
+  "swd.tooltip.notification_mode.2": "vises: handlingslinje, bosslinje eller ikke i det hele tatt."
 }

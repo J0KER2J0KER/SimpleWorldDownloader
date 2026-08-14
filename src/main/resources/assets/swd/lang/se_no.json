@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Mearrit galget go speallodieđut vurkejuvvot",
   "swd.tooltip.include_player_data.2": "ovttas viežžojuvvon máilmmiin.",
   "swd.tooltip.include_resource_packs.1": "Mearrit galget go servera resursapakkat",
-  "swd.tooltip.include_resource_packs.2": "vurkejuvvot viežžojuvvon máilmmiin."
+  "swd.tooltip.include_resource_packs.2": "vurkejuvvot viežžojuvvon máilmmiin.",
+  "swd.screen.config.label.notification_mode": "Dieđáhusat:",
+  "swd.screen.config.notification_mode.actionbar": "Dahkubáddi",
+  "swd.screen.config.notification_mode.bossbar": "Hoavdabáddi",
+  "swd.screen.config.notification_mode.off": "Jápmán",
+  "swd.tooltip.notification_mode.1": "Vállje mot vižžanjatnu-dieđut",
+  "swd.tooltip.notification_mode.2": "čájehuvvojit: dahkubáddái, hoavdabáddái dahje ii obbage."
 }

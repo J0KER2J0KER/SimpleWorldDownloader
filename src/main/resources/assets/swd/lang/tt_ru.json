@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Йөкләнгән дөнья белән бергә",
   "swd.tooltip.include_player_data.2": "уенчы мәгълүматлары саклансынмы икәнен билгеләгез.",
   "swd.tooltip.include_resource_packs.1": "Сервер ресурс пакетлары йөкләнгән дөнья белән",
-  "swd.tooltip.include_resource_packs.2": "бергә саклансынмы икәнен билгеләгез."
+  "swd.tooltip.include_resource_packs.2": "бергә саклансынмы икәнен билгеләгез.",
+  "swd.screen.config.label.notification_mode": "Билдереүләр:",
+  "swd.screen.config.notification_mode.actionbar": "Гәмәлләр панеле",
+  "swd.screen.config.notification_mode.bossbar": "Босс панеле",
+  "swd.screen.config.notification_mode.off": "Сүндерелгән",
+  "swd.tooltip.notification_mode.1": "Йөктәү статусы хәбәрләренең ничек күрсәтелүен сайлагыз:",
+  "swd.tooltip.notification_mode.2": "гәмәлләр панеле, босс панеле яки вообще күрсәтмәскә."
 }

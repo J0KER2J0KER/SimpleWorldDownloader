@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> كاندوڠن بيڠكاي ايتم دسيمڤن.",
   "swd.tooltip.resume_downloads.1": "تتڤكن سام اد ڤپيمڤنن ڤرلو دشبوڠكن",
   "swd.tooltip.resume_downloads.2": "جک ڤپيمڤنن لاءين اونتوق دنيا اين دتموءي.",
-  "swd.screen.config.label.resume_downloads": "سامبوڠ مپيمڤن:"
+  "swd.screen.config.label.resume_downloads": "سامبوڠ مپيمڤن:",
+  "swd.screen.config.label.notification_mode": "نووتيفيکاسي:",
+  "swd.screen.config.notification_mode.actionbar": "بار تيندقن",
+  "swd.screen.config.notification_mode.bossbar": "بار بوس",
+  "swd.screen.config.notification_mode.off": "ڤادم",
+  "swd.tooltip.notification_mode.1": "ڤيليه باضايمانا ميسيج ستاتوس موات تورون",
+  "swd.tooltip.notification_mode.2": "ديتونجوقکن: بار تيندقن، بار بوس، اتوا تيدق لڠسوڠ."
 }

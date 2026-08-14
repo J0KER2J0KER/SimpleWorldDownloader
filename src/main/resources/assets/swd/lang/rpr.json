@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Установите, должны ли данныя игрока сохраняться",
   "swd.tooltip.include_player_data.2": "вмѣстѣ съ загруженнымъ міромъ.",
   "swd.tooltip.include_resource_packs.1": "Установите, должны ли пакеты ресурсовъ сервера",
-  "swd.tooltip.include_resource_packs.2": "сохраняться съ загруженнымъ міромъ."
+  "swd.tooltip.include_resource_packs.2": "сохраняться съ загруженнымъ міромъ.",
+  "swd.screen.config.label.notification_mode": "Meldunge:",
+  "swd.screen.config.notification_mode.actionbar": "Aktionsleis",
+  "swd.screen.config.notification_mode.bossbar": "Bossleis",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Wähle wie Download-Meldunge",
+  "swd.tooltip.notification_mode.2": "anjeseesch wäde: Aktionsleis, Bossleis oder jar nit."
 }

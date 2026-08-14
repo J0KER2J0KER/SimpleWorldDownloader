@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Iestatiet, vai spēlētāja dati jāsaglabā",
   "swd.tooltip.include_player_data.2": "kopā ar lejupielādēto pasauli.",
   "swd.tooltip.include_resource_packs.1": "Iestatiet, vai servera resursu pakotnes jāsaglabā",
-  "swd.tooltip.include_resource_packs.2": "kopā ar lejupielādēto pasauli."
+  "swd.tooltip.include_resource_packs.2": "kopā ar lejupielādēto pasauli.",
+  "swd.screen.config.label.notification_mode": "Paziņojumi:",
+  "swd.screen.config.notification_mode.actionbar": "Darbību josla",
+  "swd.screen.config.notification_mode.bossbar": "Bosa josla",
+  "swd.screen.config.notification_mode.off": "Izslēgts",
+  "swd.tooltip.notification_mode.1": "Izvēlieties, kā parādīt lejupielādes statusa ziņojumus:",
+  "swd.tooltip.notification_mode.2": "darbību joslā, bosa joslā vai neparādīt vispār."
 }

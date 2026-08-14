@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Stel in of spelergegevens opgeslagen moeten",
   "swd.tooltip.include_player_data.2": "worden samen met de gedownloade wereld.",
   "swd.tooltip.include_resource_packs.1": "Stel in of serverbronpakketten opgeslagen",
-  "swd.tooltip.include_resource_packs.2": "moeten worden met de gedownloade wereld."
+  "swd.tooltip.include_resource_packs.2": "moeten worden met de gedownloade wereld.",
+  "swd.screen.config.label.notification_mode": "Meldingen:",
+  "swd.screen.config.notification_mode.actionbar": "Actiebalk",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalk",
+  "swd.screen.config.notification_mode.off": "Uit",
+  "swd.tooltip.notification_mode.1": "Kies hoe downloadstatusberichten",
+  "swd.tooltip.notification_mode.2": "getoond worden: actiebalk, baasbalk of helemaal niet."
 }

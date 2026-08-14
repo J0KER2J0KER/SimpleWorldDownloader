@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "பதிவிறக்கப்பட்ட உலகத்துடன் வீரர் தரவு",
   "swd.tooltip.include_player_data.2": "சேமிக்கப்பட வேண்டுமா என அமைக்கவும்.",
   "swd.tooltip.include_resource_packs.1": "சேவையகத்தின் வள தொகுப்புகள்",
-  "swd.tooltip.include_resource_packs.2": "பதிவிறக்கப்பட்ட உலகத்துடன் சேமிக்கப்பட வேண்டுமா என அமைக்கவும்."
+  "swd.tooltip.include_resource_packs.2": "பதிவிறக்கப்பட்ட உலகத்துடன் சேமிக்கப்பட வேண்டுமா என அமைக்கவும்.",
+  "swd.screen.config.label.notification_mode": "அறிவிப்புகள்:",
+  "swd.screen.config.notification_mode.actionbar": "செயல் பட்டை",
+  "swd.screen.config.notification_mode.bossbar": "பாஸ் பட்டை",
+  "swd.screen.config.notification_mode.off": "ஆஃப்",
+  "swd.tooltip.notification_mode.1": "பதிவிறக்க செய்தி எவ்வாறு காட்டப்பட வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்:",
+  "swd.tooltip.notification_mode.2": "செயல் பட்டை, பாஸ் பட்டை, அல்லது அறவே இல்லை."
 }

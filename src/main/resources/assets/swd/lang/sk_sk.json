@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Nastavte, či sa majú dáta hráča uložiť",
   "swd.tooltip.include_player_data.2": "spolu so stiahnutým svetom.",
   "swd.tooltip.include_resource_packs.1": "Nastavte, či sa majú balíky zdrojov servera",
-  "swd.tooltip.include_resource_packs.2": "uložiť so stiahnutým svetom."
+  "swd.tooltip.include_resource_packs.2": "uložiť so stiahnutým svetom.",
+  "swd.screen.config.label.notification_mode": "Oznámenia:",
+  "swd.screen.config.notification_mode.actionbar": "Panel akcií",
+  "swd.screen.config.notification_mode.bossbar": "Ukazovateľ bossa",
+  "swd.screen.config.notification_mode.off": "Vypnuté",
+  "swd.tooltip.notification_mode.1": "Vyberte, ako sa zobrazujú správy o stave sťahovania:",
+  "swd.tooltip.notification_mode.2": "panel akcií, ukazovateľ bossa alebo vôbec."
 }

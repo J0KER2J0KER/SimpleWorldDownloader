@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Deji haddii xogta ciyaartoyga la keydsanayo",
   "swd.tooltip.include_player_data.2": "xagga adduunka la soo dejiyay.",
   "swd.tooltip.include_resource_packs.1": "Deji haddii xirmooyin kheyraadka servarka",
-  "swd.tooltip.include_resource_packs.2": "la keydsanayo adduunka la soo dejiyay."
+  "swd.tooltip.include_resource_packs.2": "la keydsanayo adduunka la soo dejiyay.",
+  "swd.screen.config.label.notification_mode": "Ogeysiisyada:",
+  "swd.screen.config.notification_mode.actionbar": "Barta waxqabadka",
+  "swd.screen.config.notification_mode.bossbar": "Barta maamulaha",
+  "swd.screen.config.notification_mode.off": "Dami",
+  "swd.tooltip.notification_mode.1": "Xasho sida fariimaha xaalada soo dejinta",
+  "swd.tooltip.notification_mode.2": "loo muujiyo: barta waxqabadka, barta maamulaha, ama haba yaraatee."
 }

@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Inhalt vum Bilderrahmen jeschpeichert.",
   "swd.tooltip.resume_downloads.1": "He enstelle, ov et Schpeichere wiggerjeiht,",
   "swd.tooltip.resume_downloads.2": "wann ald jet för de Welt jefunge wood.",
-  "swd.screen.config.label.resume_downloads": "Wigger schpeichere:"
+  "swd.screen.config.label.resume_downloads": "Wigger schpeichere:",
+  "swd.screen.config.label.notification_mode": "Meldunge:",
+  "swd.screen.config.notification_mode.actionbar": "Aktionsleis",
+  "swd.screen.config.notification_mode.bossbar": "Bossleis",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Söök us, wie de Download-Statusmelde",
+  "swd.tooltip.notification_mode.2": "anjeseesch wäde: Aktionsleis, Bossleis oder gar nit."
 }

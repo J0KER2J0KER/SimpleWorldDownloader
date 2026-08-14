@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Contenuto dell'item frame salvato.",
   "swd.tooltip.resume_downloads.1": "Imposta se il salvataggio deve riprendere",
   "swd.tooltip.resume_downloads.2": "se viene trovato un altro salvataggio per il mondo.",
-  "swd.screen.config.label.resume_downloads": "Riprendi salvataggio:"
+  "swd.screen.config.label.resume_downloads": "Riprendi salvataggio:",
+  "swd.screen.config.label.notification_mode": "Notifichis:",
+  "swd.screen.config.notification_mode.actionbar": "Sbare di azion",
+  "swd.screen.config.notification_mode.bossbar": "Sbare dal boss",
+  "swd.screen.config.notification_mode.off": "Dismutât",
+  "swd.tooltip.notification_mode.1": "Sielç cemût che i meşaçs di scjamf",
+  "swd.tooltip.notification_mode.2": "a vegnin mostrâts: sbare di azion, sbare dal boss, o par nuie."
 }
 

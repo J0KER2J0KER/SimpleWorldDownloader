@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Ohun inu firemu nkan ti wa ni fipamọ.",
   "swd.tooltip.resume_downloads.1": "Ṣeto boya o yẹ ki ipamọ tẹsiwaju",
   "swd.tooltip.resume_downloads.2": "ti a ba rii ipamọ miiran fun agbaye.",
-  "swd.screen.config.label.resume_downloads": "Tẹsiwaju ipamọ:"
+  "swd.screen.config.label.resume_downloads": "Tẹsiwaju ipamọ:",
+  "swd.screen.config.label.notification_mode": "Àwọn ìfilọ̀:",
+  "swd.screen.config.notification_mode.actionbar": "Báà iṣẹ́",
+  "swd.screen.config.notification_mode.bossbar": "Báà boss",
+  "swd.screen.config.notification_mode.off": "Bọ́",
+  "swd.tooltip.notification_mode.1": "Sọ bí àwọn àfiihan ipò ìdownload pẹ̀lú:",
+  "swd.tooltip.notification_mode.2": "báà iṣẹ́, báà boss, tàbí kò sí rárá."
 }

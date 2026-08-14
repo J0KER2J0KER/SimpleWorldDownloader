@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> ಐಟಂ ಫ್ರೇಮ್ ವಿಷಯವನ್ನು ಉಳಿಸಲಾಗಿದೆ.",
   "swd.tooltip.resume_downloads.1": "ಪ್ರಪಂಚದ ಇನ್ನೊಂದು ಉಳಿಸುವಿಕೆ ಕಂಡುಬಂದಲ್ಲಿ",
   "swd.tooltip.resume_downloads.2": "ಉಳಿಸುವುದನ್ನು ಪುನರಾರಂಭಿಸಬೇಕೆ ಎಂದು ಹೊಂದಿಸಿ.",
-  "swd.screen.config.label.resume_downloads": "ಉಳಿಸುವುದನ್ನು ಪುನರಾರಂಭಿಸಿ:"
+  "swd.screen.config.label.resume_downloads": "ಉಳಿಸುವುದನ್ನು ಪುನರಾರಂಭಿಸಿ:",
+  "swd.screen.config.label.notification_mode": "ಸೂಚನೆಗಳು:",
+  "swd.screen.config.notification_mode.actionbar": "ಆಕ್ಷನ್ ಬಾರ್",
+  "swd.screen.config.notification_mode.bossbar": "ಬಾಸ್ ಬಾರ್",
+  "swd.screen.config.notification_mode.off": "ಆಫ್",
+  "swd.tooltip.notification_mode.1": "ಡೌನ್‌ಲೋಡ್ ಸ್ಥಿತಿ ಸಂದೇಶಗಳನ್ನು ಹೇಗೆ ತೋರಿಸಬೇಕು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ:",
+  "swd.tooltip.notification_mode.2": "ಆಕ್ಷನ್ ಬಾರ್, ಬಾಸ್ ಬಾರ್, ಅಥವಾ ಯಾವುದೂ ಇಲ್ಲ."
 }

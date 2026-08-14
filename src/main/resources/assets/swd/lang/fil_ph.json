@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Na-save ang nilalaman ng item frame.",
   "swd.tooltip.resume_downloads.1": "Itakda kung dapat ipagpatuloy ang pag-save",
   "swd.tooltip.resume_downloads.2": "kung may nahanap na ibang save para sa mundo.",
-  "swd.screen.config.label.resume_downloads": "Ipagpatuloy ang pag-save:"
+  "swd.screen.config.label.resume_downloads": "Ipagpatuloy ang pag-save:",
+  "swd.screen.config.label.notification_mode": "Mga Abiso:",
+  "swd.screen.config.notification_mode.actionbar": "Action Bar",
+  "swd.screen.config.notification_mode.bossbar": "Boss Bar",
+  "swd.screen.config.notification_mode.off": "Naka-off",
+  "swd.tooltip.notification_mode.1": "Pumili kung paano ipapakita ang mga mensahe ng status ng pag-download:",
+  "swd.tooltip.notification_mode.2": "action bar, boss bar, o hindi man lang."
 }
 

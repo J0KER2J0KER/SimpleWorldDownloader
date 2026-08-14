@@ -31,5 +31,12 @@
   "swd.status.itemframe_saved": "> The tapestry within the frame is secured.",
   "swd.tooltip.resume_downloads.1": "Decree if the labor shouldst be taken up anew",
   "swd.tooltip.resume_downloads.2": "should another chronicle of this world be found.",
-  "swd.screen.config.label.resume_downloads": "Resume the labor:"
+  "swd.screen.config.label.resume_downloads": "Resume the labor:",
+  "swd.screen.config.label.notification_mode": "Notifications:",
+  "swd.screen.config.notification_mode.actionbar": "Action Bar",
+  "swd.screen.config.notification_mode.bossbar": "Boss Bar",
+  "swd.screen.config.notification_mode.off": "Off",
+  "swd.tooltip.notification_mode.1": "Choose how download status tidings",
+  "swd.tooltip.notification_mode.2": "be displayed: action bar, boss bar, or not at all."
+}
 }

@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Objektu-markoaren edukia gorde da.",
   "swd.tooltip.resume_downloads.1": "Ezarri gordetzea berrekin behar den",
   "swd.tooltip.resume_downloads.2": "munduarentzako beste gordetze bat aurkitzen bada.",
-  "swd.screen.config.label.resume_downloads": "Berrekin gordetzea:"
+  "swd.screen.config.label.resume_downloads": "Berrekin gordetzea:",
+  "swd.screen.config.label.notification_mode": "Jakinarazpenak:",
+  "swd.screen.config.notification_mode.actionbar": "Ekintza-barra",
+  "swd.screen.config.notification_mode.bossbar": "Boss-barra",
+  "swd.screen.config.notification_mode.off": "Desaktibatuta",
+  "swd.tooltip.notification_mode.1": "Aukeratu nola erakutsiko diren deskarga-mezuak:",
+  "swd.tooltip.notification_mode.2": "ekintza-barran, boss-barran edo ezer ez."
 }
 

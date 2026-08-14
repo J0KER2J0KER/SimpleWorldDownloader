@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Το περιεχόμενο της κορνίζας αντικειμένου αποθηκεύτηκε.",
   "swd.tooltip.resume_downloads.1": "Ορίστε εάν η αποθήκευση θα πρέπει να συνεχιστεί",
   "swd.tooltip.resume_downloads.2": "εάν βρεθεί άλλη αποθήκευση για τον κόσμο.",
-  "swd.screen.config.label.resume_downloads": "Συνέχιση αποθήκευσης:"
+  "swd.screen.config.label.resume_downloads": "Συνέχιση αποθήκευσης:",
+  "swd.screen.config.label.notification_mode": "Ειδοποιήσεις:",
+  "swd.screen.config.notification_mode.actionbar": "Γραμμή ενεργειών",
+  "swd.screen.config.notification_mode.bossbar": "Γραμμή αρχηγού",
+  "swd.screen.config.notification_mode.off": "Ανενεργό",
+  "swd.tooltip.notification_mode.1": "Επιλέξτε πώς εμφανίζονται τα μηνύματα λήψης:",
+  "swd.tooltip.notification_mode.2": "γραμμή ενεργειών, γραμμή αρχηγού ή καθόλου."
 }
 

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Սահմանեք, արդյոք խաղացողի տվյալները պետք է պահպանվեն",
   "swd.tooltip.include_player_data.2": "ներբեռնված աշխարհի հետ միասին։",
   "swd.tooltip.include_resource_packs.1": "Սահմանեք, արդյոք սերվերի ռեսուրս փաթեթները",
-  "swd.tooltip.include_resource_packs.2": "պետք է պահպանվեն ներբեռնված աշխարհի հետ։"
+  "swd.tooltip.include_resource_packs.2": "պետք է պահպանվեն ներբեռնված աշխարհի հետ։",
+  "swd.screen.config.label.notification_mode": "Ծանուցումներ:",
+  "swd.screen.config.notification_mode.actionbar": "Գործողությունների վահանակ",
+  "swd.screen.config.notification_mode.bossbar": "Բոսի վահանակ",
+  "swd.screen.config.notification_mode.off": "Անջատված",
+  "swd.tooltip.notification_mode.1": "Ընտրեք, թե ինչպես ցուցադրվեն ներբեռնման հաղորդագրությունները.",
+  "swd.tooltip.notification_mode.2": "գործողությունների վահանակում, բոսի վահանակում կամ ընդհանրապես:"
 }

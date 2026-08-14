@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Stel in of spelersgegevens opgesloage moete weure",
   "swd.tooltip.include_player_data.2": "same met de gedownloade welt.",
   "swd.tooltip.include_resource_packs.1": "Stel in of server-bronpakkette opgesloage",
-  "swd.tooltip.include_resource_packs.2": "moete weure met de gedownloade welt."
+  "swd.tooltip.include_resource_packs.2": "moete weure met de gedownloade welt.",
+  "swd.screen.config.label.notification_mode": "Meldinge:",
+  "swd.screen.config.notification_mode.actionbar": "Actiebalk",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalk",
+  "swd.screen.config.notification_mode.off": "Oet",
+  "swd.tooltip.notification_mode.1": "Kees wie downloadstatusberichten",
+  "swd.tooltip.notification_mode.2": "waere geteund: actiebalk, baasbalk of gar neet."
 }

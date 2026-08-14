@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Inhoud van itemlijst opgeslaoge.",
   "swd.tooltip.resume_downloads.1": "Stel in of opslaon hervat moet worre",
   "swd.tooltip.resume_downloads.2": "as d'r un andere save voor de wereld gevonnen is.",
-  "swd.screen.config.label.resume_downloads": "Opslaon hervatten:"
+  "swd.screen.config.label.resume_downloads": "Opslaon hervatten:",
+  "swd.screen.config.label.notification_mode": "Meldingen:",
+  "swd.screen.config.notification_mode.actionbar": "Actiebalk",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalk",
+  "swd.screen.config.notification_mode.off": "Uit",
+  "swd.tooltip.notification_mode.1": "Kies wie downloadstatusberichten",
+  "swd.tooltip.notification_mode.2": "eweest worren: actiebalk, baasbalk of gemaal nie."
 }
 

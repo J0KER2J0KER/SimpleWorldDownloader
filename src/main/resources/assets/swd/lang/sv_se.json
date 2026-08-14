@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Ange om spelardata ska sparas",
   "swd.tooltip.include_player_data.2": "tillsammans med den nedladdade världen.",
   "swd.tooltip.include_resource_packs.1": "Ange om serverns resurspaket ska",
-  "swd.tooltip.include_resource_packs.2": "sparas med den nedladdade världen."
+  "swd.tooltip.include_resource_packs.2": "sparas med den nedladdade världen.",
+  "swd.screen.config.label.notification_mode": "Aviseringar:",
+  "swd.screen.config.notification_mode.actionbar": "Handlingsfält",
+  "swd.screen.config.notification_mode.bossbar": "Bossmätare",
+  "swd.screen.config.notification_mode.off": "Av",
+  "swd.tooltip.notification_mode.1": "Välj hur nedladdningsmeddelanden",
+  "swd.tooltip.notification_mode.2": "visas: handlingsfält, bossmätare eller inte alls."
 }

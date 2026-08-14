@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> 아이템 액자 내용물 저장됨.",
   "swd.tooltip.resume_downloads.1": "해당 월드의 다른 저장 데이터가 발견될 경우",
   "swd.tooltip.resume_downloads.2": "저장을 재개할지 여부를 설정합니다.",
-  "swd.screen.config.label.resume_downloads": "저장 재개:"
+  "swd.screen.config.label.resume_downloads": "저장 재개:",
+  "swd.screen.config.label.notification_mode": "알림:",
+  "swd.screen.config.notification_mode.actionbar": "작업 표시줄",
+  "swd.screen.config.notification_mode.bossbar": "보스 바",
+  "swd.screen.config.notification_mode.off": "꺼짐",
+  "swd.tooltip.notification_mode.1": "다운로드 상태 메시지가 표시되는 방식을 선택합니다:",
+  "swd.tooltip.notification_mode.2": "작업 표시줄, 보스 바, 또는 표시하지 않음."
 }

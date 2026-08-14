@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Тоглогчийн өгөгдлийг татаж авсан",
   "swd.tooltip.include_player_data.2": "дэлхийн хамт хадгалах эсэхийг тохируул.",
   "swd.tooltip.include_resource_packs.1": "Серверийн нөөцийн багцуудыг татаж авсан",
-  "swd.tooltip.include_resource_packs.2": "дэлхийн хамт хадгалах эсэхийг тохируул."
+  "swd.tooltip.include_resource_packs.2": "дэлхийн хамт хадгалах эсэхийг тохируул.",
+  "swd.screen.config.label.notification_mode": "Мэдэгдэл:",
+  "swd.screen.config.notification_mode.actionbar": "Үйлдлийн самбар",
+  "swd.screen.config.notification_mode.bossbar": "Босс бар",
+  "swd.screen.config.notification_mode.off": "Унтраах",
+  "swd.tooltip.notification_mode.1": "Татах төлөвийн мэдээг хэрхэн харуулахыг сонгоно уу:",
+  "swd.tooltip.notification_mode.2": "үйлдлийн самбар, босс бар эсвэл огт харуулахгүй."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Issettja jekk id-data tal-plejer għandhiex tiġi mħażżna",
   "swd.tooltip.include_player_data.2": "flimkien mad-dinja mniżżla.",
   "swd.tooltip.include_resource_packs.1": "Issettja jekk il-pakketti tar-riżorsi tas-server",
-  "swd.tooltip.include_resource_packs.2": "għandhomx jiġu mħażżna mad-dinja mniżżla."
+  "swd.tooltip.include_resource_packs.2": "għandhomx jiġu mħażżna mad-dinja mniżżla.",
+  "swd.screen.config.label.notification_mode": "Notifiki:",
+  "swd.screen.config.notification_mode.actionbar": "Barra tal-azjona",
+  "swd.screen.config.notification_mode.bossbar": "Barra tal-boss",
+  "swd.screen.config.notification_mode.off": "Mitfi",
+  "swd.tooltip.notification_mode.1": "Agħżel kif il-messaġġi tal-istatus tat-tniżżil",
+  "swd.tooltip.notification_mode.2": "jiġu juru: barra tal-azjona, barra tal-boss, jew xejn."
 }

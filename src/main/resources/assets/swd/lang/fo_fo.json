@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Innihald í lutarammu goymt.",
   "swd.tooltip.resume_downloads.1": "Set um framhaldast skal við at goyma",
   "swd.tooltip.resume_downloads.2": "um ein onnur goymsla fyri verðina verður funnin.",
-  "swd.screen.config.label.resume_downloads": "Halt fram at goyma:"
+  "swd.screen.config.label.resume_downloads": "Halt fram at goyma:",
+  "swd.screen.config.label.notification_mode": "Báðingar:",
+  "swd.screen.config.notification_mode.actionbar": "Gerðabjálki",
+  "swd.screen.config.notification_mode.bossbar": "Stjórnabjálki",
+  "swd.screen.config.notification_mode.off": "Sløkt",
+  "swd.tooltip.notification_mode.1": "Vel hvussu henti statusboð",
+  "swd.tooltip.notification_mode.2": "verða sýnd: gerðabjálki, stjórnabjálki ella als ikki."
 }
 

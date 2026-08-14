@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Susbaint a' fhrèam-nì air a shàbhaladh.",
   "swd.tooltip.resume_downloads.1": "Suidhich an bu chòir dhuinn cumail oirnn a' sàbhaladh",
   "swd.tooltip.resume_downloads.2": "ma lorgar sàbhaladh eile airson an t-saoghail.",
-  "swd.screen.config.label.resume_downloads": "Lean air sàbhaladh:"
+  "swd.screen.config.label.resume_downloads": "Lean air sàbhaladh:",
+  "swd.screen.config.label.notification_mode": "Brathan:",
+  "swd.screen.config.notification_mode.actionbar": "Bàr gnìomha",
+  "swd.screen.config.notification_mode.bossbar": "Bàr boss",
+  "swd.screen.config.notification_mode.off": "Caisg",
+  "swd.tooltip.notification_mode.1": "Roghnaich mar a thèid teachdaireachdan inbhe luchdadh a-nuas",
+  "swd.tooltip.notification_mode.2": "a thaisbeanadh: bàr gnìomha, bàr boss, neo idir."
 }
 

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Sett fast, ob Spelerdaten mit speekert weern schöllt",
   "swd.tooltip.include_player_data.2": "tosammen mit de daalladene Welt.",
   "swd.tooltip.include_resource_packs.1": "Sett fast, ob Server-Ressource-Pakke speekert weern schöllt",
-  "swd.tooltip.include_resource_packs.2": "mit de daalladene Welt."
+  "swd.tooltip.include_resource_packs.2": "mit de daalladene Welt.",
+  "swd.screen.config.label.notification_mode": "Mellen:",
+  "swd.screen.config.notification_mode.actionbar": "Akschoonsleest",
+  "swd.screen.config.notification_mode.bossbar": "Bossleest",
+  "swd.screen.config.notification_mode.off": "Ut",
+  "swd.tooltip.notification_mode.1": "Söök ut, wo de Download-Statusmellen",
+  "swd.tooltip.notification_mode.2": "wiest warrt: Akschoonsleest, Bossleest oder gar nich."
 }

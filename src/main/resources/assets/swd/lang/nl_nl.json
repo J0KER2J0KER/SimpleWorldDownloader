@@ -31,5 +31,10 @@
   "swd.status.itemframe_saved": "> Inhoud van itemlijst opgeslagen.",
   "swd.tooltip.resume_downloads.1": "Stel in of opslaan hervat moet worden",
   "swd.tooltip.resume_downloads.2": "als er een andere save voor de wereld is gevonden.",
-  "swd.screen.config.label.resume_downloads": "Opslaan hervatten:"
+  "swd.screen.config.label.notification_mode": "Meldingen:",
+  "swd.screen.config.notification_mode.actionbar": "Actiebalk",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalk",
+  "swd.screen.config.notification_mode.off": "Uit",
+  "swd.tooltip.notification_mode.1": "Kies hoe downloadstatusberichten",
+  "swd.tooltip.notification_mode.2": "worden weergegeven: actiebalk, baasbalk of helemaal niet."
 }

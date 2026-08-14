@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Zawartość ramki na przedmiot została zapisana.",
   "swd.tooltip.resume_downloads.1": "Ustaw, czy zapisywanie powinno zostać wznowione,",
   "swd.tooltip.resume_downloads.2": "jeśli znaleziono inny zapis tego świata.",
-  "swd.screen.config.label.resume_downloads": "Wznów zapisywanie:"
+  "swd.screen.config.label.resume_downloads": "Wznów zapisywanie:",
+  "swd.screen.config.label.notification_mode": "Powiadomienia:",
+  "swd.screen.config.notification_mode.actionbar": "Pasek akcji",
+  "swd.screen.config.notification_mode.bossbar": "Pasek bossa",
+  "swd.screen.config.notification_mode.off": "Wyłączone",
+  "swd.tooltip.notification_mode.1": "Wybierz sposób wyświetlania komunikatów pobierania:",
+  "swd.tooltip.notification_mode.2": "pasek akcji, pasek bossa lub wcale."
 }

@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Đã lưu vật phẩm trong khung.",
   "swd.tooltip.resume_downloads.1": "Thiết lập xem có nên tiếp tục lưu hay không",
   "swd.tooltip.resume_downloads.2": "nếu tìm thấy bản lưu khác của thế giới này.",
-  "swd.screen.config.label.resume_downloads": "Tiếp tục lưu:"
+  "swd.screen.config.label.resume_downloads": "Tiếp tục lưu:",
+  "swd.screen.config.label.notification_mode": "Thông báo:",
+  "swd.screen.config.notification_mode.actionbar": "Thanh hành động",
+  "swd.screen.config.notification_mode.bossbar": "Thanh Trùm",
+  "swd.screen.config.notification_mode.off": "Tắt",
+  "swd.tooltip.notification_mode.1": "Chọn cách hiển thị thông báo trạng thái tải xuống:",
+  "swd.tooltip.notification_mode.2": "thanh hành động, thanh Trùm, hoặc không hiển thị."
 }

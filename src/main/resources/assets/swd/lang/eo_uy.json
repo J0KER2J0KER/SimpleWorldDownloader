@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Enhavo de aĵkadro konservita.",
   "swd.tooltip.resume_downloads.1": "Agordu ĉu konservado devus esti daŭrigita",
   "swd.tooltip.resume_downloads.2": "se alia konservo por la mondo estas trovita.",
-  "swd.screen.config.label.resume_downloads": "Daŭrigi konservadon:"
+  "swd.screen.config.label.resume_downloads": "Daŭrigi konservadon:",
+  "swd.screen.config.label.notification_mode": "Sciigoj:",
+  "swd.screen.config.notification_mode.actionbar": "Ago-stango",
+  "swd.screen.config.notification_mode.bossbar": "Estro-stango",
+  "swd.screen.config.notification_mode.off": "Malamaskita",
+  "swd.tooltip.notification_mode.1": "Elektu kiamaniere elŝutstataj mesaĝoj",
+  "swd.tooltip.notification_mode.2": "estas montrataj: ago-stango, estro-stango, aŭ tute ne."
 }
 

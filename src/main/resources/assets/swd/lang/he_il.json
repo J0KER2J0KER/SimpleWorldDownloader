@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "הגדר האם נתוני שחקן ישמרו",
   "swd.tooltip.include_player_data.2": "יחד עם העולם שהורד.",
   "swd.tooltip.include_resource_packs.1": "הגדר האם חבילות משאבים של השרת יישמרו",
-  "swd.tooltip.include_resource_packs.2": "יחד עם העולם שהורד."
+  "swd.tooltip.include_resource_packs.2": "יחד עם העולם שהורד.",
+  "swd.screen.config.label.notification_mode": "הודעות:",
+  "swd.screen.config.notification_mode.actionbar": "סרגל פעולות",
+  "swd.screen.config.notification_mode.bossbar": "סרגל בוס",
+  "swd.screen.config.notification_mode.off": "כבוי",
+  "swd.tooltip.notification_mode.1": "בחר כיצד הודעות מצב ההורדה",
+  "swd.tooltip.notification_mode.2": "יוצגו: סרגל פעולות, סרגל בוס או בכלל לא."
 }

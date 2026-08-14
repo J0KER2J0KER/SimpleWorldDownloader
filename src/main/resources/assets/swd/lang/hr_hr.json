@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Postavite hoće li podaci o igraču biti spremljeni",
   "swd.tooltip.include_player_data.2": "zajedno s preuzetim svijetom.",
   "swd.tooltip.include_resource_packs.1": "Postavite hoće li paketi resursa servera biti",
-  "swd.tooltip.include_resource_packs.2": "spremljeni s preuzetim svijetom."
+  "swd.tooltip.include_resource_packs.2": "spremljeni s preuzetim svijetom.",
+  "swd.screen.config.label.notification_mode": "Obavijesti:",
+  "swd.screen.config.notification_mode.actionbar": "Traka radnji",
+  "swd.screen.config.notification_mode.bossbar": "Traka šefa",
+  "swd.screen.config.notification_mode.off": "Isključeno",
+  "swd.tooltip.notification_mode.1": "Odaberite kako se prikazuju poruke o statusu preuzimanja:",
+  "swd.tooltip.notification_mode.2": "traka radnji, traka šefa ili uopće ne."
 }

@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Зат жақтауының мазмұны сақталды.",
   "swd.tooltip.resume_downloads.1": "Егер әлем үшін басқа сақтау табылса,",
   "swd.tooltip.resume_downloads.2": "сақтауды жалғастыруды орнатыңыз.",
-  "swd.screen.config.label.resume_downloads": "Сақтауды жалғастыру:"
+  "swd.screen.config.label.resume_downloads": "Сақтауды жалғастыру:",
+  "swd.screen.config.label.notification_mode": "Хабарландырулар:",
+  "swd.screen.config.notification_mode.actionbar": "Әрекеттер панелі",
+  "swd.screen.config.notification_mode.bossbar": "Босс панелі",
+  "swd.screen.config.notification_mode.off": "Өшірулі",
+  "swd.tooltip.notification_mode.1": "Жүктеу күйі хабарларының қалай көрсетілетінін таңдаңыз:",
+  "swd.tooltip.notification_mode.2": "әрекеттер панелі, босс панелі немесе мүлдем көрсетпеу."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Встановіть, чи мають дані гравця зберігатися",
   "swd.tooltip.include_player_data.2": "разом із завантаженим світом.",
   "swd.tooltip.include_resource_packs.1": "Встановіть, чи мають пакети ресурсів сервера",
-  "swd.tooltip.include_resource_packs.2": "зберігатися із завантаженим світом."
+  "swd.tooltip.include_resource_packs.2": "зберігатися із завантаженим світом.",
+  "swd.screen.config.label.notification_mode": "Сповіщення:",
+  "swd.screen.config.notification_mode.actionbar": "Панель дій",
+  "swd.screen.config.notification_mode.bossbar": "Смужка боса",
+  "swd.screen.config.notification_mode.off": "Вимкнено",
+  "swd.tooltip.notification_mode.1": "Виберіть, як відображаються повідомлення про завантаження:",
+  "swd.tooltip.notification_mode.2": "панель дій, смужка боса або взагалі ніяк."
 }

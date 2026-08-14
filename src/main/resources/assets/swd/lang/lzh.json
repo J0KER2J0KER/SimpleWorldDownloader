@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "設玩者資料是否與",
   "swd.tooltip.include_player_data.2": "所下載之世界同存。",
   "swd.tooltip.include_resource_packs.1": "設伺服器資源包是否",
-  "swd.tooltip.include_resource_packs.2": "與所下載之世界同存。"
+  "swd.tooltip.include_resource_packs.2": "與所下載之世界同存。",
+  "swd.screen.config.label.notification_mode": "告示：",
+  "swd.screen.config.notification_mode.actionbar": "動作欄",
+  "swd.screen.config.notification_mode.bossbar": "主魁欄",
+  "swd.screen.config.notification_mode.off": "關",
+  "swd.tooltip.notification_mode.1": "擇下載之報",
+  "swd.tooltip.notification_mode.2": "顯示之法：動作欄、主魁欄或不示。"
 }

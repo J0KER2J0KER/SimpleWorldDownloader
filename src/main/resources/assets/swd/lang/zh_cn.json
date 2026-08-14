@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> 物品展示框内容已保存。",
   "swd.tooltip.resume_downloads.1": "设置如果找到该世界的其他存档时，",
   "swd.tooltip.resume_downloads.2": "是否应恢复保存过程。",
-  "swd.screen.config.label.resume_downloads": "恢复保存："
+  "swd.screen.config.label.resume_downloads": "恢复保存：",
+  "swd.screen.config.label.notification_mode": "通知：",
+  "swd.screen.config.notification_mode.actionbar": "快捷栏上方",
+  "swd.screen.config.notification_mode.bossbar": "Boss 栏",
+  "swd.screen.config.notification_mode.off": "关闭",
+  "swd.tooltip.notification_mode.1": "选择下载状态消息的",
+  "swd.tooltip.notification_mode.2": "显示方式：快捷栏上方、Boss 栏或不显示。"
 }

@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Conteúdo da moldura salvo.",
   "swd.tooltip.resume_downloads.1": "Define se o salvamento deve ser retomado",
   "swd.tooltip.resume_downloads.2": "se outro salvamento para o mundo for encontrado.",
-  "swd.screen.config.label.resume_downloads": "Retomar salvamento:"
+  "swd.screen.config.label.resume_downloads": "Retomar salvamento:",
+  "swd.screen.config.label.notification_mode": "Notificações:",
+  "swd.screen.config.notification_mode.actionbar": "Barra de ação",
+  "swd.screen.config.notification_mode.bossbar": "Barra de chefe",
+  "swd.screen.config.notification_mode.off": "Desativado",
+  "swd.tooltip.notification_mode.1": "Escolha como as mensagens de download",
+  "swd.tooltip.notification_mode.2": "são exibidas: barra de ação, barra de chefe ou nenhuma."
 }

@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Setz ob Spielerdaten midgespeichert wern solln",
   "swd.tooltip.include_player_data.2": "zamm mid der runnergeladen Welt.",
   "swd.tooltip.include_resource_packs.1": "Setz ob Server-Ressourcepakete gespeichert wern solln",
-  "swd.tooltip.include_resource_packs.2": "mid der runnergeladen Welt."
+  "swd.tooltip.include_resource_packs.2": "mid der runnergeladen Welt.",
+  "swd.screen.config.label.notification_mode": "Meldungen:",
+  "swd.screen.config.notification_mode.actionbar": "Agzionsleisde",
+  "swd.screen.config.notification_mode.bossbar": "Bossleisde",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Gugge wie de Downloade-Meldungen",
+  "swd.tooltip.notification_mode.2": "angeseischt wärdn: Agzionsleisde, Bossleisde oder gar nie."
 }

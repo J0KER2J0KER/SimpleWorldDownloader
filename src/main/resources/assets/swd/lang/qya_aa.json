@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Pé cé quettar tyalieron coivinaruvat",
   "swd.tooltip.include_player_data.2": "as i ohtataina nóre.",
   "swd.tooltip.include_resource_packs.1": "Pé cé serviello mathornor coivinaruvat",
-  "swd.tooltip.include_resource_packs.2": "as i ohtataina nóre."
+  "swd.tooltip.include_resource_packs.2": "as i ohtataina nóre.",
+  "swd.screen.config.label.notification_mode": "Centaion:",
+  "swd.screen.config.notification_mode.actionbar": "Carianma",
+  "swd.screen.config.notification_mode.bossbar": "Cáno Parma",
+  "swd.screen.config.notification_mode.off": "Lúcëa",
+  "swd.tooltip.notification_mode.1": "Cildë manen menta-lénya canat",
+  "swd.tooltip.notification_mode.2": "técina: carianma, cáno parma, var munta."
 }

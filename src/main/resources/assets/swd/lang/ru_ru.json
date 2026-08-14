@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Содержимое рамки сохранено.",
   "swd.tooltip.resume_downloads.1": "Укажите, следует ли возобновить сохранение,",
   "swd.tooltip.resume_downloads.2": "если найдено другое сохранение для этого мира.",
-  "swd.screen.config.label.resume_downloads": "Возобновить сохранение:"
+  "swd.screen.config.label.resume_downloads": "Возобновить сохранение:",
+  "swd.screen.config.label.notification_mode": "Уведомления:",
+  "swd.screen.config.notification_mode.actionbar": "Панель действий",
+  "swd.screen.config.notification_mode.bossbar": "Полоса босса",
+  "swd.screen.config.notification_mode.off": "Выкл.",
+  "swd.tooltip.notification_mode.1": "Выберите, как отображаются сообщения о загрузке:",
+  "swd.tooltip.notification_mode.2": "в панели действий, полосе босса или вообще не показывать."
 }

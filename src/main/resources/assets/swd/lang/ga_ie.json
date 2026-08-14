@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Sábháladh ábhar an fhráma míre.",
   "swd.tooltip.resume_downloads.1": "Socraigh ar cheart leanúint den tsábháil",
   "swd.tooltip.resume_downloads.2": "má aimsítear sábháil eile don domhan.",
-  "swd.screen.config.label.resume_downloads": "Atosaigh an tsábháil:"
+  "swd.screen.config.label.resume_downloads": "Atosaigh an tsábháil:",
+  "swd.screen.config.label.notification_mode": "Fógraí:",
+  "swd.screen.config.notification_mode.actionbar": "Barra gníomhaíochta",
+  "swd.screen.config.notification_mode.bossbar": "Barra boss",
+  "swd.screen.config.notification_mode.off": "Múchta",
+  "swd.tooltip.notification_mode.1": "Roghnaigh conas a thaispeántar teachtaireachtaí stádas íoslódála:",
+  "swd.tooltip.notification_mode.2": "barra gníomhaíochta, barra boss, nó ar bith."
 }
 

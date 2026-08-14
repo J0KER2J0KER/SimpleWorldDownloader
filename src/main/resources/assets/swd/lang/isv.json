@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "Ustanov, jesli danně igrača imajut byvati sčuvany",
   "swd.tooltip.include_player_data.2": "vmeste s sčitanym světom.",
   "swd.tooltip.include_resource_packs.1": "Ustanov, jesli resursnye pakety servera imajut",
-  "swd.tooltip.include_resource_packs.2": "byvati sčuvany s sčitanym světom."
+  "swd.tooltip.include_resource_packs.2": "byvati sčuvany s sčitanym světom.",
+  "swd.screen.config.label.notification_mode": "Izvještjenja:",
+  "swd.screen.config.notification_mode.actionbar": "Traka dějstvij",
+  "swd.screen.config.notification_mode.bossbar": "Traka bosa",
+  "swd.screen.config.notification_mode.off": "Izključeno",
+  "swd.tooltip.notification_mode.1": "Izberite kako se pokazujų soobšćenja statusa sdohnutja:",
+  "swd.tooltip.notification_mode.2": "traka dějstvij, traka bosa ili nikako."
 }

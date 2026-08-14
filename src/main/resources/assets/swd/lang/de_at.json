@@ -31,5 +31,12 @@
   "swd.status.itemframe_saved": "> Inhalt des Rahmens gespeichert.",
   "swd.tooltip.resume_downloads.1": "Legt fest, ob das Speichern fortgesetzt werden soll,",
   "swd.tooltip.resume_downloads.2": "wenn ein weiterer Speicherstand für diese Welt gefunden wird.",
-  "swd.screen.config.label.resume_downloads": "Speichern fortsetzen:"
+  "swd.screen.config.label.resume_downloads": "Speichern fortsetzen:",
+  "swd.screen.config.label.notification_mode": "Benachrichtigungen:",
+  "swd.screen.config.notification_mode.actionbar": "Aktionsleiste",
+  "swd.screen.config.notification_mode.bossbar": "Bossleiste",
+  "swd.screen.config.notification_mode.off": "Aus",
+  "swd.tooltip.notification_mode.1": "Wähle, wie Download-Statusmeldungen",
+  "swd.tooltip.notification_mode.2": "angezeigt werden: Aktionsleiste, Bossleiste oder gar ned."
+}
 }

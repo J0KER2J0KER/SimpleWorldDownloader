@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> Contenuto dell'item frame salvato.",
   "swd.tooltip.resume_downloads.1": "Imposta se il salvataggio deve riprendere",
   "swd.tooltip.resume_downloads.2": "se viene trovato un altro salvataggio per questo mondo.",
-  "swd.screen.config.label.resume_downloads": "Riprendi salvataggio:"
+  "swd.screen.config.label.resume_downloads": "Riprendi salvataggio:",
+  "swd.screen.config.label.notification_mode": "Notifiche:",
+  "swd.screen.config.notification_mode.actionbar": "Barra delle azioni",
+  "swd.screen.config.notification_mode.bossbar": "Barra del boss",
+  "swd.screen.config.notification_mode.off": "Disattivato",
+  "swd.tooltip.notification_mode.1": "Scegli come mostrare i messaggi di download:",
+  "swd.tooltip.notification_mode.2": "nella barra delle azioni, nella barra del boss o per niente."
 }

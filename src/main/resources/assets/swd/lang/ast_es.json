@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Conteníu del marcu d'oxetos guardáu.",
   "swd.tooltip.resume_downloads.1": "Afitar si'l guardáu tien de reanudase",
   "swd.tooltip.resume_downloads.2": "si s'atopa otru guardáu pal mundu.",
-  "swd.screen.config.label.resume_downloads": "Reanudar guardáu:"
+  "swd.screen.config.label.resume_downloads": "Reanudar guardáu:",
+  "swd.screen.config.label.notification_mode": "Notificaciones:",
+  "swd.screen.config.notification_mode.actionbar": "Barra d'aición",
+  "swd.screen.config.notification_mode.bossbar": "Barra de xefes",
+  "swd.screen.config.notification_mode.off": "Apagao",
+  "swd.tooltip.notification_mode.1": "Escoye cómo se amuesen los mensaxes de descarga:",
+  "swd.tooltip.notification_mode.2": "na barra d'aición, barra de xefes o de denguna manera."
 }
 

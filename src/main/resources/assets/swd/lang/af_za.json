@@ -31,6 +31,12 @@
   "swd.status.itemframe_saved": "> Itemraam-inhoud gestoor.",
   "swd.tooltip.resume_downloads.1": "Stel in of die stoor hervat moet word",
   "swd.tooltip.resume_downloads.2": "as nog 'n stoor vir die wêreld gevind word.",
-  "swd.screen.config.label.resume_downloads": "Hervat stoor:"
+  "swd.screen.config.label.resume_downloads": "Hervat stoor:",
+  "swd.screen.config.label.notification_mode": "Kennisgewings:",
+  "swd.screen.config.notification_mode.actionbar": "Aksiebalk",
+  "swd.screen.config.notification_mode.bossbar": "Baasbalk",
+  "swd.screen.config.notification_mode.off": "Af",
+  "swd.tooltip.notification_mode.1": "Kies hoe aflaai-statusboodskappe",
+  "swd.tooltip.notification_mode.2": "getoon word: aksiebalk, baasbalk, of heeltemal nie."
 }
 

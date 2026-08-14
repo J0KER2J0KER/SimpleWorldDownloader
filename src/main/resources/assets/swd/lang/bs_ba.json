@@ -31,6 +31,13 @@
   "swd.status.itemframe_saved": "> Sadržaj okvira za predmete je spašen.",
   "swd.tooltip.resume_downloads.1": "Postavite da li se spašavanje treba nastaviti",
   "swd.tooltip.resume_downloads.2": "ako je pronađeno drugo spašavanje za ovaj svijet.",
-  "swd.screen.config.label.resume_downloads": "Nastavi spašavanje:"
+  "swd.screen.config.label.resume_downloads": "Nastavi spašavanje:",
+  "swd.screen.config.label.notification_mode": "Obavještenja:",
+  "swd.screen.config.notification_mode.actionbar": "Traka radnji",
+  "swd.screen.config.notification_mode.bossbar": "Traka bossa",
+  "swd.screen.config.notification_mode.off": "Isključeno",
+  "swd.tooltip.notification_mode.1": "Odaberite kako se prikazuju poruke o statusu preuzimanja:",
+  "swd.tooltip.notification_mode.2": "traka radnji, traka bossa ili nikako."
+}
 }
 

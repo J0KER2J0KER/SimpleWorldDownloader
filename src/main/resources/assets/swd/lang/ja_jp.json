@@ -31,5 +31,11 @@
   "swd.status.itemframe_saved": "> 額縁のコンテンツを保存しました。",
   "swd.tooltip.resume_downloads.1": "このワールドの別のセーブデータが見つかった場合、",
   "swd.tooltip.resume_downloads.2": "保存を再開するかどうかを設定します。",
-  "swd.screen.config.label.resume_downloads": "保存を再開:"
+  "swd.screen.config.label.resume_downloads": "保存を再開:",
+  "swd.screen.config.label.notification_mode": "通知:",
+  "swd.screen.config.notification_mode.actionbar": "アクションバー",
+  "swd.screen.config.notification_mode.bossbar": "ボスバー",
+  "swd.screen.config.notification_mode.off": "オフ",
+  "swd.tooltip.notification_mode.1": "ダウンロード状況メッセージの表示方法を選択:",
+  "swd.tooltip.notification_mode.2": "アクションバー、ボスバー、または表示しない。"
 }

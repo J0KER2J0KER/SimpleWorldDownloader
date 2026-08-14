@@ -31,5 +31,11 @@
   "swd.tooltip.include_player_data.1": "ตั้งว่าจะบันทึกข้อมูลผู้เล่น",
   "swd.tooltip.include_player_data.2": "พร้อมกับโลกที่ดาวน์โหลดหรือไม่",
   "swd.tooltip.include_resource_packs.1": "ตั้งว่าจะบันทึกรีซอร์สแพ็กของเซิร์ฟเวอร์",
-  "swd.tooltip.include_resource_packs.2": "พร้อมกับโลกที่ดาวน์โหลดหรือไม่"
+  "swd.tooltip.include_resource_packs.2": "พร้อมกับโลกที่ดาวน์โหลดหรือไม่",
+  "swd.screen.config.label.notification_mode": "การแจ้งเตือน:",
+  "swd.screen.config.notification_mode.actionbar": "แถบการกระทำ",
+  "swd.screen.config.notification_mode.bossbar": "แถบบอส",
+  "swd.screen.config.notification_mode.off": "ปิด",
+  "swd.tooltip.notification_mode.1": "เลือกวิธีแสดงข้อความสถานะการดาวน์โหลด:",
+  "swd.tooltip.notification_mode.2": "แถบการกระทำ แถบบอส หรือไม่แสดงเลย"
 }
