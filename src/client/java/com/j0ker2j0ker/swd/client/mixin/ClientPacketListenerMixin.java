@@ -26,8 +26,8 @@ public abstract class ClientPacketListenerMixin {
 
         Minecraft mc = Minecraft.getInstance();
         if(mc.isLocalServer() || mc.getCurrentServer() == null) return;
-        int chunkX = packet.getX();
-        int chunkZ = packet.getZ();
+        int chunkX = packet.x();
+        int chunkZ = packet.z();
         LevelChunk wc = this.level.getChunkSource().getChunk(chunkX, chunkZ, false);
         if (wc == null || wc.isEmpty() || mc.level == null) return;
 

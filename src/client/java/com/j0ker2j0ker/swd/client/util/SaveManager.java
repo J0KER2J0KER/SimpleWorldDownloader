@@ -71,9 +71,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int DATA_VERSION = 4903;
-    private static final String VERSION_NAME = "26.2";
-    private static final byte IS_SNAPSHOT = (byte) 0;
+    private static final int DATA_VERSION = 5021;
+    private static final String VERSION_NAME = "26.3 Release Candidate 2";
+    private static final byte IS_SNAPSHOT = (byte) 1;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
     private static final int DOUBLE_CHEST_SLOTS = 54;
@@ -226,8 +226,8 @@ public class SaveManager {
         if (cachePlayerUuid == null) cachePlayerUuid = mc.player.getUUID();
 
         boolean changed = false;
-        boolean hadProgressUpdates = !packet.getProgress().isEmpty();
-        boolean hadRemovals = !packet.getRemoved().isEmpty();
+        boolean hadProgressUpdates = !packet.progress().isEmpty();
+        boolean hadRemovals = !packet.removed().isEmpty();
 
         if (packet.shouldReset()) {
             cachedAdvancements = new JsonObject();
@@ -238,14 +238,14 @@ public class SaveManager {
             }
         }
 
-        for (Identifier removedId : packet.getRemoved()) {
+        for (Identifier removedId : packet.removed()) {
             String key = removedId.toString();
             cachedAdvancements.remove(key);
             removedAdvancements.add(key);
             changed = true;
         }
 
-        packet.getProgress().forEach((advancementId, progress) -> {
+        packet.progress().forEach((advancementId, progress) -> {
             String key = advancementId.toString();
             JsonObject incoming = buildAdvancementJson(progress);
             JsonObject existing = getObject(cachedAdvancements, key);
