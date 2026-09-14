@@ -3,26 +3,34 @@ package com.j0ker2j0ker.swd.client.screen;
 import com.j0ker2j0ker.swd.client.SwdClient;
 import com.j0ker2j0ker.swd.client.util.SwdConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractScrollArea;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class SwdConfigScreen extends Screen {
     private final Screen parent;
+    private final List<SettingEntry> settings = new ArrayList<>();
 
-    // layout
-    private int centerX;
-    private int includesHeaderX;
-    private int includesHeaderY;
-
-    private final List<SettingEntry> settings = new java.util.ArrayList<>();
+    private ScrollPanel scrollPanel;
 
     // description texts
     private static final List<Component> NAME_DESC = List.of(
@@ -68,94 +76,44 @@ public class SwdConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        this.centerX = this.width / 2;
         this.settings.clear();
 
-        // label positions (left side)
-        int nameLabelX = centerX - 180;
-        int nameLabelY = 75;
-        int autoLabelX = centerX - 180;
-        int autoLabelY = 100;
-        int resumeLabelX = centerX - 180;
-        int resumeLabelY = 120;
-        int notificationLabelX = centerX - 180;
-        int notificationLabelY = 140;
-        this.includesHeaderX = centerX - 180;
-        this.includesHeaderY = 165;
-        int entitiesLabelX = centerX - 180;
-        int entitiesLabelY = 190;
-        int playerDataLabelX = centerX - 180;
-        int playerDataLabelY = 210;
-        int resourcePacksLabelX = centerX - 180;
-        int resourcePacksLabelY = 230;
+        int centerX = this.width / 2;
+        int contentTop = 55;
+        int contentBottom = this.height - 65;
+        int panelWidth = 390;
+        int panelX = centerX - panelWidth / 2;
+        int panelHeight = Math.max(1, contentBottom - contentTop);
 
-        // move inputs right + smaller text box
-        int nameFieldX = centerX - 20;
-        int nameFieldY = 70;
-        int nameFieldW = 150;
-        int nameFieldH = 20;
+        this.scrollPanel = new ScrollPanel(panelX, contentTop, panelWidth, panelHeight);
 
-        int resetX = nameFieldX + nameFieldW + 10;
-        int resetW = 60;
+        int labelX = panelX + 8;
+        int controlX = panelX + 190;
 
-        int autoCheckboxX = centerX - 20;
-        int autoCheckboxY = 95;
-        int resumeCheckboxX = centerX - 20;
-        int resumeCheckboxY = 115;
-        int notificationButtonX = centerX - 20;
-        int notificationButtonY = 133;
-        int notificationButtonW = 150;
-        int entitiesCheckboxX = centerX - 20;
-        int entitiesCheckboxY = 185;
-        int playerDataCheckboxX = centerX - 20;
-        int playerDataCheckboxY = 205;
-        int resourcePacksCheckboxX = centerX - 20;
-        int resourcePacksCheckboxY = 225;
-
-        // dynamic settings list
         this.settings.add(new StringSettingEntry(
                 Component.translatable("swd.screen.config.label.save_world_to"),
-                NAME_DESC,
-                nameLabelX,
-                nameLabelY,
-                nameFieldX,
-                nameFieldY,
-                nameFieldW,
-                nameFieldH,
+                NAME_DESC, labelX, 15, controlX, 10, 110, 20,
                 () -> SwdClient.CONFIG.saveWorldTo != null ? SwdClient.CONFIG.saveWorldTo : "",
                 value -> SwdClient.CONFIG.saveWorldTo = value
         ));
 
         this.settings.add(new BooleanSettingEntry(
                 Component.translatable("swd.screen.config.label.auto_download"),
-                AUTO_DESC,
-                autoLabelX,
-                autoLabelY,
-                autoCheckboxX,
-                autoCheckboxY,
+                AUTO_DESC, labelX, 45, controlX, 40,
                 () -> SwdClient.CONFIG.autoDownload,
                 value -> SwdClient.CONFIG.autoDownload = value
         ));
 
         this.settings.add(new BooleanSettingEntry(
                 Component.translatable("swd.screen.config.label.resume_downloads"),
-                RESUME_DESC,
-                resumeLabelX,
-                resumeLabelY,
-                resumeCheckboxX,
-                resumeCheckboxY,
+                RESUME_DESC, labelX, 70, controlX, 65,
                 () -> SwdClient.CONFIG.resumeDownloads,
                 value -> SwdClient.CONFIG.resumeDownloads = value
         ));
 
         this.settings.add(new EnumSettingEntry<>(
                 Component.translatable("swd.screen.config.label.notification_mode"),
-                NOTIFICATION_DESC,
-                notificationLabelX,
-                notificationLabelY,
-                notificationButtonX,
-                notificationButtonY,
-                notificationButtonW,
+                NOTIFICATION_DESC, labelX, 95, controlX, 90, 150,
                 SwdConfig.NotificationMode.class,
                 mode -> Component.translatable("swd.screen.config.notification_mode." + mode.name().toLowerCase()),
                 () -> SwdClient.CONFIG.notificationMode,
@@ -164,85 +122,51 @@ public class SwdConfigScreen extends Screen {
 
         this.settings.add(new BooleanSettingEntry(
                 Component.translatable("swd.screen.config.label.include_entities"),
-                ENTITIES_DESC,
-                entitiesLabelX,
-                entitiesLabelY,
-                entitiesCheckboxX,
-                entitiesCheckboxY,
+                ENTITIES_DESC, labelX, 145, controlX, 140,
                 () -> SwdClient.CONFIG.includeEntities,
                 value -> SwdClient.CONFIG.includeEntities = value
         ));
 
         this.settings.add(new BooleanSettingEntry(
                 Component.translatable("swd.screen.config.label.include_player_data"),
-                PLAYER_DATA_DESC,
-                playerDataLabelX,
-                playerDataLabelY,
-                playerDataCheckboxX,
-                playerDataCheckboxY,
+                PLAYER_DATA_DESC, labelX, 170, controlX, 165,
                 () -> SwdClient.CONFIG.includePlayerData,
                 value -> SwdClient.CONFIG.includePlayerData = value
         ));
 
         this.settings.add(new BooleanSettingEntry(
                 Component.translatable("swd.screen.config.label.include_resource_packs"),
-                RESOURCE_PACKS_DESC,
-                resourcePacksLabelX,
-                resourcePacksLabelY,
-                resourcePacksCheckboxX,
-                resourcePacksCheckboxY,
+                RESOURCE_PACKS_DESC, labelX, 195, controlX, 190,
                 () -> SwdClient.CONFIG.includeResourcePacks,
                 value -> SwdClient.CONFIG.includeResourcePacks = value
         ));
 
         for (SettingEntry setting : this.settings) {
-            setting.addWidgets(this);
+            setting.addWidgets(this.scrollPanel);
         }
 
-        this.addRenderableWidget(Button.builder(Component.translatable("swd.button.reset"), b -> {
-            for (SettingEntry setting : this.settings) {
-                if (setting instanceof StringSettingEntry stringSetting) {
-                    stringSetting.setValue("");
-                }
-            }
-            SwdClient.CONFIG.saveWorldTo = "";
-        }).pos(resetX, nameFieldY).width(resetW).build());
+        this.addRenderableWidget(this.scrollPanel);
 
-        this.addRenderableWidget(Button.builder(Component.translatable("swd.button.save"), b -> {
-            for (SettingEntry setting : this.settings) {
-                setting.applyToConfig();
-            }
-            SwdClient.CONFIG.save();
-            this.onClose();
-        }).pos(centerX - 155, this.height - 50).width(150).build());
+        this.addRenderableWidget(Button.builder(Component.translatable("swd.button.save"),
+                        button -> {
+                            for (SettingEntry setting : this.settings) {
+                                setting.applyToConfig();
+                            }
+                            SwdClient.CONFIG.save();
+                            this.onClose();
+                        }).pos(centerX - 155, this.height - 45).width(150).build());
 
-        this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, b -> this.onClose())
-                .pos(centerX + 5, this.height - 50).width(150).build());
+        this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> this.onClose())
+                .pos(centerX + 5, this.height - 45).width(150).build());
     }
 
     @Override
-    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractRenderState(graphics, mouseX, mouseY, a);
+    public void extractRenderState(
+            GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
         graphics.nextStratum();
-
         graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
-        graphics.pose().translate(includesHeaderX, includesHeaderY);
-        graphics.pose().scale(1.35f, 1.35f);
-        graphics.text(this.font, Component.translatable("swd.screen.config.includes_heading"), 0, 0, 0xFFAAAAAA);
-        graphics.pose().scale(0.7407407f, 0.7407407f);
-        graphics.pose().translate(-includesHeaderX, -includesHeaderY);
-
-        for (SettingEntry setting : this.settings) {
-            setting.renderLabel(this.font, graphics);
-        }
-
-        for (SettingEntry setting : this.settings) {
-            if (setting.isHovered(this.font, mouseX, mouseY)) {
-                graphics.setComponentTooltipForNextFrame(this.font, setting.getTooltip(), mouseX, mouseY);
-                break;
-            }
-        }
     }
 
     @Override
@@ -250,60 +174,252 @@ public class SwdConfigScreen extends Screen {
         this.minecraft.setScreenAndShow(parent);
     }
 
-    private abstract static class SettingEntry {
-        private final Component label;
-        private final List<Component> tooltip;
-        private final int labelX;
-        private final int labelY;
+    private final class ScrollPanel extends AbstractScrollArea {
+        private final List<AbstractWidget> widgets = new ArrayList<>();
+        private final int panelX;
+        private final int panelY;
+        private final int panelWidth;
+        private final int panelHeight;
 
-        protected SettingEntry(Component label, List<Component> tooltip, int labelX, int labelY) {
-            this.label = label;
-            this.tooltip = tooltip;
-            this.labelX = labelX;
-            this.labelY = labelY;
+        private ScrollPanel(int x, int y, int width, int height) {
+            super(x, y, width, height,
+                    Component.translatable("swd.screen.config.title"),
+                    AbstractScrollArea.defaultSettings(12));
+
+            this.panelX = x;
+            this.panelY = y;
+            this.panelWidth = width;
+            this.panelHeight = height;
         }
 
-        public List<Component> getTooltip() {
-            return tooltip;
+        private void addWidget(AbstractWidget widget) {
+            this.widgets.add(widget);
+            this.updateChildPositions();
         }
 
-        public void renderLabel(net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
-            graphics.text(font, label, labelX, labelY, 0xFFFFFFFF);
+        @Override
+        public void setScrollAmount(double scrollAmount) {
+            super.setScrollAmount(scrollAmount);
+            this.updateChildPositions();
         }
 
-        public boolean isHovered(net.minecraft.client.gui.Font font, int mouseX, int mouseY) {
-            int labelW = font.width(label);
-            boolean hoverLabel = isHovering(mouseX, mouseY, labelX, labelY, labelW, 10);
-            return hoverLabel || isWidgetHovered(mouseX, mouseY);
+        private void updateChildPositions() {
+            int offset = (int) this.scrollAmount();
+            for (SettingEntry setting : SwdConfigScreen.this.settings) {
+                setting.updateWidgetPosition(this.getY(), offset);
+            }
         }
 
-        protected abstract boolean isWidgetHovered(int mouseX, int mouseY);
+        @Override
+        protected int contentHeight() {
+            return 235;
+        }
 
-        public abstract void addWidgets(SwdConfigScreen screen);
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+        }
 
-        public abstract void applyToConfig();
+        @Override
+        protected void extractWidgetRenderState(
+                GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            graphics.enableScissor(
+                    this.getX(),
+                    this.getY(),
+                    this.getRight(),
+                    this.getBottom());
 
-        protected boolean isHovering(int mouseX, int mouseY, int x, int y, int w, int h) {
-            return mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h;
+            graphics.nextStratum();
+
+            int headingY = this.getY() + 0 - (int) this.scrollAmount();
+            graphics.text(
+                    SwdConfigScreen.this.font,
+                    Component.translatable("swd.screen.config.includes_heading"),
+                    this.getX() + 8,
+                    headingY,
+                    0xFFAAAAAA
+            );
+
+            this.updateChildPositions();
+
+            for (SettingEntry setting : settings) {
+                setting.renderLabel(SwdConfigScreen.this.font, graphics, this.getY());
+            }
+
+            for (AbstractWidget widget : this.widgets) {
+                widget.extractRenderState(graphics, mouseX, mouseY, partialTick);
+            }
+
+            graphics.disableScissor();
+            this.extractScrollbar(graphics, mouseX, mouseY);
+        }
+
+        @Override
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+            if (!this.visible || !this.active) {
+                return false;
+            }
+
+            if (this.updateScrolling(event)) {
+                return true;
+            }
+
+            if (!this.isMouseOver(event.x(), event.y())) {
+                return false;
+            }
+
+            for (int i = this.widgets.size() - 1; i >= 0; i--) {
+                AbstractWidget widget = this.widgets.get(i);
+                if (widget.mouseClicked(event, doubleClick)) {
+                    this.setFocusedWidget(widget);
+                    return true;
+                }
+            }
+
+            return true;
+        }
+
+        @Override
+        public boolean mouseReleased(MouseButtonEvent event) {
+            boolean handled = false;
+
+            for (AbstractWidget widget : this.widgets) {
+                handled |= widget.mouseReleased(event);
+            }
+
+            this.onRelease(event);
+            return handled;
+        }
+
+        @Override
+        public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
+            if (super.mouseDragged(event, dx, dy)) {
+                return true;
+            }
+
+            for (AbstractWidget widget : this.widgets) {
+                if (widget.mouseDragged(event, dx, dy)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        @Override
+        public void mouseMoved(double x, double y) {
+            for (AbstractWidget widget : this.widgets) {
+                widget.mouseMoved(x, y);
+            }
+        }
+
+        @Override
+        public boolean mouseScrolled(
+                double mouseX, double mouseY, double scrollX, double scrollY) {
+            if (!this.isMouseOver(mouseX, mouseY)) {
+                return false;
+            }
+
+            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        }
+
+        @Override
+        public boolean keyPressed(KeyEvent event) {
+            for (AbstractWidget widget : this.widgets) {
+                if (widget.isFocused() && widget.keyPressed(event)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean keyReleased(KeyEvent event) {
+            for (AbstractWidget widget : this.widgets) {
+                if (widget.isFocused() && widget.keyReleased(event)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean charTyped(CharacterEvent event) {
+            for (AbstractWidget widget : this.widgets) {
+                if (widget.isFocused() && widget.charTyped(event)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean isMouseOver(double mouseX, double mouseY) {
+            return mouseX >= this.getX()
+                    && mouseX < this.getRight()
+                    && mouseY >= this.getY()
+                    && mouseY < this.getBottom();
+        }
+
+        private void setFocusedWidget(@Nullable GuiEventListener focused) {
+            for (AbstractWidget widget : this.widgets) {
+                widget.setFocused(widget == focused);
+            }
         }
     }
 
-    private static final class StringSettingEntry extends SettingEntry {
+    private abstract class SettingEntry {
+        private final Component label;
+        private final List<Component> tooltip;
+        private final int labelX;
+        private final int baseLabelY;
+
+        protected SettingEntry(
+                Component label, List<Component> tooltip, int labelX, int labelY) {
+            this.label = label;
+            this.tooltip = tooltip;
+            this.labelX = labelX;
+            this.baseLabelY = labelY;
+        }
+
+        public void renderLabel(
+                net.minecraft.client.gui.Font font,
+                GuiGraphicsExtractor graphics,
+                int panelY) {
+            int y = panelY + baseLabelY - (int) SwdConfigScreen.this.scrollPanel.scrollAmount();
+            graphics.text(font, label, labelX, y, 0xFFFFFFFF);
+
+            if (isHovered(font, graphics)) {
+                graphics.setComponentTooltipForNextFrame(font, tooltip, labelX, y);
+            }
+        }
+
+        protected abstract boolean isHovered(net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics);
+
+        public abstract void addWidgets(ScrollPanel panel);
+
+        public abstract void updateWidgetPosition(int panelY, int scrollOffset);
+
+        public abstract void applyToConfig();
+
+        protected static boolean inside(double mouseX, double mouseY, int x, int y, int width, int height) {
+            return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
+        }
+    }
+
+    private final class StringSettingEntry extends SettingEntry {
         private final int fieldX;
-        private final int fieldY;
+        private final int baseFieldY;
         private final int fieldW;
         private final int fieldH;
-        private final java.util.function.Supplier<String> getter;
-        private final java.util.function.Consumer<String> setter;
+        private final Supplier<String> getter;
+        private final Consumer<String> setter;
         private EditBox editBox;
+        private Button resetButton;
 
-        private StringSettingEntry(Component label, List<Component> tooltip, int labelX, int labelY,
-                                   int fieldX, int fieldY, int fieldW, int fieldH,
-                                   java.util.function.Supplier<String> getter,
-                                   java.util.function.Consumer<String> setter) {
+        private StringSettingEntry(Component label, List<Component> tooltip, int labelX, int labelY, int fieldX, int fieldY, int fieldW, int fieldH, Supplier<String> getter, Consumer<String> setter) {
             super(label, tooltip, labelX, labelY);
             this.fieldX = fieldX;
-            this.fieldY = fieldY;
+            this.baseFieldY = fieldY;
             this.fieldW = fieldW;
             this.fieldH = fieldH;
             this.getter = getter;
@@ -311,17 +427,45 @@ public class SwdConfigScreen extends Screen {
         }
 
         @Override
-        public void addWidgets(SwdConfigScreen screen) {
-            this.editBox = new EditBox(screen.font, fieldX, fieldY, fieldW, fieldH,
+        public void addWidgets(ScrollPanel panel) {
+            this.editBox = new EditBox(
+                    SwdConfigScreen.this.font,
+                    fieldX,
+                    panel.getY() + baseFieldY,
+                    fieldW,
+                    fieldH,
                     Component.translatable("swd.screen.config.placeholder.world_name"));
             this.editBox.setMaxLength(128);
             this.editBox.setValue(getter.get());
-            screen.addRenderableWidget(this.editBox);
+            panel.addWidget(this.editBox);
+
+            this.resetButton = Button.builder(
+                            Component.translatable("swd.button.reset"),
+                            button -> {
+                                this.setValue("");
+                                SwdClient.CONFIG.saveWorldTo = "";
+                            })
+                    .pos(fieldX + fieldW + 10, panel.getY() + baseFieldY)
+                    .width(60)
+                    .build();
+
+            panel.addWidget(this.resetButton);
         }
 
         @Override
-        protected boolean isWidgetHovered(int mouseX, int mouseY) {
-            return this.editBox != null && this.editBox.isMouseOver(mouseX, mouseY);
+        public void updateWidgetPosition(int panelY, int scrollOffset) {
+            if (this.editBox != null) {
+                this.editBox.setY(panelY + this.baseFieldY - scrollOffset);
+            }
+            if (this.resetButton != null) {
+                this.resetButton.setY(panelY + this.baseFieldY - scrollOffset);
+            }
+        }
+
+        @Override
+        protected boolean isHovered(
+                net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
+            return this.editBox != null && this.editBox.isMouseOver(graphics.guiWidth(), graphics.guiHeight());
         }
 
         @Override
@@ -338,36 +482,44 @@ public class SwdConfigScreen extends Screen {
         }
     }
 
-    private static final class BooleanSettingEntry extends SettingEntry {
+    private final class BooleanSettingEntry extends SettingEntry {
         private final int checkboxX;
-        private final int checkboxY;
-        private final java.util.function.BooleanSupplier getter;
-        private final java.util.function.Consumer<Boolean> setter;
+        private final int baseCheckboxY;
+        private final BooleanSupplier getter;
+        private final Consumer<Boolean> setter;
         private Checkbox checkbox;
 
-        private BooleanSettingEntry(Component label, List<Component> tooltip, int labelX, int labelY,
-                                    int checkboxX, int checkboxY,
-                                    java.util.function.BooleanSupplier getter,
-                                    java.util.function.Consumer<Boolean> setter) {
+        private BooleanSettingEntry(
+                Component label, List<Component> tooltip,
+                int labelX, int labelY,
+                int checkboxX, int checkboxY,
+                BooleanSupplier getter, Consumer<Boolean> setter) {
             super(label, tooltip, labelX, labelY);
             this.checkboxX = checkboxX;
-            this.checkboxY = checkboxY;
+            this.baseCheckboxY = checkboxY;
             this.getter = getter;
             this.setter = setter;
         }
 
         @Override
-        public void addWidgets(SwdConfigScreen screen) {
-            this.checkbox = Checkbox.builder(Component.empty(), screen.font)
-                    .pos(checkboxX, checkboxY)
+        public void addWidgets(ScrollPanel panel) {
+            this.checkbox = Checkbox.builder(Component.empty(), SwdConfigScreen.this.font)
+                    .pos(checkboxX, panel.getY() + baseCheckboxY)
                     .selected(getter.getAsBoolean())
                     .build();
-            screen.addRenderableWidget(this.checkbox);
+            panel.addWidget(this.checkbox);
         }
 
         @Override
-        protected boolean isWidgetHovered(int mouseX, int mouseY) {
-            return this.checkbox != null && this.checkbox.isMouseOver(mouseX, mouseY);
+        public void updateWidgetPosition(int panelY, int scrollOffset) {
+            if (this.checkbox != null) {
+                this.checkbox.setY(panelY + this.baseCheckboxY - scrollOffset);
+            }
+        }
+
+        @Override
+        protected boolean isHovered(net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
+            return this.checkbox != null && this.checkbox.isMouseOver(graphics.guiWidth(), graphics.guiHeight());
         }
 
         @Override
@@ -378,9 +530,9 @@ public class SwdConfigScreen extends Screen {
         }
     }
 
-    private static final class EnumSettingEntry<T extends Enum<T>> extends SettingEntry {
+    private final class EnumSettingEntry<T extends Enum<T>> extends SettingEntry {
         private final int buttonX;
-        private final int buttonY;
+        private final int baseButtonY;
         private final int buttonW;
         private final T[] values;
         private final java.util.function.Function<T, Component> valueName;
@@ -396,7 +548,7 @@ public class SwdConfigScreen extends Screen {
                                  java.util.function.Consumer<T> setter) {
             super(label, tooltip, labelX, labelY);
             this.buttonX = buttonX;
-            this.buttonY = buttonY;
+            this.baseButtonY = buttonY;
             this.buttonW = buttonW;
             this.values = enumClass.getEnumConstants();
             this.valueName = valueName;
@@ -405,17 +557,26 @@ public class SwdConfigScreen extends Screen {
         }
 
         @Override
-        public void addWidgets(SwdConfigScreen screen) {
+        public void addWidgets(ScrollPanel panel) {
             this.button = CycleButton.builder(valueName, getter.get())
                     .withValues(values)
                     .displayOnlyValue()
-                    .create(buttonX, buttonY, buttonW, 20, Component.empty());
-            screen.addRenderableWidget(this.button);
+                    .create(buttonX, panel.getY() + baseButtonY, buttonW, 20, Component.empty());
+            panel.addWidget(this.button);
         }
 
         @Override
-        protected boolean isWidgetHovered(int mouseX, int mouseY) {
-            return this.button != null && this.button.isMouseOver(mouseX, mouseY);
+        public void updateWidgetPosition(int panelY, int scrollOffset) {
+            if (this.button != null) {
+                this.button.setY(panelY + this.baseButtonY - scrollOffset);
+            }
+        }
+
+        @Override
+        protected boolean isHovered(
+                net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
+            return button != null && button.isMouseOver(
+                    graphics.guiWidth(), graphics.guiHeight());
         }
 
         @Override
