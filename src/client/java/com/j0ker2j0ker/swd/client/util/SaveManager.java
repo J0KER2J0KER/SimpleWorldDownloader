@@ -71,9 +71,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SaveManager {
 
-    private static final int DATA_VERSION = 5021;
-    private static final String VERSION_NAME = "26.3 Release Candidate 2";
-    private static final byte IS_SNAPSHOT = (byte) 1;
+    private static final int DATA_VERSION = 5023;
+    private static final String VERSION_NAME = "26.3";
+    private static final byte IS_SNAPSHOT = (byte) 0;
 
     private static final int PLAYER_INVENTORY_SLOTS = 36;
     private static final int DOUBLE_CHEST_SLOTS = 54;
