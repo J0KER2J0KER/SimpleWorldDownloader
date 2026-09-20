@@ -1,0 +1,68 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT'
+}
+
+base {
+    archivesName = "${rootProject.archives_base_name}-fabric"
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "swd" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+sourceSets {
+    client {
+        java.srcDir rootProject.file('common/src/main/java')
+        resources.srcDir rootProject.file('common/src/main/resources')
+    }
+}
+
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
+repositories {
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.terraformersmc.com/releases" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+
+    implementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+
+    implementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", rootProject.minecraft_version
+    inputs.property "loader_version", rootProject.loader_version
+    filteringCharset = "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": rootProject.minecraft_version,
+                "loader_version": rootProject.loader_version
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    from(rootProject.file("LICENSE.txt")) {
+        rename { "${it}_${rootProject.archives_base_name}" }
+    }
+}

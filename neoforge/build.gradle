@@ -1,0 +1,45 @@
+plugins {
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+
+base {
+    archivesName = "${rootProject.archives_base_name}-neoforge"
+}
+
+neoForge {
+    version = "${rootProject.neoforge_version}"
+
+    runs {
+        client {
+            client()
+        }
+    }
+
+    mods {
+        swd {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDir rootProject.file('common/src/main/java')
+        resources.srcDir rootProject.file('common/src/main/resources')
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    filteringCharset = "UTF-8"
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version
+    }
+}
+
+jar {
+    from(rootProject.file("LICENSE.txt")) {
+        rename { "${it}_${rootProject.archives_base_name}" }
+    }
+}

@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "GPL-3.0"
+issueTrackerURL = "https://github.com/J0KER2J0KER/SimpleWorldDownloader/issues"
+
+[[mods]]
+modId = "swd"
+version = "${version}"
+displayName = "Simple World Downloader"
+displayURL = "https://github.com/J0KER2J0KER/SimpleWorldDownloader"
+iconFile = "assets/swd/icon.png"
+authors = "J0KER2J0KER"
+description = '''
+Allows you to download worlds from servers.
+'''
+
+[[mixins]]
+config = "swd.client.mixins.json"
+
+[[dependencies.swd]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.3.0.6-beta]"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.swd]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.3]"
+ordering = "NONE"
+side = "CLIENT"
