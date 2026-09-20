@@ -20,7 +20,7 @@ config = "swd.client.mixins.json"
 [[dependencies.swd]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.3.0.6-beta]"
+versionRange = "[26.3.0.7-beta]"
 ordering = "NONE"
 side = "CLIENT"
 
