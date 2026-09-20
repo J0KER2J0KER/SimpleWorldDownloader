@@ -1,6 +1,7 @@
 {
   "pack": {
-    "pack_format": 71,
-    "description": "Simple World Downloader resources"
+    "description": "Simple World Downloader resources",
+    "min_format": [97, 1],
+    "max_format": [97, 1]
   }
 }
