@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Barra del boss",
   "swd.screen.config.notification_mode.off": "Disativad",
   "swd.tooltip.notification_mode.1": "Sceern comè che i messagg de scaricament",
-  "swd.tooltip.notification_mode.2": "vengnen mostrad: barra de accion, barra del boss, o per nagott."
+  "swd.tooltip.notification_mode.2": "vengnen mostrad: barra de accion, barra del boss, o per nagott.",
+  "swd.screen.config.label.lock_untraded_villagers": "Bloca vilan sensa scambi:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dà 1 XP ai vilan sensa scambi per fà mantegnì",
+  "swd.tooltip.lock_untraded_villagers.2": "i sò scambi quant l'è caregad el mond salvad."
 }

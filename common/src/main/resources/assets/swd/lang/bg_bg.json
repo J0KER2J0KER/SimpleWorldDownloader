@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Лента на боса",
   "swd.screen.config.notification_mode.off": "Изкл.",
   "swd.tooltip.notification_mode.1": "Изберете как да се показват съобщенията за изтегляне:",
-  "swd.tooltip.notification_mode.2": "лента за действия, лента на боса или изобщо да не се показват."
+  "swd.tooltip.notification_mode.2": "лента за действия, лента на боса или изобщо да не се показват.",
+  "swd.screen.config.label.lock_untraded_villagers": "Заключи селяните без търговия:",
+  "swd.tooltip.lock_untraded_villagers.1": "Дава 1 XP на селяните без търговия, за да запазят",
+  "swd.tooltip.lock_untraded_villagers.2": "търговията си при зареждане на запазения свят."
 }
 

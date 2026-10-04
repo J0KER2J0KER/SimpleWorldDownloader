@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Ukazovateľ bossa",
   "swd.screen.config.notification_mode.off": "Vypnuté",
   "swd.tooltip.notification_mode.1": "Vyberte, ako sa zobrazujú správy o stave sťahovania:",
-  "swd.tooltip.notification_mode.2": "panel akcií, ukazovateľ bossa alebo vôbec."
+  "swd.tooltip.notification_mode.2": "panel akcií, ukazovateľ bossa alebo vôbec.",
+  "swd.screen.config.label.lock_untraded_villagers": "Uzamknúť neobchodovaných dedinčanov:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dajte neobchodovaným dedinčanom 1 XP, aby si zachovali",
+  "swd.tooltip.lock_untraded_villagers.2": "svoje obchody po načítaní uloženého sveta."
 }

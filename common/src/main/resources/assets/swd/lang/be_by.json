@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Паласа боса",
   "swd.screen.config.notification_mode.off": "Выкл.",
   "swd.tooltip.notification_mode.1": "Выберыце, як адлюстроўваюцца паведамленні пра спампоўку:",
-  "swd.tooltip.notification_mode.2": "у панэлі дзеянняў, паласе боса ці наогул ніяк."
+  "swd.tooltip.notification_mode.2": "у панэлі дзеянняў, паласе боса ці наогул ніяк.",
+  "swd.screen.config.label.lock_untraded_villagers": "Заблакаваць жыхароў без гандлю:",
+  "swd.tooltip.lock_untraded_villagers.1": "Дайце жыхарам без гандлю 1 вопыт, каб яны захавалі",
+  "swd.tooltip.lock_untraded_villagers.2": "свой гандаль пры загрузцы захаванага свету."
 }
 

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "סרגל בוס",
   "swd.screen.config.notification_mode.off": "כבוי",
   "swd.tooltip.notification_mode.1": "בחר כיצד הודעות מצב ההורדה",
-  "swd.tooltip.notification_mode.2": "יוצגו: סרגל פעולות, סרגל בוס או בכלל לא."
+  "swd.tooltip.notification_mode.2": "יוצגו: סרגל פעולות, סרגל בוס או בכלל לא.",
+  "swd.screen.config.label.lock_untraded_villagers": "נעילת כפריים ללא מסחר:",
+  "swd.tooltip.lock_untraded_villagers.1": "תן לכפריים ללא מסחר 1 XP כדי שישמרו על",
+  "swd.tooltip.lock_untraded_villagers.2": "ההצעות שלהם בעת טעינת העולם השמור."
 }

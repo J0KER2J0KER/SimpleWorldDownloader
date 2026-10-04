@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "보스 바",
   "swd.screen.config.notification_mode.off": "꺼짐",
   "swd.tooltip.notification_mode.1": "다운로드 상태 메시지가 표시되는 방식을 선택합니다:",
-  "swd.tooltip.notification_mode.2": "작업 표시줄, 보스 바, 또는 표시하지 않음."
+  "swd.tooltip.notification_mode.2": "작업 표시줄, 보스 바, 또는 표시하지 않음.",
+  "swd.screen.config.label.lock_untraded_villagers": "거래하지 않은 주민 잠금:",
+  "swd.tooltip.lock_untraded_villagers.1": "거래하지 않은 주민에게 1 XP를 주어 저장된 세계가",
+  "swd.tooltip.lock_untraded_villagers.2": "불러와질 때 거래 목록을 유지하게 합니다."
 }

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "แถบบอส",
   "swd.screen.config.notification_mode.off": "ปิด",
   "swd.tooltip.notification_mode.1": "เลือกวิธีแสดงข้อความสถานะการดาวน์โหลด:",
-  "swd.tooltip.notification_mode.2": "แถบการกระทำ แถบบอส หรือไม่แสดงเลย"
+  "swd.tooltip.notification_mode.2": "แถบการกระทำ แถบบอส หรือไม่แสดงเลย",
+  "swd.screen.config.label.lock_untraded_villagers": "ล็อคชาวบ้านที่ยังไม่ได้แลกเปลี่ยน:",
+  "swd.tooltip.lock_untraded_villagers.1": "มอบ XP 1 หน่วยให้ชาวบ้านที่ยังไม่ได้แลกเปลี่ยน",
+  "swd.tooltip.lock_untraded_villagers.2": "เพื่อรักษาการแลกเปลี่ยนไว้เมื่อโหลดโลกที่บันทึกไว้"
 }

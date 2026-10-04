@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Rripi i boss-it",
   "swd.screen.config.notification_mode.off": "Fikur",
   "swd.tooltip.notification_mode.1": "Zgjidhni se si shfaqen mesazhet e shkarkimit:",
-  "swd.tooltip.notification_mode.2": "rripi i veprimeve, rripi i boss-it, ose aspak."
+  "swd.tooltip.notification_mode.2": "rripi i veprimeve, rripi i boss-it, ose aspak.",
+  "swd.screen.config.label.lock_untraded_villagers": "Kyç fshatarët pa tregti:",
+  "swd.tooltip.lock_untraded_villagers.1": "Jepu fshatarëve 1 XP që të mbajnë tregtitë e tyre",
+  "swd.tooltip.lock_untraded_villagers.2": "kur të ngarkohet bota e ruajtur."
 }

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bossleistn",
   "swd.screen.config.notification_mode.off": "Aus",
   "swd.tooltip.notification_mode.1": "Suach da aus, wia d'Download-Meldunga",
-  "swd.tooltip.notification_mode.2": "aungezeigt werdn: Aktionsleistn, Bossleistn oda gar ned."
+  "swd.tooltip.notification_mode.2": "aungezeigt werdn: Aktionsleistn, Bossleistn oda gar ned.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ungehandelte Dorfbewohna sperrn:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gibt ungehandelten Dorfbewohnan 1 XP, damit's eanare",
+  "swd.tooltip.lock_untraded_villagers.2": "Angebote behaltn, wenn de gspeicherte Welt gladn wird."
 }

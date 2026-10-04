@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Baasbalke",
   "swd.screen.config.notification_mode.off": "Ut",
   "swd.tooltip.notification_mode.1": "Kies hoe't ynlaadstatusberichten",
-  "swd.tooltip.notification_mode.2": "toand wurde: aksjebalke, baasbalke, of algaar net."
+  "swd.tooltip.notification_mode.2": "toand wurde: aksjebalke, baasbalke, of algaar net.",
+  "swd.screen.config.label.lock_untraded_villagers": "Net-hannele doarpsbewenners beskoattelje:",
+  "swd.tooltip.lock_untraded_villagers.1": "Jou net-hannele doarpsbewenners 1 XP sadat se harren",
+  "swd.tooltip.lock_untraded_villagers.2": "hannel behâlde by it laden fan de wrâld."
 }
 

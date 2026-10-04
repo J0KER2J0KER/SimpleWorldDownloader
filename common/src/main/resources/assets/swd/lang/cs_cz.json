@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Ukazatel bosse",
   "swd.screen.config.notification_mode.off": "Vypnuto",
   "swd.tooltip.notification_mode.1": "Vyberte, jak se zobrazují zprávy o stavu stahování:",
-  "swd.tooltip.notification_mode.2": "panel akcí, ukazatel bosse nebo vůbec."
+  "swd.tooltip.notification_mode.2": "panel akcí, ukazatel bosse nebo vůbec.",
+  "swd.screen.config.label.lock_untraded_villagers": "Uzamknout neobchodované vesničany:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dá neobchodovaným vesničanům 1 XP, aby si zachovali",
+  "swd.tooltip.lock_untraded_villagers.2": "své obchody při načtení uloženého světa."
 }
 

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "pIn bar",
   "swd.screen.config.notification_mode.off": "Qotlh",
   "swd.tooltip.notification_mode.1": "yIchargh chich yIchev:",
-  "swd.tooltip.notification_mode.2": "vang bar, pIn bar, pagh pagh."
+  "swd.tooltip.notification_mode.2": "vang bar, pIn bar, pagh pagh.",
+  "swd.screen.config.label.lock_untraded_villagers": "Qapbe'bogh ngoy' qul:",
+  "swd.tooltip.lock_untraded_villagers.1": "wa' XP ngoy' qul nob, vaj je'ta'bogh",
+  "swd.tooltip.lock_untraded_villagers.2": "ngev chenmoHlu'ta'bogh qo' luQaw'lu'pu'DI'."
 }

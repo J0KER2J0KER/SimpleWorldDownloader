@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Bar boss",
   "swd.screen.config.notification_mode.off": "Diffodd",
   "swd.tooltip.notification_mode.1": "Dewiswch sut mae negeseuon statws lawrlwytho",
-  "swd.tooltip.notification_mode.2": "yn cael eu dangos: bar gweithredu, bar boss, neu ddim o ewb."
+  "swd.tooltip.notification_mode.2": "yn cael eu dangos: bar gweithredu, bar boss, neu ddim o ewb.",
+  "swd.screen.config.label.lock_untraded_villagers": "Cloi pentrefwyr heb fasnach:",
+  "swd.tooltip.lock_untraded_villagers.1": "Rhoddwch 1 XP i bentrefwyr i gadw eu",
+  "swd.tooltip.lock_untraded_villagers.2": "masnachau pan lwythir y byd a arbedwyd."
 }
 

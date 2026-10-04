@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Բոսի վահանակ",
   "swd.screen.config.notification_mode.off": "Անջատված",
   "swd.tooltip.notification_mode.1": "Ընտրեք, թե ինչպես ցուցադրվեն ներբեռնման հաղորդագրությունները.",
-  "swd.tooltip.notification_mode.2": "գործողությունների վահանակում, բոսի վահանակում կամ ընդհանրապես:"
+  "swd.tooltip.notification_mode.2": "գործողությունների վահանակում, բոսի վահանակում կամ ընդհանրապես:",
+  "swd.screen.config.label.lock_untraded_villagers": "Կողպել չվաճառված գյուղացիներին:",
+  "swd.tooltip.lock_untraded_villagers.1": "Տվեք չվաճառված գյուղացիներին 1 XP, որպեսզի պահպանեն",
+  "swd.tooltip.lock_untraded_villagers.2": "իրենց առևտուրը աշխարհը բեռնելիս:"
 }

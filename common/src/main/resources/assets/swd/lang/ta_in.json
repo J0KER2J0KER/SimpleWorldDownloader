@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "பாஸ் பட்டை",
   "swd.screen.config.notification_mode.off": "ஆஃப்",
   "swd.tooltip.notification_mode.1": "பதிவிறக்க செய்தி எவ்வாறு காட்டப்பட வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்:",
-  "swd.tooltip.notification_mode.2": "செயல் பட்டை, பாஸ் பட்டை, அல்லது அறவே இல்லை."
+  "swd.tooltip.notification_mode.2": "செயல் பட்டை, பாஸ் பட்டை, அல்லது அறவே இல்லை.",
+  "swd.screen.config.label.lock_untraded_villagers": "வர்த்தகம் செய்யாத கிராமவாசிகளைப் பூட்டு:",
+  "swd.tooltip.lock_untraded_villagers.1": "வர்த்தகம் செய்யாத கிராமவாசிகளுக்கு 1 XP கொடுங்கள், அதனால்",
+  "swd.tooltip.lock_untraded_villagers.2": "உலகம் ஏற்றப்படும்போது அவர்களின் வர்த்தகம் காக்கப்படும்."
 }

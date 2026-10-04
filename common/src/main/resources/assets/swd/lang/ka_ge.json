@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "ბოსის ზოლი",
   "swd.screen.config.notification_mode.off": "გამორთული",
   "swd.tooltip.notification_mode.1": "აირჩიეთ ჩამოტვირთვის სტატუსის შეტყობინებების",
-  "swd.tooltip.notification_mode.2": "ჩვენების წესი: მოქმედებების ზოლი, ბოსის ზოლი ან საერთოდ არ გამოჩნდეს."
+  "swd.tooltip.notification_mode.2": "ჩვენების წესი: მოქმედებების ზოლი, ბოსის ზოლი ან საერთოდ არ გამოჩნდეს.",
+  "swd.screen.config.label.lock_untraded_villagers": "ჩაკეტეთ უვაჭრელი სოფლელები:",
+  "swd.tooltip.lock_untraded_villagers.1": "მიეცით უვაჭრელ სოფლელებს 1 XP, რათა შეინარჩუნონ",
+  "swd.tooltip.lock_untraded_villagers.2": "თავისი ვაჭრობა მსოფლიოს ჩატვირთვისას."
 }

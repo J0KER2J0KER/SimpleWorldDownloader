@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "BOSS BAR",
   "swd.screen.config.notification_mode.off": "OFF",
   "swd.tooltip.notification_mode.1": "CHOOZ HOW DOWLOOD MSGZ",
-  "swd.tooltip.notification_mode.2": "R SHOWN: AKSHUN BAR, BOSS BAR, OR NOES."
+  "swd.tooltip.notification_mode.2": "R SHOWN: AKSHUN BAR, BOSS BAR, OR NOES.",
+  "swd.screen.config.label.lock_untraded_villagers": "LOK N00B VILJURS:",
+  "swd.tooltip.lock_untraded_villagers.1": "GIV N00B VILJURS 1 XP SO DEY KEEPS DER",
+  "swd.tooltip.lock_untraded_villagers.2": "TRADZ WEN UR WURLD IZ LOADED."
 }

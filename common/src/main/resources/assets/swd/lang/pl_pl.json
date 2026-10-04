@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Pasek bossa",
   "swd.screen.config.notification_mode.off": "Wyłączone",
   "swd.tooltip.notification_mode.1": "Wybierz sposób wyświetlania komunikatów pobierania:",
-  "swd.tooltip.notification_mode.2": "pasek akcji, pasek bossa lub wcale."
+  "swd.tooltip.notification_mode.2": "pasek akcji, pasek bossa lub wcale.",
+  "swd.screen.config.label.lock_untraded_villagers": "Zablokuj osadników bez ofert:",
+  "swd.tooltip.lock_untraded_villagers.1": "Daj osadnikom bez ofert 1 PD, aby zachowali",
+  "swd.tooltip.lock_untraded_villagers.2": "swoje oferty po załadowaniu zapisanego świata."
 }

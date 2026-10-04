@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Γραμμή αρχηγού",
   "swd.screen.config.notification_mode.off": "Ανενεργό",
   "swd.tooltip.notification_mode.1": "Επιλέξτε πώς εμφανίζονται τα μηνύματα λήψης:",
-  "swd.tooltip.notification_mode.2": "γραμμή ενεργειών, γραμμή αρχηγού ή καθόλου."
+  "swd.tooltip.notification_mode.2": "γραμμή ενεργειών, γραμμή αρχηγού ή καθόλου.",
+  "swd.screen.config.label.lock_untraded_villagers": "Κλείδωμα χωρικών χωρίς συναλλαγές:",
+  "swd.tooltip.lock_untraded_villagers.1": "Δώστε 1 XP στους χωρικούς ώστε να κρατήσουν",
+  "swd.tooltip.lock_untraded_villagers.2": "τις συναλλαγές τους όταν φορτώνεται ο κόσμος."
 }
 

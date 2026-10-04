@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Boss-styp",
   "swd.screen.config.notification_mode.off": "Av",
   "swd.tooltip.notification_mode.1": "Wel ur dunnload-meddelan",
-  "swd.tooltip.notification_mode.2": "skulla wisa: gärninggsstyp, boss-styp elder int alls."
+  "swd.tooltip.notification_mode.2": "skulla wisa: gärninggsstyp, boss-styp elder int alls.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lås ubyttade byboar:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gjåv byboar 1 XP so di behåller sijn",
+  "swd.tooltip.lock_untraded_villagers.2": "handlar när wärldn laddas upp."
 }

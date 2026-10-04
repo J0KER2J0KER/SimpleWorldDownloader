@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Baasbalk",
   "swd.screen.config.notification_mode.off": "Oet",
   "swd.tooltip.notification_mode.1": "Kees wie downloadstatusberichten",
-  "swd.tooltip.notification_mode.2": "waere geteund: actiebalk, baasbalk of gar neet."
+  "swd.tooltip.notification_mode.2": "waere geteund: actiebalk, baasbalk of gar neet.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ongehandelde dörpsbewoners blokkere:",
+  "swd.tooltip.lock_untraded_villagers.1": "Geuf ongehandelde dörpsbewoners 1 XP zodet ze häör",
+  "swd.tooltip.lock_untraded_villagers.2": "hanjel behawwe es de opgeslage wereld weurt gelaje."
 }

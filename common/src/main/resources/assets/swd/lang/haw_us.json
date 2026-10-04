@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Pā Tumuaki",
   "swd.screen.config.notification_mode.off": "Off",
   "swd.tooltip.notification_mode.1": "E koho pehea e hoʻohālikelike ai i nā meʻa hoʻoili:",
-  "swd.tooltip.notification_mode.2": "pāʻoihana, pā tumuaki, a i ʻole ʻaʻole loa."
+  "swd.tooltip.notification_mode.2": "pāʻoihana, pā tumuaki, a i ʻole ʻaʻole loa.",
+  "swd.screen.config.label.lock_untraded_villagers": "Laka i nā kupa kauhale kalepa ʻole:",
+  "swd.tooltip.lock_untraded_villagers.1": "Hāʻawi i 1 XP i nā kupa kauhale e paʻa ai kā",
+  "swd.tooltip.lock_untraded_villagers.2": "lākou kalepa i ka wehe ʻana o ka honua."
 }

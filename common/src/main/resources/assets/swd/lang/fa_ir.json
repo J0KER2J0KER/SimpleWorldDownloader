@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "نوار رئیس",
   "swd.screen.config.notification_mode.off": "خاموش",
   "swd.tooltip.notification_mode.1": "نحوه نمایش پیام‌های وضعیت دانلود را انتخاب کنید:",
-  "swd.tooltip.notification_mode.2": "نوار اقدام، نوار رئیس، یا اصلاً نمایش داده نشود."
+  "swd.tooltip.notification_mode.2": "نوار اقدام، نوار رئیس، یا اصلاً نمایش داده نشود.",
+  "swd.screen.config.label.lock_untraded_villagers": "قفل کردن روستاییان بدون معامله:",
+  "swd.tooltip.lock_untraded_villagers.1": "به روستاییان بدون معامله 1 XP بدهید تا در زمان بارگذاری",
+  "swd.tooltip.lock_untraded_villagers.2": "دنیای ذخیره‌شده، معاملات خود را حفظ کنند."
 }
 

@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Estro-stango",
   "swd.screen.config.notification_mode.off": "Malamaskita",
   "swd.tooltip.notification_mode.1": "Elektu kiamaniere elŝutstataj mesaĝoj",
-  "swd.tooltip.notification_mode.2": "estas montrataj: ago-stango, estro-stango, aŭ tute ne."
+  "swd.tooltip.notification_mode.2": "estas montrataj: ago-stango, estro-stango, aŭ tute ne.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ŝlosi nekomercitajn vilaĝanojn:",
+  "swd.tooltip.lock_untraded_villagers.1": "Donas al nekomercitaj vilaĝanoj 1 SP por konservi",
+  "swd.tooltip.lock_untraded_villagers.2": "iliajn komercojn kiam la mondo estas ŝargita."
 }
 

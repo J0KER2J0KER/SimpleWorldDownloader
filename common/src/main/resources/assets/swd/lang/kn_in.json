@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "ಬಾಸ್ ಬಾರ್",
   "swd.screen.config.notification_mode.off": "ಆಫ್",
   "swd.tooltip.notification_mode.1": "ಡೌನ್‌ಲೋಡ್ ಸ್ಥಿತಿ ಸಂದೇಶಗಳನ್ನು ಹೇಗೆ ತೋರಿಸಬೇಕು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ:",
-  "swd.tooltip.notification_mode.2": "ಆಕ್ಷನ್ ಬಾರ್, ಬಾಸ್ ಬಾರ್, ಅಥವಾ ಯಾವುದೂ ಇಲ್ಲ."
+  "swd.tooltip.notification_mode.2": "ಆಕ್ಷನ್ ಬಾರ್, ಬಾಸ್ ಬಾರ್, ಅಥವಾ ಯಾವುದೂ ಇಲ್ಲ.",
+  "swd.screen.config.label.lock_untraded_villagers": "ವ್ಯಾಪಾರ ಮಾಡದ ಹಳ್ಳಿಗರನ್ನು ಲಾಕ್ ಮಾಡಿ:",
+  "swd.tooltip.lock_untraded_villagers.1": "ವ್ಯಾಪಾರ ಮಾಡದ ಹಳ್ಳಿಗರಿಗೆ 1 XP ನೀಡಿ ಇದರಿಂದ ಅವರು",
+  "swd.tooltip.lock_untraded_villagers.2": "ಉಳಿಸಿದ ಪ್ರಪಂಚವನ್ನು ಲೋಡ್ ಮಾಡಿದಾಗ ವ್ಯಾಪಾರವನ್ನು ಇರಿಸಿಕೊಳ್ಳುತ್ತಾರೆ."
 }

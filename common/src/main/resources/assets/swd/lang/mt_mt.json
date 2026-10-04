@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Barra tal-boss",
   "swd.screen.config.notification_mode.off": "Mitfi",
   "swd.tooltip.notification_mode.1": "Agħżel kif il-messaġġi tal-istatus tat-tniżżil",
-  "swd.tooltip.notification_mode.2": "jiġu juru: barra tal-azjona, barra tal-boss, jew xejn."
+  "swd.tooltip.notification_mode.2": "jiġu juru: barra tal-azjona, barra tal-boss, jew xejn.",
+  "swd.screen.config.label.lock_untraded_villagers": "Illokkja r-raħħala li ma tpartitx:",
+  "swd.tooltip.lock_untraded_villagers.1": "Agħti r-raħħala 1 XP biex iżommu n-negozji",
+  "swd.tooltip.lock_untraded_villagers.2": "tagħhom meta tgħabbi d-dinja ffrankata."
 }

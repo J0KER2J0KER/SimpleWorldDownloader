@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Boss Çubuğu",
   "swd.screen.config.notification_mode.off": "Kapalı",
   "swd.tooltip.notification_mode.1": "İndirme durumu mesajlarının nasıl gösterileceğini seçin:",
-  "swd.tooltip.notification_mode.2": "eylem çubuğu, boss çubuğu veya hiç gösterilmesin."
+  "swd.tooltip.notification_mode.2": "eylem çubuğu, boss çubuğu veya hiç gösterilmesin.",
+  "swd.screen.config.label.lock_untraded_villagers": "Takas yapılmamış köylüleri kilitle:",
+  "swd.tooltip.lock_untraded_villagers.1": "Takas yapılmamış köylülere 1 XP vererek kayıtlı dünya",
+  "swd.tooltip.lock_untraded_villagers.2": "yüklendiğinde takaslarını korumalarını sağla."
 }

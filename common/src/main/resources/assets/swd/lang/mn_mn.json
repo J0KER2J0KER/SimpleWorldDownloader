@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Босс бар",
   "swd.screen.config.notification_mode.off": "Унтраах",
   "swd.tooltip.notification_mode.1": "Татах төлөвийн мэдээг хэрхэн харуулахыг сонгоно уу:",
-  "swd.tooltip.notification_mode.2": "үйлдлийн самбар, босс бар эсвэл огт харуулахгүй."
+  "swd.tooltip.notification_mode.2": "үйлдлийн самбар, босс бар эсвэл огт харуулахгүй.",
+  "swd.screen.config.label.lock_untraded_villagers": "Худалдаа хийгээгүй тосгоны иргэдийг түгжих:",
+  "swd.tooltip.lock_untraded_villagers.1": "Дэлхийг ачаалах үед худалдаагаа хадгалахын тулд",
+  "swd.tooltip.lock_untraded_villagers.2": "худалдаа хийгээгүй тосгоны иргэдэд 1 XP өг."
 }

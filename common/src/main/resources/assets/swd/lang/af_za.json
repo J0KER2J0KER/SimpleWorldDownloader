@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Baasbalk",
   "swd.screen.config.notification_mode.off": "Af",
   "swd.tooltip.notification_mode.1": "Kies hoe aflaai-statusboodskappe",
-  "swd.tooltip.notification_mode.2": "getoon word: aksiebalk, baasbalk, of heeltemal nie."
+  "swd.tooltip.notification_mode.2": "getoon word: aksiebalk, baasbalk, of heeltemal nie.",
+  "swd.screen.config.label.lock_untraded_villagers": "Sluit onverhandelde dorpenaars:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gee onverhandelde dorpenaars 1 XP sodat hulle hul",
+  "swd.tooltip.lock_untraded_villagers.2": "handel behou wanneer die wêreld gelaai word."
 }
 

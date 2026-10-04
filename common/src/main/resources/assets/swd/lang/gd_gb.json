@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Bàr boss",
   "swd.screen.config.notification_mode.off": "Caisg",
   "swd.tooltip.notification_mode.1": "Roghnaich mar a thèid teachdaireachdan inbhe luchdadh a-nuas",
-  "swd.tooltip.notification_mode.2": "a thaisbeanadh: bàr gnìomha, bàr boss, neo idir."
+  "swd.tooltip.notification_mode.2": "a thaisbeanadh: bàr gnìomha, bàr boss, neo idir.",
+  "swd.screen.config.label.lock_untraded_villagers": "Glais muinntir gun mhalairt:",
+  "swd.tooltip.lock_untraded_villagers.1": "Thoir 1 XP do mhuinntir gun mhalairt gus am bi an",
+  "swd.tooltip.lock_untraded_villagers.2": "malairtean aca nuair a lùchdar an saoghal."
 }
 

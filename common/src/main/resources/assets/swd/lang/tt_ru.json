@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Босс панеле",
   "swd.screen.config.notification_mode.off": "Сүндерелгән",
   "swd.tooltip.notification_mode.1": "Йөктәү статусы хәбәрләренең ничек күрсәтелүен сайлагыз:",
-  "swd.tooltip.notification_mode.2": "гәмәлләр панеле, босс панеле яки вообще күрсәтмәскә."
+  "swd.tooltip.notification_mode.2": "гәмәлләр панеле, босс панеле яки вообще күрсәтмәскә.",
+  "swd.screen.config.label.lock_untraded_villagers": "Сәүдә итмәгән авылдашларны бикләү:",
+  "swd.tooltip.lock_untraded_villagers.1": "Дөнья йөкләнгәндә сәүдәләрен саклап калсыннар өчен",
+  "swd.tooltip.lock_untraded_villagers.2": "сәүдә итмәгән авылдашларга 1 XP бирегез."
 }

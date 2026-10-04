@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Bossleisten",
   "swd.screen.config.notification_mode.off": "Aus",
   "swd.tooltip.notification_mode.1": "Sucht aus, wie die Download-Meldungen",
-  "swd.tooltip.notification_mode.2": "ohgetzeigt wärn: Aktionsleisten, Bossleisten oder gar ned."
+  "swd.tooltip.notification_mode.2": "ohgetzeigt wärn: Aktionsleisten, Bossleisten oder gar ned.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ungehandelte Dorfbewohner sperren:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gibt ungehandelten Dorfbewohnern 1 EP, damit sie ihre",
+  "swd.tooltip.lock_untraded_villagers.2": "Angebote behalten, wenn die Welt geladen wird."
 }
 

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Vrstica šefa",
   "swd.screen.config.notification_mode.off": "Izklopljeno",
   "swd.tooltip.notification_mode.1": "Izberite, kako se prikazujejo sporočila o statusu prenosa:",
-  "swd.tooltip.notification_mode.2": "vrstica dejanj, vrstica šefa ali sploh ne."
+  "swd.tooltip.notification_mode.2": "vrstica dejanj, vrstica šefa ali sploh ne.",
+  "swd.screen.config.label.lock_untraded_villagers": "Zakleni vaščane brez trgovine:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dajte vaščanom brez trgovine 1 XP, da ohranijo svoje",
+  "swd.tooltip.lock_untraded_villagers.2": "trgovine, ko se shranjen svet znova naloži."
 }

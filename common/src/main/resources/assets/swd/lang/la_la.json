@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Tabula domini",
   "swd.screen.config.notification_mode.off": "Inactivum",
   "swd.tooltip.notification_mode.1": "Elige quomodo nuntii status deonerationis",
-  "swd.tooltip.notification_mode.2": "ostendantur: tabula actionis, tabula domini, aut nullo modo."
+  "swd.tooltip.notification_mode.2": "ostendantur: tabula actionis, tabula domini, aut nullo modo.",
+  "swd.screen.config.label.lock_untraded_villagers": "Claude vicanos inemptos:",
+  "swd.tooltip.lock_untraded_villagers.1": "Da vicanis inemptis 1 XP ut teneant commercia",
+  "swd.tooltip.lock_untraded_villagers.2": "cum mundus servatus onustus est."
 }

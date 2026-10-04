@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Boss paneli",
   "swd.screen.config.notification_mode.off": "Söndürülüb",
   "swd.tooltip.notification_mode.1": "Yükləmə statusu mesajlarının necə göstəriləcəyini seçin:",
-  "swd.tooltip.notification_mode.2": "fəaliyyət paneli, boss paneli və ya heç biri."
+  "swd.tooltip.notification_mode.2": "fəaliyyət paneli, boss paneli və ya heç biri.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ticarətsiz kəndliləri kilidlə:",
+  "swd.tooltip.lock_untraded_villagers.1": "Ticarətsiz kəndlilərə 1 XP ver ki, dünya yüklənəndə",
+  "swd.tooltip.lock_untraded_villagers.2": "ticarətlərini qoruya bilsinlər."
 }
 

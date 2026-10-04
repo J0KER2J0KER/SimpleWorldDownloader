@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Смужка боса",
   "swd.screen.config.notification_mode.off": "Вимкнено",
   "swd.tooltip.notification_mode.1": "Виберіть, як відображаються повідомлення про завантаження:",
-  "swd.tooltip.notification_mode.2": "панель дій, смужка боса або взагалі ніяк."
+  "swd.tooltip.notification_mode.2": "панель дій, смужка боса або взагалі ніяк.",
+  "swd.screen.config.label.lock_untraded_villagers": "Заблокувати селян без торгів:",
+  "swd.tooltip.lock_untraded_villagers.1": "Дайте селянам без торгів 1 од. досвіду, щоб вони зберегли",
+  "swd.tooltip.lock_untraded_villagers.2": "свої торги під час завантаження збереженого світу."
 }

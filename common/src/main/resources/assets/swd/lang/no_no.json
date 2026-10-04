@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bosslinje",
   "swd.screen.config.notification_mode.off": "Av",
   "swd.tooltip.notification_mode.1": "Velg hvordan nedlastingsstatusmeldinger",
-  "swd.tooltip.notification_mode.2": "vises: handlingslinje, bosslinje eller ikke i det hele tatt."
+  "swd.tooltip.notification_mode.2": "vises: handlingslinje, bosslinje eller ikke i det hele tatt.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lås ubyttede landsbyboere:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gi ubyttede landsbyboere 1 XP slik at de beholder",
+  "swd.tooltip.lock_untraded_villagers.2": "handlene sine når den lagrede verdenen lastes inn."
 }

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Cáno Parma",
   "swd.screen.config.notification_mode.off": "Lúcëa",
   "swd.tooltip.notification_mode.1": "Cildë manen menta-lénya canat",
-  "swd.tooltip.notification_mode.2": "técina: carianma, cáno parma, var munta."
+  "swd.tooltip.notification_mode.2": "técina: carianma, cáno parma, var munta.",
+  "swd.screen.config.label.lock_untraded_villagers": "Tepë úmanca nostalë:",
+  "swd.tooltip.lock_untraded_villagers.1": "Anta úmanca nostalë 1 XP yé tyarë mancalë",
+  "swd.tooltip.lock_untraded_villagers.2": "yé martya arda."
 }

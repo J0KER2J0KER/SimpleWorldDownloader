@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Трака боса",
   "swd.screen.config.notification_mode.off": "Искључено",
   "swd.tooltip.notification_mode.1": "Изаберите како се приказују поруке о преузимању:",
-  "swd.tooltip.notification_mode.2": "трака радњи, трака боса или уопште не."
+  "swd.tooltip.notification_mode.2": "трака радњи, трака боса или уопште не.",
+  "swd.screen.config.label.lock_untraded_villagers": "Zaključaj seljane bez trgovine:",
+  "swd.tooltip.lock_untraded_villagers.1": "Daj seljanima bez trgovine 1 XP kako bi zadržali",
+  "swd.tooltip.lock_untraded_villagers.2": "svoje trgovine kada se učita sačuvani svet."
 }

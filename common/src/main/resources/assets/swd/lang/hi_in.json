@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "बॉस बार",
   "swd.screen.config.notification_mode.off": "बंद",
   "swd.tooltip.notification_mode.1": "चुनें कि डाउनलोड स्थिति संदेश",
-  "swd.tooltip.notification_mode.2": "कैसे दिखाए जाएं: एक्शन बार, बॉस बार, या बिल्कुल नहीं।"
+  "swd.tooltip.notification_mode.2": "कैसे दिखाए जाएं: एक्शन बार, बॉस बार, या बिल्कुल नहीं।",
+  "swd.screen.config.label.lock_untraded_villagers": "व्यापार न किए ग्रामीणों को लॉक करें:",
+  "swd.tooltip.lock_untraded_villagers.1": "व्यापार न किए गए ग्रामीणों को 1 XP दें ताकि वे",
+  "swd.tooltip.lock_untraded_villagers.2": "दुनिया लोड होने पर अपने व्यापार बनाए रखें।"
 }

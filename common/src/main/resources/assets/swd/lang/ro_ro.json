@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bara bossului",
   "swd.screen.config.notification_mode.off": "Oprit",
   "swd.tooltip.notification_mode.1": "Alegeți cum sunt afișate mesajele privind descărcarea:",
-  "swd.tooltip.notification_mode.2": "bara de acțiuni, bara bossului sau deloc."
+  "swd.tooltip.notification_mode.2": "bara de acțiuni, bara bossului sau deloc.",
+  "swd.screen.config.label.lock_untraded_villagers": "Blochează sătenii fără schimburi:",
+  "swd.tooltip.lock_untraded_villagers.1": "Oferă sătenilor 1 XP pentru a-și păstra schimburile",
+  "swd.tooltip.lock_untraded_villagers.2": "atunci când este încărcată lumea salvată."
 }

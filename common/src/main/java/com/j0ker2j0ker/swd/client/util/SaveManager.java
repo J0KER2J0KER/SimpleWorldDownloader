@@ -50,7 +50,10 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.PlayerDataStorage;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerData;
@@ -78,6 +81,7 @@ public class SaveManager {
     private static final int PLAYER_INVENTORY_SLOTS = 36;
     private static final int DOUBLE_CHEST_SLOTS = 54;
     private static final int SINGLE_CHEST_SLOTS = 27;
+    private static final int MAX_GOSSIP_REPUTATION = 700;
     private static final long META_FLUSH_INTERVAL_MS = 5000L;
     private static final DateTimeFormatter ADVANCEMENT_TIME_FORMAT = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss Z", Locale.ROOT)
@@ -471,9 +475,15 @@ public class SaveManager {
         CompoundTag overlay = new CompoundTag();
 
         MerchantOffers offers = menu.getOffers();
+        int reputation = merchant instanceof Villager ? estimateReputation(offers) : 0;
         saveMerchantOffers(offers).ifPresent(tag -> overlay.put("Offers", tag));
 
-        overlay.putInt("Xp", menu.getTraderXp());
+        int traderXp = menu.getTraderXp();
+        if (Swd.CONFIG.lockUntradedVillagers && merchant instanceof Villager
+                && menu.getTraderLevel() <= 1 && traderXp == 0 && !offers.isEmpty()) {
+            traderXp = 1;
+        }
+        overlay.putInt("Xp", traderXp);
         overlay.putInt("RestocksToday", readIntField(merchant, "numberOfRestocksToday"));
         overlay.putLong("LastRestock", readLongField(merchant, "lastRestockGameTime"));
         overlay.putLong("LastGossipDecay", readLongField(merchant, "lastGossipDecayTime"));
@@ -482,6 +492,9 @@ public class SaveManager {
             VillagerData data = villager.getVillagerData().withLevel(menu.getTraderLevel());
             saveVillagerData(data).ifPresent(tag -> overlay.put("VillagerData", tag));
             overlay.putBoolean("VillagerDataFinalized", true);
+
+            UUID gossipTarget = cachePlayerUuid != null ? cachePlayerUuid : (mc.player != null ? mc.player.getUUID() : null);
+            overlay.put("Gossips", buildGossips(reputation, gossipTarget));
         }
 
         cacheEntityOverrides.put(merchant.getUUID(), overlay);
@@ -549,12 +562,13 @@ public class SaveManager {
         if (Swd.CONFIG.includeEntities) {
             net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(
                     pos.getMinBlockX(), wc.getLevel().getMinY(), pos.getMinBlockZ(),
-                    pos.getMaxBlockX(), wc.getLevel().getMaxY(), pos.getMaxBlockZ()
+                    pos.getMaxBlockX() + 1, wc.getLevel().getMaxY(), pos.getMaxBlockZ() + 1
             );
 
             wc.getLevel().getEntities(null, box).forEach(entity -> {
                 if (entity instanceof net.minecraft.world.entity.player.Player) return;
                 if (entity.isPassenger()) return;
+                if (!entity.chunkPosition().equals(pos)) return;
 
                 CompoundTag entityNbt = saveEntityToNbt(entity);
 
@@ -693,6 +707,12 @@ public class SaveManager {
                 Tag oldOffers = copyTag(oldNbt, "Offers");
                 if (!newNbt.contains("Offers") && oldOffers != null) {
                     mergedEntity.put("Offers", oldOffers);
+                    for (String tradeKey : new String[]{"Xp", "Gossips", "RestocksToday", "LastRestock", "LastGossipDecay"}) {
+                        Tag oldValue = copyTag(oldNbt, tradeKey);
+                        if (oldValue != null) {
+                            mergedEntity.put(tradeKey, oldValue);
+                        }
+                    }
                 }
 
                 Tag oldVillagerData = copyTag(oldNbt, "VillagerData");
@@ -849,9 +869,7 @@ public class SaveManager {
             CompoundTag override = cacheEntityOverrides.get(uuid);
             if (override != null) {
                 for (String key : override.keySet()) {
-                    if (!entityNbt.contains(key)) {
-                        entityNbt.put(key, override.get(key));
-                    }
+                    entityNbt.put(key, override.get(key));
                 }
             }
         }
@@ -865,9 +883,89 @@ public class SaveManager {
 
     private static Optional<CompoundTag> saveMerchantOffers(MerchantOffers offers) {
         if (offers.isEmpty()) return Optional.empty();
-        return MerchantOffers.CODEC.encodeStart(ops, offers)
-                .resultOrPartial(err -> System.err.println("Failed to encode merchant offers: " + err))
-                .map(tag -> (CompoundTag) tag);
+        int[] specialPriceDiffs = new int[offers.size()];
+        for (int i = 0; i < offers.size(); i++) {
+            MerchantOffer offer = offers.get(i);
+            specialPriceDiffs[i] = offer.getSpecialPriceDiff();
+            offer.resetSpecialPriceDiff();
+        }
+        try {
+            return MerchantOffers.CODEC.encodeStart(ops, offers)
+                    .resultOrPartial(err -> System.err.println("Failed to encode merchant offers: " + err))
+                    .map(tag -> (CompoundTag) tag);
+        } finally {
+            for (int i = 0; i < offers.size(); i++) {
+                offers.get(i).addToSpecialPriceDiff(specialPriceDiffs[i]);
+            }
+        }
+    }
+
+    private static int gossipPriceDiff(MerchantOffer offer, MobEffectInstance hero) {
+        int diff = offer.getSpecialPriceDiff();
+        if (hero != null) {
+            double discount = 0.3D + 0.0625D * hero.getAmplifier();
+            diff += Math.max((int) Math.floor(discount * offer.getBaseCostA().getCount()), 1);
+        }
+        return diff;
+    }
+
+    private static int estimateReputation(MerchantOffers offers) {
+        if (offers.isEmpty()) return 0;
+        MobEffectInstance hero = mc.player != null ? mc.player.getEffect(MobEffects.HERO_OF_THE_VILLAGE) : null;
+
+        double lowerBound = Double.NEGATIVE_INFINITY;
+        for (MerchantOffer offer : offers) {
+            float multiplier = offer.getPriceMultiplier();
+            if (multiplier <= 0f) continue;
+            lowerBound = Math.max(lowerBound, -gossipPriceDiff(offer, hero) / (double) multiplier);
+        }
+        if (lowerBound == Double.NEGATIVE_INFINITY) return 0;
+
+        int estimate = clampReputation(Math.ceil(lowerBound - 1.0E-6D));
+        for (int delta : new int[]{0, 1, -1, 2, -2}) {
+            int candidate = estimate + delta;
+            if (reproducesPrices(offers, hero, candidate)) {
+                return clampReputation(candidate);
+            }
+        }
+        return estimate;
+    }
+
+    private static boolean reproducesPrices(MerchantOffers offers, MobEffectInstance hero, int reputation) {
+        for (MerchantOffer offer : offers) {
+            float multiplier = offer.getPriceMultiplier();
+            if (multiplier <= 0f) continue;
+            int expected = -(int) Math.floor((double) ((float) reputation * multiplier));
+            if (expected != gossipPriceDiff(offer, hero)) return false;
+        }
+        return true;
+    }
+
+    private static int clampReputation(double reputation) {
+        return (int) Math.max(-MAX_GOSSIP_REPUTATION, Math.min(MAX_GOSSIP_REPUTATION, reputation));
+    }
+
+    private static ListTag buildGossips(int reputation, UUID target) {
+        ListTag gossips = new ListTag();
+        if (reputation == 0 || target == null) return gossips;
+
+        String sign = reputation > 0 ? "positive" : "negative";
+        int remaining = Math.min(Math.abs(reputation), MAX_GOSSIP_REPUTATION);
+        int major = Math.min(remaining / 5, 100);
+        int minor = Math.min(remaining - major * 5, 200);
+
+        addGossipEntry(gossips, target, "major_" + sign, major);
+        addGossipEntry(gossips, target, "minor_" + sign, minor);
+        return gossips;
+    }
+
+    private static void addGossipEntry(ListTag gossips, UUID target, String type, int value) {
+        if (value <= 0) return;
+        CompoundTag entry = new CompoundTag();
+        entry.put("Target", new IntArrayTag(uuidToIntArray(target)));
+        entry.putString("Type", type);
+        entry.putInt("Value", value);
+        gossips.add(entry);
     }
 
     private static Optional<CompoundTag> saveVillagerData(VillagerData data) {

@@ -22,6 +22,7 @@ public class SwdConfig {
     public boolean includeEntities = true;
     public boolean includePlayerData = true;
     public boolean includeResourcePacks = true;
+    public boolean lockUntradedVillagers = false;
 
     private static final Gson GSON =
             new GsonBuilder().setPrettyPrinting().create();

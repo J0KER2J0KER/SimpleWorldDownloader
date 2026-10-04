@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Boss 條",
   "swd.screen.config.notification_mode.off": "關閉",
   "swd.tooltip.notification_mode.1": "選擇下載狀態訊息的",
-  "swd.tooltip.notification_mode.2": "顯示方式：快捷列上方、Boss 條或不顯示。"
+  "swd.tooltip.notification_mode.2": "顯示方式：快捷列上方、Boss 條或不顯示。",
+  "swd.screen.config.label.lock_untraded_villagers": "鎖定未交易的村民：",
+  "swd.tooltip.lock_untraded_villagers.1": "給予未交易的村民 1 點經驗值，以便在載入世界時",
+  "swd.tooltip.lock_untraded_villagers.2": "保留他們的交易內容。"
 }

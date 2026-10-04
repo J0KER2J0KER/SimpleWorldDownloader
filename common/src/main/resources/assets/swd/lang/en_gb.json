@@ -5,6 +5,7 @@
   "swd.screen.config.label.include_entities": "Include entities:",
   "swd.screen.config.label.include_player_data": "Include player data:",
   "swd.screen.config.label.include_resource_packs": "Include resource packs:",
+  "swd.screen.config.label.lock_untraded_villagers": "Lock untraded villagers:",
   "swd.screen.config.includes_heading": "Included data",
   "swd.screen.config.placeholder.world_name": "World name to save as",
   "swd.button.reset": "Reset",
@@ -20,6 +21,8 @@
   "swd.tooltip.include_player_data.2": "along with the downloaded world.",
   "swd.tooltip.include_resource_packs.1": "Set whether server resource packs should",
   "swd.tooltip.include_resource_packs.2": "be saved with the downloaded world.",
+  "swd.tooltip.lock_untraded_villagers.1": "Give untraded villagers 1 XP so they keep their",
+  "swd.tooltip.lock_untraded_villagers.2": "trades when the saved world is loaded.",
   "swd.status.started_saving": "> Started saving chunks...",
   "swd.status.stopped_saving": "> Stopped saving chunks.",
   "swd.status.villager_trade_saved": "> Villager trade data saved.",
@@ -39,4 +42,3 @@
   "swd.tooltip.notification_mode.1": "Choose how download status messages",
   "swd.tooltip.notification_mode.2": "are shown: action bar, boss bar, or not at all."
 }
-

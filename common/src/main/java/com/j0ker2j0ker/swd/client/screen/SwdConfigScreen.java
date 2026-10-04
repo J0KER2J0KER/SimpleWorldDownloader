@@ -69,6 +69,11 @@ public class SwdConfigScreen extends Screen {
             Component.translatable("swd.tooltip.include_resource_packs.2")
     );
 
+    private static final List<Component> LOCK_UNTRADED_DESC = List.of(
+            Component.translatable("swd.tooltip.lock_untraded_villagers.1"),
+            Component.translatable("swd.tooltip.lock_untraded_villagers.2")
+    );
+
     public SwdConfigScreen(Screen parent) {
         super(Component.translatable("swd.screen.config.title"));
         this.parent = parent;
@@ -139,6 +144,13 @@ public class SwdConfigScreen extends Screen {
                 RESOURCE_PACKS_DESC, labelX, 195, controlX, 190,
                 () -> Swd.CONFIG.includeResourcePacks,
                 value -> Swd.CONFIG.includeResourcePacks = value
+        ));
+
+        this.settings.add(new BooleanSettingEntry(
+                Component.translatable("swd.screen.config.label.lock_untraded_villagers"),
+                LOCK_UNTRADED_DESC, labelX, 220, controlX, 215,
+                () -> Swd.CONFIG.lockUntradedVillagers,
+                value -> Swd.CONFIG.lockUntradedVillagers = value
         ));
 
         for (SettingEntry setting : this.settings) {
@@ -212,7 +224,7 @@ public class SwdConfigScreen extends Screen {
 
         @Override
         protected int contentHeight() {
-            return 235;
+            return 260;
         }
 
         @Override
@@ -230,19 +242,10 @@ public class SwdConfigScreen extends Screen {
 
             graphics.nextStratum();
 
-            int headingY = this.getY() + 0 - (int) this.scrollAmount();
-            graphics.text(
-                    SwdConfigScreen.this.font,
-                    Component.translatable("swd.screen.config.includes_heading"),
-                    this.getX() + 8,
-                    headingY,
-                    0xFFAAAAAA
-            );
-
             this.updateChildPositions();
 
             for (SettingEntry setting : settings) {
-                setting.renderLabel(SwdConfigScreen.this.font, graphics, this.getY());
+                setting.renderLabel(SwdConfigScreen.this.font, graphics, this.getY(), mouseX, mouseY);
             }
 
             for (AbstractWidget widget : this.widgets) {
@@ -384,16 +387,17 @@ public class SwdConfigScreen extends Screen {
         public void renderLabel(
                 net.minecraft.client.gui.Font font,
                 GuiGraphicsExtractor graphics,
-                int panelY) {
+                int panelY,
+                int mouseX,
+                int mouseY) {
             int y = panelY + baseLabelY - (int) SwdConfigScreen.this.scrollPanel.scrollAmount();
             graphics.text(font, label, labelX, y, 0xFFFFFFFF);
 
-            if (isHovered(font, graphics)) {
-                graphics.setComponentTooltipForNextFrame(font, tooltip, labelX, y);
+            if (SwdConfigScreen.this.scrollPanel.isMouseOver(mouseX, mouseY)
+                    && mouseY >= y - 5 && mouseY < y + 15) {
+                graphics.setComponentTooltipForNextFrame(font, tooltip, mouseX, mouseY);
             }
         }
-
-        protected abstract boolean isHovered(net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics);
 
         public abstract void addWidgets(ScrollPanel panel);
 
@@ -463,12 +467,6 @@ public class SwdConfigScreen extends Screen {
         }
 
         @Override
-        protected boolean isHovered(
-                net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
-            return this.editBox != null && this.editBox.isMouseOver(graphics.guiWidth(), graphics.guiHeight());
-        }
-
-        @Override
         public void applyToConfig() {
             if (this.editBox != null) {
                 setter.accept(this.editBox.getValue().trim());
@@ -515,11 +513,6 @@ public class SwdConfigScreen extends Screen {
             if (this.checkbox != null) {
                 this.checkbox.setY(panelY + this.baseCheckboxY - scrollOffset);
             }
-        }
-
-        @Override
-        protected boolean isHovered(net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
-            return this.checkbox != null && this.checkbox.isMouseOver(graphics.guiWidth(), graphics.guiHeight());
         }
 
         @Override
@@ -570,13 +563,6 @@ public class SwdConfigScreen extends Screen {
             if (this.button != null) {
                 this.button.setY(panelY + this.baseButtonY - scrollOffset);
             }
-        }
-
-        @Override
-        protected boolean isHovered(
-                net.minecraft.client.gui.Font font, GuiGraphicsExtractor graphics) {
-            return button != null && button.isMouseOver(
-                    graphics.guiWidth(), graphics.guiHeight());
         }
 
         @Override

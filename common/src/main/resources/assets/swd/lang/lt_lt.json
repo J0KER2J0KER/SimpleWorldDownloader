@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bosų juosta",
   "swd.screen.config.notification_mode.off": "Išjungta",
   "swd.tooltip.notification_mode.1": "Pasirinkite, kaip rodomi atsisiuntimo būsenos pranešimai:",
-  "swd.tooltip.notification_mode.2": "veiksmų juostoje, bosų juostoje arba nerodyti."
+  "swd.tooltip.notification_mode.2": "veiksmų juostoje, bosų juostoje arba nerodyti.",
+  "swd.screen.config.label.lock_untraded_villagers": "Užrakinti nepardavusius kaimiečius:",
+  "swd.tooltip.lock_untraded_villagers.1": "Duokite nepardavusiems kaimiečiams 1 XP, kad jie išlaikytų",
+  "swd.tooltip.lock_untraded_villagers.2": "savo prekybą, kai užkraunamas išsaugotas pasaulis."
 }

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Cap'n Bar",
   "swd.screen.config.notification_mode.off": "Off",
   "swd.tooltip.notification_mode.1": "Choose how fetchin' status scrawls",
-  "swd.tooltip.notification_mode.2": "be shown: action plank, cap'n bar, or sink 'em all."
+  "swd.tooltip.notification_mode.2": "be shown: action plank, cap'n bar, or sink 'em all.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lock untraded landlubbers:",
+  "swd.tooltip.lock_untraded_villagers.1": "Give untraded scallywags 1 XP so they keeps their",
+  "swd.tooltip.lock_untraded_villagers.2": "booty trades when ye load yer world."
 }

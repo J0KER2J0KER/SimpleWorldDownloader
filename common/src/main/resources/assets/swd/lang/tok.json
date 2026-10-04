@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "lawa palisa",
   "swd.screen.config.notification_mode.off": "ala",
   "swd.tooltip.notification_mode.1": "o sona e nasin pi toki tawa:",
-  "swd.tooltip.notification_mode.2": "pali palisa, lawa palisa, anu ala."
+  "swd.tooltip.notification_mode.2": "pali palisa, lawa palisa, anu ala.",
+  "swd.screen.config.label.lock_untraded_villagers": "jan pi esun ala li awen:",
+  "swd.tooltip.lock_untraded_villagers.1": "o pana e wawa wan tawa jan pi esun ala la",
+  "swd.tooltip.lock_untraded_villagers.2": "ona li awen e esun ona lon tenpo kama open."
 }

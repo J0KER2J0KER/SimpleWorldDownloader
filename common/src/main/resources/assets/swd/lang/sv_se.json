@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bossmätare",
   "swd.screen.config.notification_mode.off": "Av",
   "swd.tooltip.notification_mode.1": "Välj hur nedladdningsmeddelanden",
-  "swd.tooltip.notification_mode.2": "visas: handlingsfält, bossmätare eller inte alls."
+  "swd.tooltip.notification_mode.2": "visas: handlingsfält, bossmätare eller inte alls.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lås obytta bybor:",
+  "swd.tooltip.lock_untraded_villagers.1": "Ge obytta bybor 1 XP så att de behåller sina",
+  "swd.tooltip.lock_untraded_villagers.2": "byten när den sparade världen laddas."
 }

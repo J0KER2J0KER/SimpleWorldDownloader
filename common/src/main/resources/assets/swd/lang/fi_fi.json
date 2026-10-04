@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Pohjaspalkki",
   "swd.screen.config.notification_mode.off": "Pois",
   "swd.tooltip.notification_mode.1": "Valitse, miten lataustilaviestit",
-  "swd.tooltip.notification_mode.2": "näytetään: toimintapalkissa, pomopalkissa tai ei ollenkaan."
+  "swd.tooltip.notification_mode.2": "näytetään: toimintapalkissa, pomopalkissa tai ei ollenkaan.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lukitse kauppaamattomat kyläläiset:",
+  "swd.tooltip.lock_untraded_villagers.1": "Anna kauppaamattomille kyläläisille 1 XP, jotta ne säilyttävät",
+  "swd.tooltip.lock_untraded_villagers.2": "kauppansa, kun tallennettu maailma ladataan."
 }
 

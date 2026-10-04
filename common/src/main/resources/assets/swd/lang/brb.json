@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Baasbalk",
   "swd.screen.config.notification_mode.off": "Uit",
   "swd.tooltip.notification_mode.1": "Kies wie downloadstatusberichten",
-  "swd.tooltip.notification_mode.2": "eweest worren: actiebalk, baasbalk of gemaal nie."
+  "swd.tooltip.notification_mode.2": "eweest worren: actiebalk, baasbalk of gemaal nie.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ongeruilde dorpelinge vastzette:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gift ongeruilde dorpelinge 1 XP zoeda ze hun",
+  "swd.tooltip.lock_untraded_villagers.2": "handel houwe as de wereld word gelaje."
 }
 

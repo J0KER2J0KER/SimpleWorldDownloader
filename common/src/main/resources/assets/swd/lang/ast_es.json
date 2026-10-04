@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Barra de xefes",
   "swd.screen.config.notification_mode.off": "Apagao",
   "swd.tooltip.notification_mode.1": "Escoye cómo se amuesen los mensaxes de descarga:",
-  "swd.tooltip.notification_mode.2": "na barra d'aición, barra de xefes o de denguna manera."
+  "swd.tooltip.notification_mode.2": "na barra d'aición, barra de xefes o de denguna manera.",
+  "swd.screen.config.label.lock_untraded_villagers": "Bloquiar aldeanos ensin intercambios:",
+  "swd.tooltip.lock_untraded_villagers.1": "Da a los aldeanos ensin intercambios 1 d'esperiencia p'asina",
+  "swd.tooltip.lock_untraded_villagers.2": "caltener los intercambios al cargar el mundu."
 }
 

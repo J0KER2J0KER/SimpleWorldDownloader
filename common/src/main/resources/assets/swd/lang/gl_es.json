@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Barra de xefes",
   "swd.screen.config.notification_mode.off": "Desactivado",
   "swd.tooltip.notification_mode.1": "Escolle como se amosan as mensaxes de descarga:",
-  "swd.tooltip.notification_mode.2": "barra de acción, barra de xefes ou ningunha."
+  "swd.tooltip.notification_mode.2": "barra de acción, barra de xefes ou ningunha.",
+  "swd.screen.config.label.lock_untraded_villagers": "Bloquear aldeáns sen intercambios:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dá 1 XP aos aldeáns sen intercambios para manter os",
+  "swd.tooltip.lock_untraded_villagers.2": "seus intercambios ao cargar o mundo gardado."
 }

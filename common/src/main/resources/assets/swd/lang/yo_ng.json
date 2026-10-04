@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Báà boss",
   "swd.screen.config.notification_mode.off": "Bọ́",
   "swd.tooltip.notification_mode.1": "Sọ bí àwọn àfiihan ipò ìdownload pẹ̀lú:",
-  "swd.tooltip.notification_mode.2": "báà iṣẹ́, báà boss, tàbí kò sí rárá."
+  "swd.tooltip.notification_mode.2": "báà iṣẹ́, báà boss, tàbí kò sí rárá.",
+  "swd.screen.config.label.lock_untraded_villagers": "Tìpa àwọn ará abúlé tí kò tíì ṣòwò:",
+  "swd.tooltip.lock_untraded_villagers.1": "Fún àwọn ará abúlé ní 1 XP kí wọ́n lè pa",
+  "swd.tooltip.lock_untraded_villagers.2": "òwò wọn mọ́ nígbàtí ayé bá ṣíṣẹ."
 }

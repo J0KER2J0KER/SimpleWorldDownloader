@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bossleest",
   "swd.screen.config.notification_mode.off": "Ut",
   "swd.tooltip.notification_mode.1": "Söök ut, wo de Download-Statusmellen",
-  "swd.tooltip.notification_mode.2": "wiest warrt: Akschoonsleest, Bossleest oder gar nich."
+  "swd.tooltip.notification_mode.2": "wiest warrt: Akschoonsleest, Bossleest oder gar nich.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ungehandelte Dörpslüüd sparrn:",
+  "swd.tooltip.lock_untraded_villagers.1": "Giv ungehandelte Dörpslüüd 1 XP, dormit se jemehr",
+  "swd.tooltip.lock_untraded_villagers.2": "Angevote beholen, wenn de Welt laadt ward."
 }

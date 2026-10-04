@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bar boss",
   "swd.screen.config.notification_mode.off": "Eun",
   "swd.tooltip.notification_mode.1": "Dewisva fatel fe mothow leundhewnans",
-  "swd.tooltip.notification_mode.2": "diskwedhys: bar gwres, bar boss, po na neb pypynag."
+  "swd.tooltip.notification_mode.2": "diskwedhys: bar gwres, bar boss, po na neb pypynag.",
+  "swd.screen.config.label.lock_untraded_villagers": "Kloya trevesigyon heb marghas:",
+  "swd.tooltip.lock_untraded_villagers.1": "Ro 1 XP dhe drevesigyon rag gwitha aga marghasow",
+  "swd.tooltip.lock_untraded_villagers.2": "pan vo kargys an bys gwithys."
 }

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Hoavdabáddi",
   "swd.screen.config.notification_mode.off": "Jápmán",
   "swd.tooltip.notification_mode.1": "Vállje mot vižžanjatnu-dieđut",
-  "swd.tooltip.notification_mode.2": "čájehuvvojit: dahkubáddái, hoavdabáddái dahje ii obbage."
+  "swd.tooltip.notification_mode.2": "čájehuvvojit: dahkubáddái, hoavdabáddái dahje ii obbage.",
+  "swd.screen.config.label.lock_untraded_villagers": "Gidde gilisgávppis haga gilihat:",
+  "swd.tooltip.lock_untraded_villagers.1": "Atte gilihahttiide 1 XP vai sii bisuhit",
+  "swd.tooltip.lock_untraded_villagers.2": "gávppašemiid go vurkejuvvon máilbmi vižžojuvvo."
 }

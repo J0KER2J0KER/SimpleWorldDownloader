@@ -37,6 +37,9 @@
   "swd.screen.config.notification_mode.bossbar": "Boss-linje",
   "swd.screen.config.notification_mode.off": "Fra",
   "swd.tooltip.notification_mode.1": "Vælg hvordan downloadstatusbeskeder",
-  "swd.tooltip.notification_mode.2": "vises: handlingslinje, boss-linje eller slet ikke."
+  "swd.tooltip.notification_mode.2": "vises: handlingslinje, boss-linje eller slet ikke.",
+  "swd.screen.config.label.lock_untraded_villagers": "Lås ubesøgte landsbyboere:",
+  "swd.tooltip.lock_untraded_villagers.1": "Giv landsbyboere uden handel 1 XP, så de beholder",
+  "swd.tooltip.lock_untraded_villagers.2": "deres handler, når den gemte verden indlæses."
 }
 

@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Bossleascht",
   "swd.screen.config.notification_mode.off": "Aus",
   "swd.tooltip.notification_mode.1": "Wielt wéi d'Download-Statusmeldungen",
-  "swd.tooltip.notification_mode.2": "gewisen ginn: Aktiounsleascht, Bossleascht oder gar net."
+  "swd.tooltip.notification_mode.2": "gewisen ginn: Aktiounsleascht, Bossleascht oder gar net.",
+  "swd.screen.config.label.lock_untraded_villagers": "Ongehandelt Duerfbewunner spären:",
+  "swd.tooltip.lock_untraded_villagers.1": "Gëff ongehandelt Duerfbewunner 1 XP, fir dass si hir",
+  "swd.tooltip.lock_untraded_villagers.2": "Offere behalen, wann d'gespäichert Welt geluede gëtt."
 }

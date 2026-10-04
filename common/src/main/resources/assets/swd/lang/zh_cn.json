@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Boss 栏",
   "swd.screen.config.notification_mode.off": "关闭",
   "swd.tooltip.notification_mode.1": "选择下载状态消息的",
-  "swd.tooltip.notification_mode.2": "显示方式：快捷栏上方、Boss 栏或不显示。"
+  "swd.tooltip.notification_mode.2": "显示方式：快捷栏上方、Boss 栏或不显示。",
+  "swd.screen.config.label.lock_untraded_villagers": "锁定未交易的村民：",
+  "swd.tooltip.lock_untraded_villagers.1": "给予未交易的村民 1 点经验，以便在加载存档时",
+  "swd.tooltip.lock_untraded_villagers.2": "保留他们的交易内容。"
 }

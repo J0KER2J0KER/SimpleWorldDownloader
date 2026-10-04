@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Pasek bossa",
   "swd.screen.config.notification_mode.off": "Wyłączōne",
   "swd.tooltip.notification_mode.1": "Wyber jak pokazywać komunikaty ô pobyraniu:",
-  "swd.tooltip.notification_mode.2": "pasek akcyje, pasek bossa abo wcale."
+  "swd.tooltip.notification_mode.2": "pasek akcyje, pasek bossa abo wcale.",
+  "swd.screen.config.label.lock_untraded_villagers": "Zablokuj ôsadnikōw bez handlu:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dej ôsadnikōm bez handlu 1 PD, żeby zachowali",
+  "swd.tooltip.lock_untraded_villagers.2": "swoje ôferty po załadowaniu zaszrajbowanego świata."
 }

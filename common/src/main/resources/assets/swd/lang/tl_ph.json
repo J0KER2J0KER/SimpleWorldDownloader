@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Boss Bar",
   "swd.screen.config.notification_mode.off": "Naka-off",
   "swd.tooltip.notification_mode.1": "Pumili kung paano ipapakita ang mga mensahe ng status ng pag-download:",
-  "swd.tooltip.notification_mode.2": "action bar, boss bar, o hindi man lang."
+  "swd.tooltip.notification_mode.2": "action bar, boss bar, o hindi man lang.",
+  "swd.screen.config.label.lock_untraded_villagers": "I-lock ang di nakipagkalakalang taganayon:",
+  "swd.tooltip.lock_untraded_villagers.1": "Bigyan ng 1 XP ang mga taganayon para panatilihin ang",
+  "swd.tooltip.lock_untraded_villagers.2": "kanilang mga kalakal pag na-load na ang mundo."
 }

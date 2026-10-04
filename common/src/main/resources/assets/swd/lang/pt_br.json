@@ -37,5 +37,8 @@
   "swd.screen.config.notification_mode.bossbar": "Barra de chefe",
   "swd.screen.config.notification_mode.off": "Desativado",
   "swd.tooltip.notification_mode.1": "Escolha como as mensagens de download",
-  "swd.tooltip.notification_mode.2": "são exibidas: barra de ação, barra de chefe ou nenhuma."
+  "swd.tooltip.notification_mode.2": "são exibidas: barra de ação, barra de chefe ou nenhuma.",
+  "swd.screen.config.label.lock_untraded_villagers": "Bloquear aldeões sem trocas:",
+  "swd.tooltip.lock_untraded_villagers.1": "Dê 1 XP aos aldeões sem trocas para que mantenham",
+  "swd.tooltip.lock_untraded_villagers.2": "suas trocas quando o mundo salvo for carregado."
 }
