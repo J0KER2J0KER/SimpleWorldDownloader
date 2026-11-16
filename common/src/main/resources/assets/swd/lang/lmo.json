@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Sceern comè che i messagg de scaricament",
   "swd.tooltip.notification_mode.2": "vengnen mostrad: barra de accion, barra del boss, o per nagott.",
   "swd.screen.config.label.lock_untraded_villagers": "Bloca vilan sensa scambi:",
+  "swd.screen.config.label.chunk_resave_delay": "Ritard per salvà incoeu el chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Dà 1 XP ai vilan sensa scambi per fà mantegnì",
   "swd.tooltip.lock_untraded_villagers.2": "i sò scambi quant l'è caregad el mond salvad."
 }

@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Zgjidhni se si shfaqen mesazhet e shkarkimit:",
   "swd.tooltip.notification_mode.2": "rripi i veprimeve, rripi i boss-it, ose aspak.",
   "swd.screen.config.label.lock_untraded_villagers": "Kyç fshatarët pa tregti:",
+  "swd.screen.config.label.chunk_resave_delay": "Vonesë para ruajtjes sërish të chunk-ut",
   "swd.tooltip.lock_untraded_villagers.1": "Jepu fshatarëve 1 XP që të mbajnë tregtitë e tyre",
   "swd.tooltip.lock_untraded_villagers.2": "kur të ngarkohet bota e ruajtur."
 }

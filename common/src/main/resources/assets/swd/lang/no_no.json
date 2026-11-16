@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Velg hvordan nedlastingsstatusmeldinger",
   "swd.tooltip.notification_mode.2": "vises: handlingslinje, bosslinje eller ikke i det hele tatt.",
   "swd.screen.config.label.lock_untraded_villagers": "Lås ubyttede landsbyboere:",
+  "swd.screen.config.label.chunk_resave_delay": "Forsinkelse før chunken lagres på nytt",
   "swd.tooltip.lock_untraded_villagers.1": "Gi ubyttede landsbyboere 1 XP slik at de beholder",
   "swd.tooltip.lock_untraded_villagers.2": "handlene sine når den lagrede verdenen lastes inn."
 }

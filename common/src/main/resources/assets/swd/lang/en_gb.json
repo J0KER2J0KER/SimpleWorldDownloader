@@ -6,6 +6,7 @@
   "swd.screen.config.label.include_player_data": "Include player data:",
   "swd.screen.config.label.include_resource_packs": "Include resource packs:",
   "swd.screen.config.label.lock_untraded_villagers": "Lock untraded villagers:",
+  "swd.screen.config.label.chunk_resave_delay": "Chunk re-save delay",
   "swd.screen.config.includes_heading": "Included data",
   "swd.screen.config.placeholder.world_name": "World name to save as",
   "swd.button.reset": "Reset",

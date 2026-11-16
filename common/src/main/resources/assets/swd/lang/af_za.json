@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Kies hoe aflaai-statusboodskappe",
   "swd.tooltip.notification_mode.2": "getoon word: aksiebalk, baasbalk, of heeltemal nie.",
   "swd.screen.config.label.lock_untraded_villagers": "Sluit onverhandelde dorpenaars:",
+  "swd.screen.config.label.chunk_resave_delay": "Vertraging vir herstoor van stukke",
   "swd.tooltip.lock_untraded_villagers.1": "Gee onverhandelde dorpenaars 1 XP sodat hulle hul",
   "swd.tooltip.lock_untraded_villagers.2": "handel behou wanneer die wêreld gelaai word."
 }

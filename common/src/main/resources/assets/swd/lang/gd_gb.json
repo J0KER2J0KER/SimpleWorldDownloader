@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Roghnaich mar a thèid teachdaireachdan inbhe luchdadh a-nuas",
   "swd.tooltip.notification_mode.2": "a thaisbeanadh: bàr gnìomha, bàr boss, neo idir.",
   "swd.screen.config.label.lock_untraded_villagers": "Glais muinntir gun mhalairt:",
+  "swd.screen.config.label.chunk_resave_delay": "Dàil mus tèid an earrann a shàbhaladh a-rithist",
   "swd.tooltip.lock_untraded_villagers.1": "Thoir 1 XP do mhuinntir gun mhalairt gus am bi an",
   "swd.tooltip.lock_untraded_villagers.2": "malairtean aca nuair a lùchdar an saoghal."
 }

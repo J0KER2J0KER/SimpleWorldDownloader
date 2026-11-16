@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "擇下載之報",
   "swd.tooltip.notification_mode.2": "顯示之法：動作欄、主魁欄或不示。",
   "swd.screen.config.label.lock_untraded_villagers": "鎖未交易之民：",
+  "swd.screen.config.label.chunk_resave_delay": "區塊重存之延遲",
   "swd.tooltip.lock_untraded_villagers.1": "賜未交易之民一經驗以存其",
   "swd.tooltip.lock_untraded_villagers.2": "交易之物於載世之時。"
 }

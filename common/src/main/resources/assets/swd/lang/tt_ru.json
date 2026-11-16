@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Йөктәү статусы хәбәрләренең ничек күрсәтелүен сайлагыз:",
   "swd.tooltip.notification_mode.2": "гәмәлләр панеле, босс панеле яки вообще күрсәтмәскә.",
   "swd.screen.config.label.lock_untraded_villagers": "Сәүдә итмәгән авылдашларны бикләү:",
+  "swd.screen.config.label.chunk_resave_delay": "Чанкны кабат саклау тоткарлыгы",
   "swd.tooltip.lock_untraded_villagers.1": "Дөнья йөкләнгәндә сәүдәләрен саклап калсыннар өчен",
   "swd.tooltip.lock_untraded_villagers.2": "сәүдә итмәгән авылдашларга 1 XP бирегез."
 }

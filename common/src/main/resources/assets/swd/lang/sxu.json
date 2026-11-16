@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Gugge wie de Downloade-Meldungen",
   "swd.tooltip.notification_mode.2": "angeseischt wärdn: Agzionsleisde, Bossleisde oder gar nie.",
   "swd.screen.config.label.lock_untraded_villagers": "Unjehandelde Dorfbohooner sperren:",
+  "swd.screen.config.label.chunk_resave_delay": "Chunk widder speichern Verzögerung",
   "swd.tooltip.lock_untraded_villagers.1": "Gibb unjehandelten Dorfbohoonern 1 XP, damit se",
   "swd.tooltip.lock_untraded_villagers.2": "ihre Angebote b'haltn, wenn de Welt jeladen wörd."
 }

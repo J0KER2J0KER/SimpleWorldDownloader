@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Kies hoe downloadstatusberichten",
   "swd.tooltip.notification_mode.2": "getoond worden: actiebalk, baasbalk of helemaal niet.",
   "swd.screen.config.label.lock_untraded_villagers": "Niet-verhandelde dorpelingen vergrendelen:",
+  "swd.screen.config.label.chunk_resave_delay": "Vertraging voor het opnieuw opslaan van de chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Geef dorpelingen zonder handel 1 XP zodat ze hun",
   "swd.tooltip.lock_untraded_villagers.2": "aanbiedingen behouden wanneer de wereld laadt."
 }

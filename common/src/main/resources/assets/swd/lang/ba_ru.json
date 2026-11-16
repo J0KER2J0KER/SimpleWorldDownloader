@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Йөктәү статусы хәбәрҙәренең ничек күрһәтелеүен һайлағыҙ:",
   "swd.tooltip.notification_mode.2": "действиелар панеле, босс панеле йәки юҡ.",
   "swd.screen.config.label.lock_untraded_villagers": "Ungehandelte Dorfbewohna sperrn:",
+  "swd.screen.config.label.chunk_resave_delay": "Задержка повторного сохранения чанка",
   "swd.tooltip.lock_untraded_villagers.1": "Gibt ungehandelten Dorfbewohnan 1 XP, damit's eanare",
   "swd.tooltip.lock_untraded_villagers.2": "Angebote behaltn, wenn de gspeicherte Welt gladn wird."
 }

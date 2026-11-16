@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Diuzit penaos e vez diskouezet kelaouennoù pellgargañ:",
   "swd.tooltip.notification_mode.2": "barrenn oberiañ, barreun boss, pe netra ebet.",
   "swd.screen.config.label.lock_untraded_villagers": "Prennañ ar vilajened hep eskemm:",
+  "swd.screen.config.label.chunk_resave_delay": "Amzer dale evit enrollañ ar rann adarre",
   "swd.tooltip.lock_untraded_villagers.1": "Reiñ a ra 1 XP d'ar vilajened evit mirout",
   "swd.tooltip.lock_untraded_villagers.2": "o eskemmoù pa vez karget ar bed enrollat."
 }

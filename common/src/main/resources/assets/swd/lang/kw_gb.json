@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Dewisva fatel fe mothow leundhewnans",
   "swd.tooltip.notification_mode.2": "diskwedhys: bar gwres, bar boss, po na neb pypynag.",
   "swd.screen.config.label.lock_untraded_villagers": "Kloya trevesigyon heb marghas:",
+  "swd.screen.config.label.chunk_resave_delay": "Termyn a-ragta kerdhya an rann arta",
   "swd.tooltip.lock_untraded_villagers.1": "Ro 1 XP dhe drevesigyon rag gwitha aga marghasow",
   "swd.tooltip.lock_untraded_villagers.2": "pan vo kargys an bys gwithys."
 }

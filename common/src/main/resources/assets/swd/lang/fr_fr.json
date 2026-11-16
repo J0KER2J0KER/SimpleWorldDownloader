@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Choisissez comment les messages de téléchargement",
   "swd.tooltip.notification_mode.2": "sont affichés : barre d'action, barre de boss ou aucun.",
   "swd.screen.config.label.lock_untraded_villagers": "Verrouiller les villageois non échangés :",
+  "swd.screen.config.label.chunk_resave_delay": "Délai avant de réenregistrer le chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Donne 1 XP aux villageois non échangés pour qu'ils conservent",
   "swd.tooltip.lock_untraded_villagers.2": "leurs échanges lors du chargement de la partie."
 }

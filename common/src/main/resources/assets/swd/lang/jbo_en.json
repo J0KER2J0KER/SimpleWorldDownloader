@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "ko cuxna lo du'u samxadni datni pe lo kibycazni",
   "swd.tooltip.notification_mode.2": "cu jarco: kibyca'i gerna, nolraitru gerna, ja no da.",
   "swd.screen.config.label.lock_untraded_villagers": "gandi lo na canja cmana:",
+  "swd.screen.config.label.chunk_resave_delay": "lo temci be lo za'u vreji lo chunko",
   "swd.tooltip.lock_untraded_villagers.1": "dunda 1 XP lo na canja cmana tezu'e lo",
   "swd.tooltip.lock_untraded_villagers.2": "nunca'a ca lo nu se snuti lo se cmaxau."
 }

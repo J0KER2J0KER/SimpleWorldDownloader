@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Tria com es mostren els missatges de baixada:",
   "swd.tooltip.notification_mode.2": "barra d'acció, barra de cap o de cap manera.",
   "swd.screen.config.label.lock_untraded_villagers": "Bloqueja aldeans sense intercanvis:",
+  "swd.screen.config.label.chunk_resave_delay": "Retard per tornar a desar el fragment",
   "swd.tooltip.lock_untraded_villagers.1": "Dona 1 XP als aldeans sense intercanvis perquè mantinguin",
   "swd.tooltip.lock_untraded_villagers.2": "els seus intercanvis quan es carregui el món."
 }

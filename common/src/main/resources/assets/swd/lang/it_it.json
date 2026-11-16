@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Scegli come mostrare i messaggi di download:",
   "swd.tooltip.notification_mode.2": "nella barra delle azioni, nella barra del boss o per niente.",
   "swd.screen.config.label.lock_untraded_villagers": "Blocca i villici senza scambi:",
+  "swd.screen.config.label.chunk_resave_delay": "Ritardo prima di salvare di nuovo il chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Dà ai villici senza scambi 1 XP così manterranno i loro",
   "swd.tooltip.lock_untraded_villagers.2": "scambi quando viene caricato il mondo salvato."
 }

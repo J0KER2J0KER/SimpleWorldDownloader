@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Выберите, как отображаются сообщения о загрузке:",
   "swd.tooltip.notification_mode.2": "в панели действий, полосе босса или вообще не показывать.",
   "swd.screen.config.label.lock_untraded_villagers": "Заблокировать жителей без торгов:",
+  "swd.screen.config.label.chunk_resave_delay": "Задержка перед повторным сохранением чанка",
   "swd.tooltip.lock_untraded_villagers.1": "Дайте жителям без торгов 1 ед. опыта, чтобы они сохранили",
   "swd.tooltip.lock_untraded_villagers.2": "свои торги при загрузке сохраненного мира."
 }

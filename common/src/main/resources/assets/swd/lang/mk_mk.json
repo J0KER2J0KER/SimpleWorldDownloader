@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Изберете како се прикажуваат пораките за статус на преземање:",
   "swd.tooltip.notification_mode.2": "лента за дејства, лента за бос или воопшто не.",
   "swd.screen.config.label.lock_untraded_villagers": "Заклучи селани без трговија:",
+  "swd.screen.config.label.chunk_resave_delay": "Одложување пред повторно зачувување на делот",
   "swd.tooltip.lock_untraded_villagers.1": "Дај на селаните без трговија 1 XP за да ги задржат",
   "swd.tooltip.lock_untraded_villagers.2": "своите трговии кога ќе се вчита зачуваниот свет."
 }

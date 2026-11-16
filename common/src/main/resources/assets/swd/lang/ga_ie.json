@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Roghnaigh conas a thaispeántar teachtaireachtaí stádas íoslódála:",
   "swd.tooltip.notification_mode.2": "barra gníomhaíochta, barra boss, nó ar bith.",
   "swd.screen.config.label.lock_untraded_villagers": "Glasáil sráidbhaileoirí gan trádáil:",
+  "swd.screen.config.label.chunk_resave_delay": "Moill sula sábhálfar an blúire arís",
   "swd.tooltip.lock_untraded_villagers.1": "Tabhair 1 XP do shráidbhaileoirí ionas go gcoimeádfaidh siad",
   "swd.tooltip.lock_untraded_villagers.2": "a gcuid trádálacha nuair a lódáiltear an domhan."
 }

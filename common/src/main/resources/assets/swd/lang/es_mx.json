@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Elige cómo se muestran los mensajes de descarga:",
   "swd.tooltip.notification_mode.2": "en la barra de acción, barra de jefes o desactivado.",
   "swd.screen.config.label.lock_untraded_villagers": "Bloquear aldeanos sin intercambios:",
+  "swd.screen.config.label.chunk_resave_delay": "Retraso para volver a guardar el chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Da 1 de XP a aldeanos sin intercambios para que",
   "swd.tooltip.lock_untraded_villagers.2": "guarden sus intercambios al cargar el mundo."
 }

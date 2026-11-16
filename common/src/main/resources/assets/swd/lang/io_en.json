@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Elegez quale la mesaji di kapto-statuso",
   "swd.tooltip.notification_mode.2": "esos montrata: agado-stango, estro-stango, od tote ne.",
   "swd.screen.config.label.lock_untraded_villagers": "Klozez ne-komecita vilajani:",
+  "swd.screen.config.label.chunk_resave_delay": "Prokrasto ante ri-savar la peco",
   "swd.tooltip.lock_untraded_villagers.1": "Donez ne-komecita vilajani 1 XP por ke li",
   "swd.tooltip.lock_untraded_villagers.2": "retenas sua komerci kande la savita mondo kargesas."
 }

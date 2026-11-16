@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Söök us, wie de Download-Statusmelde",
   "swd.tooltip.notification_mode.2": "anjeseesch wäde: Aktionsleis, Bossleis oder gar nit.",
   "swd.screen.config.label.lock_untraded_villagers": "Ungehandelte Dorfbewohna sperre:",
+  "swd.screen.config.label.chunk_resave_delay": "Verzöjerung för et Chunk widder ze späächere",
   "swd.tooltip.lock_untraded_villagers.1": "Gitt ungehandelten Dorfbewohnan 1 XP, domet se",
   "swd.tooltip.lock_untraded_villagers.2": "ihre Angebote behalde, wenn de Welt jelade weed."
 }

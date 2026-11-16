@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "เลือกวิธีแสดงข้อความสถานะการดาวน์โหลด:",
   "swd.tooltip.notification_mode.2": "แถบการกระทำ แถบบอส หรือไม่แสดงเลย",
   "swd.screen.config.label.lock_untraded_villagers": "ล็อคชาวบ้านที่ยังไม่ได้แลกเปลี่ยน:",
+  "swd.screen.config.label.chunk_resave_delay": "หน่วงเวลาก่อนบันทึกชังก์อีกครั้ง",
   "swd.tooltip.lock_untraded_villagers.1": "มอบ XP 1 หน่วยให้ชาวบ้านที่ยังไม่ได้แลกเปลี่ยน",
   "swd.tooltip.lock_untraded_villagers.2": "เพื่อรักษาการแลกเปลี่ยนไว้เมื่อโหลดโลกที่บันทึกไว้"
 }

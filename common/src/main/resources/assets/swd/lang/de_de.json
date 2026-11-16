@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Wähle, wie Download-Statusmeldungen",
   "swd.tooltip.notification_mode.2": "angezeigt werden: Aktionsleiste, Bossleiste oder gar nicht.",
   "swd.screen.config.label.lock_untraded_villagers": "Unerhandelte Dorfbewohner sperren:",
+  "swd.screen.config.label.chunk_resave_delay": "Verzögerung bis zum erneuten Speichern des Chunks",
   "swd.tooltip.lock_untraded_villagers.1": "Gibt unerhandelten Dorfbewohnern 1 EP, damit sie ihre",
   "swd.tooltip.lock_untraded_villagers.2": "Angebote behalten, wenn die Welt geladen wird."
 }

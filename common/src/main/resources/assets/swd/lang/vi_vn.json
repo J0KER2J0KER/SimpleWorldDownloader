@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Chọn cách hiển thị thông báo trạng thái tải xuống:",
   "swd.tooltip.notification_mode.2": "thanh hành động, thanh Trùm, hoặc không hiển thị.",
   "swd.screen.config.label.lock_untraded_villagers": "Khóa dân làng chưa giao dịch:",
+  "swd.screen.config.label.chunk_resave_delay": "Độ trễ trước khi lưu lại chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Cung cấp 1 XP cho dân làng chưa giao dịch để họ giữ",
   "swd.tooltip.lock_untraded_villagers.2": "giao dịch khi thế giới đã lưu được tải lên."
 }

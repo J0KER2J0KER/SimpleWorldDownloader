@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Aukeratu nola erakutsiko diren deskarga-mezuak:",
   "swd.tooltip.notification_mode.2": "ekintza-barran, boss-barran edo ezer ez.",
   "swd.screen.config.label.lock_untraded_villagers": "Blokeatu trukatu gabeko herritarrak:",
+  "swd.screen.config.label.chunk_resave_delay": "Zatia berriro gordetzeko atzerapena",
   "swd.tooltip.lock_untraded_villagers.1": "Eman 1 XP trukatu gabeko herritarrei, gordetako mundua",
   "swd.tooltip.lock_untraded_villagers.2": "kargatzean haien trukeak mantendu ditzaten."
 }

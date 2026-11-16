@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Vali, kuidas allalaadimise olekusõnumeid",
   "swd.tooltip.notification_mode.2": "kuvatakse: tegevusribal, pomeribal või üldse mitte.",
   "swd.screen.config.label.lock_untraded_villagers": "Lukusta kauplemata külaelanikud:",
+  "swd.screen.config.label.chunk_resave_delay": "Tüki uuesti salvestamise viivitus",
   "swd.tooltip.lock_untraded_villagers.1": "Annab kauplemata külaelanikele 1 XP, et nad säilitaksid",
   "swd.tooltip.lock_untraded_villagers.2": "oma tehingud, kui salvestatud maailm laetakse."
 }

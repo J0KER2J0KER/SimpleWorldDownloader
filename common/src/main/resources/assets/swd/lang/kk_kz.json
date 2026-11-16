@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Жүктеу күйі хабарларының қалай көрсетілетінін таңдаңыз:",
   "swd.tooltip.notification_mode.2": "әрекеттер панелі, босс панелі немесе мүлдем көрсетпеу.",
   "swd.screen.config.label.lock_untraded_villagers": "Саудаласпаған тұрғындарды құлыптау:",
+  "swd.screen.config.label.chunk_resave_delay": "Чанкіні қайта сақтау кідірісі",
   "swd.tooltip.lock_untraded_villagers.1": "Саудаласпаған тұрғындарға 1 XP беріңіз, олар әлем",
   "swd.tooltip.lock_untraded_villagers.2": "жүктелгенде саудаларын сақтап қалуы үшін."
 }

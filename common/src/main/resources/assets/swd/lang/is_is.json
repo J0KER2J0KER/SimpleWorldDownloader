@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Veldu hvernig skilaboð um stöðu niðurhals",
   "swd.tooltip.notification_mode.2": "eru sýnd: aðgerðastika, yfirmannsstika eða alls ekki.",
   "swd.screen.config.label.lock_untraded_villagers": "Læsa óviðskiptum þorpsbúum:",
+  "swd.screen.config.label.chunk_resave_delay": "Töf áður en kubburinn er vistaður aftur",
   "swd.tooltip.lock_untraded_villagers.1": "Gefðu óviðskiptum þorpsbúum 1 XP svo þeir haldi",
   "swd.tooltip.lock_untraded_villagers.2": "viðskiptum sínum þegar vistaður heimur er hlaðinn."
 }

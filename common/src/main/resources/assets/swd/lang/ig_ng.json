@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Họrọ ka esi gosi ozi ọnọdụ nbudata:",
   "swd.tooltip.notification_mode.2": "akwụkwọ omume, akwụkwọ boss, ma ọ bụ amaghị.",
   "swd.screen.config.label.lock_untraded_villagers": "Kpochi ndị obodo akpọghị azụmahịa:",
+  "swd.screen.config.label.chunk_resave_delay": "Oge igbu oge tupu ịchekwa chunk ọzọ",
   "swd.tooltip.lock_untraded_villagers.1": "Nye ndị obodo 1 XP ka ha wee dowe",
   "swd.tooltip.lock_untraded_villagers.2": "azụmahịa ha mgbe ụwa malitere."
 }

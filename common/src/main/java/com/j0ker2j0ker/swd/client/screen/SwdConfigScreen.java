@@ -155,7 +155,7 @@ public class SwdConfigScreen extends Screen {
         ));
 
         this.settings.add(new IntegerSliderSettingEntry(
-                Component.literal("Delayed chunk re-saving"), List.of(),
+                Component.translatable("swd.screen.config.label.chunk_resave_delay"), List.of(),
                 labelX, 245, controlX, 240, 150,
                 () -> Swd.CONFIG.chunkResaveDelaySeconds,
                 value -> Swd.CONFIG.chunkResaveDelaySeconds = value

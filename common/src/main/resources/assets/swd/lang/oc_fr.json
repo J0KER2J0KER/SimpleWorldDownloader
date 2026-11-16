@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Causissètz coina los messatges de descarga",
   "swd.tooltip.notification_mode.2": "son afichats : barra d'accion, barra de cap o pas gens.",
   "swd.screen.config.label.lock_untraded_villagers": "Varrolhar los vilatgeses sens escambis:",
+  "swd.screen.config.label.chunk_resave_delay": "Relambi abans de tornar enregistrar lo chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Donatz 1 XP als vilatgeses sens escambis per que gardon",
   "swd.tooltip.lock_untraded_villagers.2": "lors escambis al cargament del mond."
 }

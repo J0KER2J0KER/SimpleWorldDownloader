@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Vel korleis nedlastingsstatusmeldingar",
   "swd.tooltip.notification_mode.2": "vert viste: handlingsfelt, bossfelt eller ikkje i det heile.",
   "swd.screen.config.label.lock_untraded_villagers": "Lås ubytta landsbybuarar:",
+  "swd.screen.config.label.chunk_resave_delay": "Forseinking før chunken blir lagra på nytt",
   "swd.tooltip.lock_untraded_villagers.1": "Gje ubytta landsbybuarar 1 XP slik at dei beheld",
   "swd.tooltip.lock_untraded_villagers.2": "handlane sine når den lagra verda vert lasta inn."
 }

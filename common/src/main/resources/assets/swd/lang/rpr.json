@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Wähle wie Download-Meldunge",
   "swd.tooltip.notification_mode.2": "anjeseesch wäde: Aktionsleis, Bossleis oder jar nit.",
   "swd.screen.config.label.lock_untraded_villagers": "Заблокировать жителей безъ торговъ:",
+  "swd.screen.config.label.chunk_resave_delay": "Задержка повторного сохраненія чанка",
   "swd.tooltip.lock_untraded_villagers.1": "Дайте жителямъ безъ торговъ 1 ед. опыта, дабы сохранить",
   "swd.tooltip.lock_untraded_villagers.2": "ихъ торги при загрузкѣ сохраненнаго міра."
 }

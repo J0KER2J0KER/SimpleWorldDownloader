@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Izberite kako se pokazujų soobšćenja statusa sdohnutja:",
   "swd.tooltip.notification_mode.2": "traka dějstvij, traka bosa ili nikako.",
   "swd.screen.config.label.lock_untraded_villagers": "Zaključi seljanov bez trgovanja:",
+  "swd.screen.config.label.chunk_resave_delay": "Zadržanje ponovnogo shranjenja čanka",
   "swd.tooltip.lock_untraded_villagers.1": "Daj seljanam bez trgovanja 1 XP, da by sohranili",
   "swd.tooltip.lock_untraded_villagers.2": "svoje trgovanja pri zagraždenju s'hranjenogo světa."
 }

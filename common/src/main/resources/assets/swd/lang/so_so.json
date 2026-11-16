@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Xasho sida fariimaha xaalada soo dejinta",
   "swd.tooltip.notification_mode.2": "loo muujiyo: barta waxqabadka, barta maamulaha, ama haba yaraatee.",
   "swd.screen.config.label.lock_untraded_villagers": "Xir tuulooyinka aan ganacsiga lahayn:",
+  "swd.screen.config.label.chunk_resave_delay": "Dib u dhac ku yimaada dib u kaydinta chunk-ka",
   "swd.tooltip.lock_untraded_villagers.1": "Sii tuulooyinka 1 XP si ay u xajistaan ganacsigooda",
   "swd.tooltip.lock_untraded_villagers.2": "marka adduunka la keydiyay la shido."
 }

@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Sielç cemût che i meşaçs di scjamf",
   "swd.tooltip.notification_mode.2": "a vegnin mostrâts: sbare di azion, sbare dal boss, o par nuie.",
   "swd.screen.config.label.lock_untraded_villagers": "Bloche vilans cence scambis:",
+  "swd.screen.config.label.chunk_resave_delay": "Ritart par tornâ a salvâ il chunk",
   "swd.tooltip.lock_untraded_villagers.1": "Da 1 XP ai vilans cence scambis par mantignî i lôr",
   "swd.tooltip.lock_untraded_villagers.2": "scambis cuant che al ven cjamât il mont."
 }

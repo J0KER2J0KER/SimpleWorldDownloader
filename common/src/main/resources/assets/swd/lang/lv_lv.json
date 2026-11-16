@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Izvēlieties, kā parādīt lejupielādes statusa ziņojumus:",
   "swd.tooltip.notification_mode.2": "darbību joslā, bosa joslā vai neparādīt vispār.",
   "swd.screen.config.label.lock_untraded_villagers": "Ieslēgt netirgojušos ciematniekus:",
+  "swd.screen.config.label.chunk_resave_delay": "Kavēšanās pirms apgabala atkārtotas saglabāšanas",
   "swd.tooltip.lock_untraded_villagers.1": "Dodiet 1 XP ciematniekiem, lai viņi saglabātu",
   "swd.tooltip.lock_untraded_villagers.2": "savus piedāvājumus, kad tiek ielādēta pasaule."
 }

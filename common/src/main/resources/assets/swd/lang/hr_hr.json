@@ -39,6 +39,7 @@
   "swd.tooltip.notification_mode.1": "Odaberite kako se prikazuju poruke o statusu preuzimanja:",
   "swd.tooltip.notification_mode.2": "traka radnji, traka šefa ili uopće ne.",
   "swd.screen.config.label.lock_untraded_villagers": "Zaključaj seljane bez trgovine:",
+  "swd.screen.config.label.chunk_resave_delay": "Odgoda ponovnog spremanja chunk-a",
   "swd.tooltip.lock_untraded_villagers.1": "Daj seljanima bez trgovine 1 XP kako bi zadržali",
   "swd.tooltip.lock_untraded_villagers.2": "svoje trgovine kada se učita spremljeni svijet."
 }
