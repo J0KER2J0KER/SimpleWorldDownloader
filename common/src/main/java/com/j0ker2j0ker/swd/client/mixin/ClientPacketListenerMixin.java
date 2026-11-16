@@ -32,6 +32,7 @@ public abstract class ClientPacketListenerMixin {
         if (wc == null || wc.isEmpty() || mc.level == null) return;
 
         SaveManager.saveChunkToRegion(SaveManager.path, wc, true, mc.level.dimension());
+        SaveManager.scheduleDelayedChunkResave(chunkX, chunkZ, mc.level.dimension());
     }
 
     @Inject(method = "handleAwardStats", at = @At("TAIL"))

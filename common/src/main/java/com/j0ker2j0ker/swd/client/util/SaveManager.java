@@ -71,6 +71,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SaveManager {
 
@@ -92,6 +95,13 @@ public class SaveManager {
     private static final java.util.Set<String> queuedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private static final java.util.Set<String> touchedChunks = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private static final int MAX_QUEUE_SIZE = 4096;
+    private static final ScheduledExecutorService delayedResaveExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread thread = new Thread(r, "SWD delayed chunk resave");
+        thread.setDaemon(true);
+        return thread;
+    });
+    private static final java.util.Set<String> pendingDelayedResaves = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private static volatile long saveSessionId;
     public static Thread saveThread = null;
 
     public static volatile boolean isSaving = false;
@@ -129,6 +139,7 @@ public class SaveManager {
 
         ops = Objects.requireNonNull(mc.level).registryAccess().createSerializationContext(NbtOps.INSTANCE);
         isSaving = true;
+        saveSessionId++;
 
         determineWorldName();
         path = mc.getLevelSource().getBaseDir().resolve(name);
@@ -176,6 +187,8 @@ public class SaveManager {
 
         queuedChunks.clear();
         touchedChunks.clear();
+        saveSessionId++;
+        pendingDelayedResaves.clear();
 
         if (cacheBlockInventories != null) cacheBlockInventories.clear();
         if (cacheEntityInventories != null) cacheEntityInventories.clear();
@@ -1365,6 +1378,30 @@ public class SaveManager {
         if (showMessage) {
             printStatus(Component.translatable("swd.status.saving_chunk", wc.getPos()).withStyle(ChatFormatting.GREEN));
         }
+    }
+
+    public static void scheduleDelayedChunkResave(int chunkX, int chunkZ,
+            net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension) {
+        int delaySeconds = Math.max(0, Math.min(5, Swd.CONFIG.chunkResaveDelaySeconds));
+        if (!isSaving || delaySeconds == 0 || mc.level == null || mc.isLocalServer() || mc.getCurrentServer() == null) return;
+
+        ChunkPos pos = new ChunkPos(chunkX, chunkZ);
+        String key = packChunkDimKey(pos, dimension);
+        if (!pendingDelayedResaves.add(key)) return;
+        long session = saveSessionId;
+        ClientLevel expectedLevel = mc.level;
+        Path expectedPath = path;
+
+        delayedResaveExecutor.schedule(() -> mc.execute(() -> {
+            pendingDelayedResaves.remove(key);
+            if (!isSaving || session != saveSessionId || mc.level != expectedLevel || path != expectedPath
+                    || mc.level == null || !dimension.equals(mc.level.dimension())) return;
+            LevelChunk current = mc.level.getChunkSource().getChunkNow(chunkX, chunkZ);
+            if (current != null && !current.isEmpty()) {
+                queuedChunks.remove(key);
+                saveChunkToRegion(expectedPath, current, false, dimension);
+            }
+        }), delaySeconds, TimeUnit.SECONDS);
     }
 
     private static void processQueue(Path worldFolder) {

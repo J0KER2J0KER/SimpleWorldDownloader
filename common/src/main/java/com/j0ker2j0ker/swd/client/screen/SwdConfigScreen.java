@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -153,6 +154,13 @@ public class SwdConfigScreen extends Screen {
                 value -> Swd.CONFIG.lockUntradedVillagers = value
         ));
 
+        this.settings.add(new IntegerSliderSettingEntry(
+                Component.literal("Delayed chunk re-saving"), List.of(),
+                labelX, 245, controlX, 240, 150,
+                () -> Swd.CONFIG.chunkResaveDelaySeconds,
+                value -> Swd.CONFIG.chunkResaveDelaySeconds = value
+        ));
+
         for (SettingEntry setting : this.settings) {
             setting.addWidgets(this.scrollPanel);
         }
@@ -224,7 +232,7 @@ public class SwdConfigScreen extends Screen {
 
         @Override
         protected int contentHeight() {
-            return 260;
+            return 285;
         }
 
         @Override
@@ -295,17 +303,13 @@ public class SwdConfigScreen extends Screen {
 
         @Override
         public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
-            if (super.mouseDragged(event, dx, dy)) {
-                return true;
-            }
-
             for (AbstractWidget widget : this.widgets) {
-                if (widget.mouseDragged(event, dx, dy)) {
+                if (widget.isFocused() && widget.mouseDragged(event, dx, dy)) {
                     return true;
                 }
             }
 
-            return false;
+            return super.mouseDragged(event, dx, dy);
         }
 
         @Override
@@ -569,6 +573,73 @@ public class SwdConfigScreen extends Screen {
         public void applyToConfig() {
             if (this.button != null) {
                 setter.accept(this.button.getValue());
+            }
+        }
+    }
+
+    private final class IntegerSliderSettingEntry extends SettingEntry {
+        private final int sliderX;
+        private final int baseSliderY;
+        private final int sliderW;
+        private final java.util.function.IntSupplier getter;
+        private final java.util.function.IntConsumer setter;
+        private AbstractSliderButton slider;
+        private int selectedValue;
+        private Runnable refreshSliderMessage = () -> {};
+
+        private IntegerSliderSettingEntry(Component label, List<Component> tooltip,
+                                           int labelX, int labelY, int sliderX, int sliderY, int sliderW,
+                                           java.util.function.IntSupplier getter,
+                                           java.util.function.IntConsumer setter) {
+            super(label, tooltip, labelX, labelY);
+            this.sliderX = sliderX;
+            this.baseSliderY = sliderY;
+            this.sliderW = sliderW;
+            this.getter = getter;
+            this.setter = setter;
+        }
+
+        @Override
+        public void addWidgets(ScrollPanel panel) {
+            int initialValue = Math.max(0, Math.min(5, getter.getAsInt()));
+            this.selectedValue = initialValue;
+            this.slider = new AbstractSliderButton(sliderX, panel.getY() + baseSliderY,
+                    sliderW, 20, Component.empty(), initialValue / 5.0) {
+                {
+                    IntegerSliderSettingEntry.this.refreshSliderMessage = this::updateMessage;
+                }
+
+                private int selectedValue() {
+                    return (int) Math.round(this.value * 5.0);
+                }
+
+                @Override
+                protected void updateMessage() {
+                    this.value = selectedValue() / 5.0;
+                    int seconds = selectedValue();
+                    this.setMessage(seconds == 0 ? Component.literal("Off") : Component.literal(seconds + " s"));
+                }
+
+                @Override
+                protected void applyValue() {
+                    IntegerSliderSettingEntry.this.selectedValue = selectedValue();
+                }
+            };
+            this.refreshSliderMessage.run();
+            panel.addWidget(this.slider);
+        }
+
+        @Override
+        public void updateWidgetPosition(int panelY, int scrollOffset) {
+            if (this.slider != null) {
+                this.slider.setY(panelY + this.baseSliderY - scrollOffset);
+            }
+        }
+
+        @Override
+        public void applyToConfig() {
+            if (this.slider != null) {
+                setter.accept(this.selectedValue);
             }
         }
     }
